@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adventures{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-3 mb-3">
+  {% if app.user != null %}
+    <p class="hidden" id="title">{{title}}</p> 
+    <div class="row">
+      <div class="col-sm-12 col-md-4">
+      <a href="{{ path('adventure_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Adventure</button></a>   
+      {{ knp_pagination_filter(pagination, {'a.name': 'Name'}) }}
+      {{ knp_pagination_render(pagination, null, {}, {
+      'align': 'center',
+      'size': 'small',
+      'rounded': true,
+      }) }}
+      </div>
+      <div class="col-sm-12 col-md-8 table-responsive">
+        <table class="table table-striped table-light">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody name="feedTable" id="feedTable">
+            {% for adventure in pagination %}
+            {% set id = adventure.id %}
+              <tr>
+                <td><a class="nav-link" href="{{ path('adventure_edit', {'id': adventure.id}) }}">{{ adventure.id}}</a></td>
+                <td>{{ adventure.name }}</td>
+                </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}           
+</div>
+{% endblock %}
