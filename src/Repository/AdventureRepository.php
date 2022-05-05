@@ -47,16 +47,19 @@ class AdventureRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-
+    
     /**
      * @param string|null $term
      */
-    public function getWithSearchQueryBuilderViewAdventure(?string $term): QueryBuilder
+    public function getWithSearchQueryBuilderView(?string $term): QueryBuilder
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
-            ->select('a')
+            ->select('a','g','h','u')
             ->from('App\Entity\Adventure', 'a')
+            ->leftJoin('a.gamebook', 'g')
+            ->leftJoin('a.hero', 'h')
+            ->leftJoin('a.user', 'u')
             ->orderBy('a.id', 'ASC');
 
         return $qb;

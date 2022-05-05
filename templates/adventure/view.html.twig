@@ -4,8 +4,8 @@
 
 {% block body %}
 <div class="container-fluid mt-3 mb-3">
+  <p class="hidden" id="title">{{title}}</p> 
   {% if app.user != null %}
-    <p class="hidden" id="title">{{title}}</p> 
     <div class="row">
       <div class="col-sm-12 col-md-4">
       <a href="{{ path('adventure_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Adventure</button></a>   
@@ -21,16 +21,24 @@
           <thead>
             <tr>
               <th>ID</th>
+              <th>User</th>
+              <th>Gamebook</th>
+              <th>Hero</th>
+              <th>Time Elapsed</th>
               <th>Name</th>
             </tr>
           </thead>
-          <tbody name="feedTable" id="feedTable">
+          <tbody name="adventureTable" id="adventureTable">
             {% for adventure in pagination %}
             {% set id = adventure.id %}
               <tr>
                 <td><a class="nav-link" href="{{ path('adventure_edit', {'id': adventure.id}) }}">{{ adventure.id}}</a></td>
-                <td>{{ adventure.name }}</td>
-                </tr>
+                <td>{{ adventure.user }}</td>
+                <td>{{ adventure.adventure }}</td>
+                <td>{{ adventure.hero }}</td>
+                <td>{{ adventure.timeelapsed }}</td>
+                <td>{{ adventure.name }}</td>-
+              </tr>
             {% endfor %}
           </tbody>
         </table>

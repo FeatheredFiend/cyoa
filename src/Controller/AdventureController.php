@@ -21,7 +21,7 @@ class AdventureController extends AbstractController
     public function index(AdventureRepository $adventureRepository, Request $request, PaginatorInterface $paginator, string $title): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $adventureRepository->getWithSearchQueryBuilderViewAdventure($q);
+        $queryBuilder = $adventureRepository->getWithSearchQueryBuilderView($q);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */

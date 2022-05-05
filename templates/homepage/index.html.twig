@@ -3,18 +3,26 @@
 {% block title %}Hello HomepageController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/cyoa/src/Controller/HomepageController.php'|file_link(0) }}">src/Controller/HomepageController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/cyoa/templates/homepage/index.html.twig'|file_link(0) }}">templates/homepage/index.html.twig</a></code></li>
-    </ul>
-</div>
+<div class="container-fluid">
+    <p class="hidden" id="title">{{title}}</p> 
+    {% if app.user != null %}
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('gamebook_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Risk Rating</h3></a>
+            </div>
+        </div>
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('paragraph_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Risk Rating</h3></a>
+            </div>
+        </div> 
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('gamebookparagraph_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Risk Rating</h3></a>
+            </div>
+        </div>                
+    {% else %}
+        <p>Please Log in to view this page</p>
+    {% endif %}           
+</div>        
 {% endblock %}

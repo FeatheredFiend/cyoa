@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AdventureRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AdventureRepository::class)]
@@ -15,6 +17,29 @@ class Adventure
 
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
+    #[ORM\ManyToOne(targetEntity: Gamebook::class, inversedBy: 'adventures')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $gamebook;
+
+    #[ORM\OneToOne(inversedBy: 'adventure', targetEntity: Hero::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private $hero;
+
+    #[ORM\Column(type: 'integer')]
+    private $timeelapsed;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'adventures')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
+
+    #[ORM\OneToMany(mappedBy: 'adventure', targetEntity: AdventureParagraph::class)]
+    private $adventureParagraphs;
+
+    public function __construct()
+    {
+        $this->adventureParagraphs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -32,4 +57,87 @@ class Adventure
 
         return $this;
     }
+
+    public function getGamebook(): ?Gamebook
+    {
+        return $this->gamebook;
+    }
+
+    public function setGamebook(?Gamebook $gamebook): self
+    {
+        $this->gamebook = $gamebook;
+
+        return $this;
+    }
+
+    public function getHero(): ?Hero
+    {
+        return $this->hero;
+    }
+
+    public function setHero(Hero $hero): self
+    {
+        $this->hero = $hero;
+
+        return $this;
+    }
+
+    public function getTimeelapsed(): ?int
+    {
+        return $this->timeelapsed;
+    }
+
+    public function setTimeelapsed(int $timeelapsed): self
+    {
+        $this->timeelapsed = $timeelapsed;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AdventureParagraph>
+     */
+    public function getAdventureParagraphs(): Collection
+    {
+        return $this->adventureParagraphs;
+    }
+
+    public function addAdventureParagraph(AdventureParagraph $adventureParagraph): self
+    {
+        if (!$this->adventureParagraphs->contains($adventureParagraph)) {
+            $this->adventureParagraphs[] = $adventureParagraph;
+            $adventureParagraph->setAdventure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdventureParagraph(AdventureParagraph $adventureParagraph): self
+    {
+        if ($this->adventureParagraphs->removeElement($adventureParagraph)) {
+            // set the owning side to null (unless already changed)
+            if ($adventureParagraph->getAdventure() === $this) {
+                $adventureParagraph->setAdventure(null);
+            }
+        }
+
+        return $this;
+    }
+    
+    public function __toString() {
+        return $this->name;
+    }
+
 }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -29,6 +31,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Adventure::class)]
+    private $adventures;
+
+    public function __construct()
+    {
+        $this->adventures = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -110,5 +120,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Adventure>
+     */
+    public function getAdventures(): Collection
+    {
+        return $this->adventures;
+    }
+
+    public function addAdventure(Adventure $adventure): self
+    {
+        if (!$this->adventures->contains($adventure)) {
+            $this->adventures[] = $adventure;
+            $adventure->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdventure(Adventure $adventure): self
+    {
+        if ($this->adventures->removeElement($adventure)) {
+            // set the owning side to null (unless already changed)
+            if ($adventure->getUser() === $this) {
+                $adventure->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString() {
+        return $this->name;
     }
 }
