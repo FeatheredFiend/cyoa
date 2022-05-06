@@ -55,8 +55,27 @@ class ParagraphRepository extends ServiceEntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
-            ->select('p')
+            ->select('p', 'g')
             ->from('App\Entity\Paragraph', 'p')
+            ->leftJoin('p.gamebook', 'g')
+            ->orderBy('p.id', 'ASC');
+
+        return $qb;
+
+    }
+
+        /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderViewGamebook(?string $term, ?string $gamebook): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('p', 'g')
+            ->from('App\Entity\Paragraph', 'p')
+            ->leftJoin('p.gamebook', 'g')
+            ->andWhere('g.name = :gamebook')
+            ->setParameter('gamebook', $gamebook)
             ->orderBy('p.id', 'ASC');
 
         return $qb;

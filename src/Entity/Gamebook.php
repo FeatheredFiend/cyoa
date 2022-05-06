@@ -21,13 +21,13 @@ class Gamebook
     #[ORM\OneToMany(mappedBy: 'gamebook', targetEntity: Adventure::class)]
     private $adventures;
 
-    #[ORM\OneToMany(mappedBy: 'gamebook', targetEntity: GamebookParagraph::class)]
-    private $gamebookParagraphs;
+    #[ORM\OneToMany(mappedBy: 'gamebook', targetEntity: Paragraph::class)]
+    private $paragraphs;
 
     public function __construct()
     {
         $this->adventures = new ArrayCollection();
-        $this->gamebookParagraphs = new ArrayCollection();
+        $this->paragraphs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,37 +77,37 @@ class Gamebook
         return $this;
     }
 
-    /**
-     * @return Collection<int, GamebookParagraph>
-     */
-    public function getGamebookParagraphs(): Collection
-    {
-        return $this->gamebookParagraphs;
+    public function __toString() {
+        return $this->name;
     }
 
-    public function addGamebookParagraph(GamebookParagraph $gamebookParagraph): self
+    /**
+     * @return Collection<int, Paragraph>
+     */
+    public function getParagraphs(): Collection
     {
-        if (!$this->gamebookParagraphs->contains($gamebookParagraph)) {
-            $this->gamebookParagraphs[] = $gamebookParagraph;
-            $gamebookParagraph->setGamebook($this);
+        return $this->paragraphs;
+    }
+
+    public function addParagraph(Paragraph $paragraph): self
+    {
+        if (!$this->paragraphs->contains($paragraph)) {
+            $this->paragraphs[] = $paragraph;
+            $paragraph->setGamebook($this);
         }
 
         return $this;
     }
 
-    public function removeGamebookParagraph(GamebookParagraph $gamebookParagraph): self
+    public function removeParagraph(Paragraph $paragraph): self
     {
-        if ($this->gamebookParagraphs->removeElement($gamebookParagraph)) {
+        if ($this->paragraphs->removeElement($paragraph)) {
             // set the owning side to null (unless already changed)
-            if ($gamebookParagraph->getGamebook() === $this) {
-                $gamebookParagraph->setGamebook(null);
+            if ($paragraph->getGamebook() === $this) {
+                $paragraph->setGamebook(null);
             }
         }
 
         return $this;
-    }
-
-    public function __toString() {
-        return $this->name;
     }
 }

@@ -24,9 +24,6 @@ class Paragraph
     #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: ParagraphAction::class)]
     private $paragraphActions;
 
-    #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: GamebookParagraph::class)]
-    private $gamebookParagraphs;
-
     #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: Equipment::class)]
     private $equipment;
 
@@ -36,10 +33,13 @@ class Paragraph
     #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: ParagraphDirection::class)]
     private $paragraphDirections;
 
+    #[ORM\ManyToOne(targetEntity: Gamebook::class, inversedBy: 'paragraphs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $gamebook;
+
     public function __construct()
     {
         $this->paragraphActions = new ArrayCollection();
-        $this->gamebookParagraphs = new ArrayCollection();
         $this->equipment = new ArrayCollection();
         $this->enemies = new ArrayCollection();
         $this->paragraphDirections = new ArrayCollection();
@@ -98,36 +98,6 @@ class Paragraph
             // set the owning side to null (unless already changed)
             if ($paragraphAction->getParagraph() === $this) {
                 $paragraphAction->setParagraph(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, GamebookParagraph>
-     */
-    public function getGamebookParagraphs(): Collection
-    {
-        return $this->gamebookParagraphs;
-    }
-
-    public function addGamebookParagraph(GamebookParagraph $gamebookParagraph): self
-    {
-        if (!$this->gamebookParagraphs->contains($gamebookParagraph)) {
-            $this->gamebookParagraphs[] = $gamebookParagraph;
-            $gamebookParagraph->setParagraph($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGamebookParagraph(GamebookParagraph $gamebookParagraph): self
-    {
-        if ($this->gamebookParagraphs->removeElement($gamebookParagraph)) {
-            // set the owning side to null (unless already changed)
-            if ($gamebookParagraph->getParagraph() === $this) {
-                $gamebookParagraph->setParagraph(null);
             }
         }
 
@@ -224,6 +194,18 @@ class Paragraph
                 $paragraphDirection->setParagraph(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGamebook(): ?Gamebook
+    {
+        return $this->gamebook;
+    }
+
+    public function setGamebook(?Gamebook $gamebook): self
+    {
+        $this->gamebook = $gamebook;
 
         return $this;
     }

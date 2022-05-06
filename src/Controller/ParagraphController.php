@@ -17,11 +17,11 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class ParagraphController extends AbstractController
 {
-    #[Route('/paragraph/view', name: 'paragraph_view', defaults: ['title' => 'View Paragraph'])]
-    public function index(ParagraphRepository $paragraphRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    #[Route('/paragraph/view/{gamebook}', name: 'paragraph_view', defaults: ['title' => 'View Paragraph'])]
+    public function index(ParagraphRepository $paragraphRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $paragraphRepository->getWithSearchQueryBuilderViewGamebook($q, $gamebook);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
@@ -32,12 +32,13 @@ class ParagraphController extends AbstractController
 
         return $this->render('paragraph/view.html.twig', [
             'pagination' => $pagination,
-            'title' => $title
+            'title' => $title,
+            'gamebook' => $gamebook,
         ]);
     }
 
-    #[Route('/paragraph/create', name: 'paragraph_create', defaults: ['title' => 'Create Paragraph'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    #[Route('/paragraph/create/{gamebook}', name: 'paragraph_create', defaults: ['title' => 'Create Paragraph'])]
+    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine): Response
     {
         $paragraph = new Paragraph();
 
@@ -52,9 +53,9 @@ class ParagraphController extends AbstractController
             $em->persist($paragraph);
             $em->flush();
 
-            return $this->redirectToRoute('paragraph_view');
+            return $this->redirectToRoute('paragraph_view', ['gamebook' => $gamebook]);
         }
-        return $this->render('paragraph/create.html.twig', ['form' => $form->createView(),'paragraph' => $paragraph,'title' => $title]);
+        return $this->render('paragraph/create.html.twig', ['form' => $form->createView(),'paragraph' => $paragraph,'title' => $title, 'gamebook' => $gamebook]);
 
     }
 

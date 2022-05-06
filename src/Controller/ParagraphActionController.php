@@ -17,11 +17,11 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class ParagraphActionController extends AbstractController
 {
-    #[Route('/paragraphaction/view', name: 'paragraphaction_view', defaults: ['title' => 'View Paragraph Action'])]
-    public function index(ParagraphActionRepository $paragraphactionRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    #[Route('/paragraphaction/view/{id}', name: 'paragraphaction_view', defaults: ['title' => 'View Paragraph Action'])]
+    public function index(ParagraphActionRepository $paragraphactionRepository, Request $request, PaginatorInterface $paginator, string $title, int $id): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphactionRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $paragraphactionRepository->getWithSearchQueryBuilderViewParagraph($q, $id);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */

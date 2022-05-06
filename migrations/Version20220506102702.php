@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220505095023 extends AbstractMigration
+final class Version20220506102702 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,16 +20,14 @@ final class Version20220505095023 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE battle DROP FOREIGN KEY FK_139917348B50597F');
-        $this->addSql('DROP INDEX IDX_139917348B50597F ON battle');
-        $this->addSql('ALTER TABLE battle DROP paragraph_id');
+        $this->addSql('ALTER TABLE paragraph ADD CONSTRAINT FK_7DD3986292A4F9CA FOREIGN KEY (gamebook_id) REFERENCES gamebook (id)');
+        $this->addSql('CREATE INDEX IDX_7DD3986292A4F9CA ON paragraph (gamebook_id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE battle ADD paragraph_id INT NOT NULL');
-        $this->addSql('ALTER TABLE battle ADD CONSTRAINT FK_139917348B50597F FOREIGN KEY (paragraph_id) REFERENCES paragraph (id)');
-        $this->addSql('CREATE INDEX IDX_139917348B50597F ON battle (paragraph_id)');
+        $this->addSql('ALTER TABLE paragraph DROP FOREIGN KEY FK_7DD3986292A4F9CA');
+        $this->addSql('DROP INDEX IDX_7DD3986292A4F9CA ON paragraph');
     }
 }

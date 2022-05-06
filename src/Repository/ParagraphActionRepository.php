@@ -65,6 +65,26 @@ class ParagraphActionRepository extends ServiceEntityRepository
         return $qb;
 
     } 
+
+        /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderViewParagraph(?string $term, ?int $id): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('pa','pac','pao','paa')
+            ->from('App\Entity\ParagraphAction', 'pa')
+            ->leftJoin('pa.paragraphactioncategory', 'pac')
+            ->leftJoin('pa.paragraphactionoperator', 'pao')
+            ->leftJoin('pa.paragraphactionattribute', 'paa')
+            ->andWhere('pa.paragraph = :paragraph')
+            ->setParameter('paragraph', $id)
+            ->orderBy('pa.id', 'ASC');
+
+        return $qb;
+
+    } 
       
     // /**
     //  * @return ParagraphAction[] Returns an array of ParagraphAction objects
