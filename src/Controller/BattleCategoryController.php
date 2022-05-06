@@ -64,8 +64,6 @@ class BattleCategoryController extends AbstractController
         $battlecategory = $battlecategoryRepository
             ->find($id);
 
-        $battlecategory->getName();
-
 
         $form = $this->createForm(BattleCategoryType::class, $battlecategory);
 

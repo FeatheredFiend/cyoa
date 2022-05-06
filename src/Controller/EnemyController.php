@@ -64,8 +64,6 @@ class EnemyController extends AbstractController
         $enemy = $enemyRepository
             ->find($id);
 
-        $enemy->getName();
-
 
         $form = $this->createForm(EnemyType::class, $enemy);
 

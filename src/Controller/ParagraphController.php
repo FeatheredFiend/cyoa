@@ -64,9 +64,6 @@ class ParagraphController extends AbstractController
         $paragraph = $paragraphRepository
             ->find($id);
 
-        $paragraph->getName();
-
-
         $form = $this->createForm(ParagraphType::class, $paragraph);
 
         $form->handleRequest($request);

@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-4">
       <a href="{{ path('gamebookparagraph_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Gamebook Paragraph</button></a>   
-      {{ knp_pagination_filter(pagination, {'a.name': 'Name'}) }}
+      {{ knp_pagination_filter(pagination, {'g.name': 'Gamebook', 'p.number': 'Paragraph'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
       'align': 'center',
       'size': 'small',
@@ -25,7 +25,7 @@
               <th>Paragraph</th>
             </tr>
           </thead>
-          <tbody name="feedTable" id="feedTable">
+          <tbody name="gamebookparagraphTable" id="gamebookparagraphTable">
             {% for gamebookparagraph in pagination %}
             {% set id = gamebookparagraph.id %}
               <tr>

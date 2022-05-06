@@ -64,9 +64,6 @@ class HeroController extends AbstractController
         $hero = $heroRepository
             ->find($id);
 
-        $hero->getName();
-
-
         $form = $this->createForm(HeroType::class, $hero);
 
         $form->handleRequest($request);

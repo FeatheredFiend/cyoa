@@ -13,10 +13,6 @@ class ParagraphDirection
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'paragraphDirections')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $paragraph;
-
     #[ORM\Column(type: 'string', length: 500)]
     private $text;
 
@@ -25,6 +21,10 @@ class ParagraphDirection
 
     #[ORM\Column(type: 'integer')]
     private $redirectparagraph;
+
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'paragraphDirections')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $paragraph;
 
     public function getId(): ?int
     {

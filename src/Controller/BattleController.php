@@ -64,8 +64,6 @@ class BattleController extends AbstractController
         $battle = $battleRepository
             ->find($id);
 
-        $battle->getName();
-
 
         $form = $this->createForm(BattleType::class, $battle);
 

@@ -33,12 +33,16 @@ class Paragraph
     #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: Enemy::class)]
     private $enemies;
 
+    #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: ParagraphDirection::class)]
+    private $paragraphDirections;
+
     public function __construct()
     {
         $this->paragraphActions = new ArrayCollection();
         $this->gamebookParagraphs = new ArrayCollection();
         $this->equipment = new ArrayCollection();
         $this->enemies = new ArrayCollection();
+        $this->paragraphDirections = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,6 +196,36 @@ class Paragraph
 
     public function __toString() {
         return $this->number;
+    }
+
+    /**
+     * @return Collection<int, ParagraphDirection>
+     */
+    public function getParagraphDirections(): Collection
+    {
+        return $this->paragraphDirections;
+    }
+
+    public function addParagraphDirection(ParagraphDirection $paragraphDirection): self
+    {
+        if (!$this->paragraphDirections->contains($paragraphDirection)) {
+            $this->paragraphDirections[] = $paragraphDirection;
+            $paragraphDirection->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphDirection(ParagraphDirection $paragraphDirection): self
+    {
+        if ($this->paragraphDirections->removeElement($paragraphDirection)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphDirection->getParagraph() === $this) {
+                $paragraphDirection->setParagraph(null);
+            }
+        }
+
+        return $this;
     }
 
 }

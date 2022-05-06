@@ -52,9 +52,9 @@ class GamebookParagraphController extends AbstractController
             $em->persist($gamebookparagraph);
             $em->flush();
 
-            return $this->redirectToRoute('gamebook_paragraph_view');
+            return $this->redirectToRoute('gamebookparagraph_view');
         }
-        return $this->render('gamebookparagraph/create.html.twig', ['form' => $form->createView(),'gamebookparagraph' => $gamebookparagraph,'title' => $title]);
+        return $this->render('gamebook_paragraph/create.html.twig', ['form' => $form->createView(),'gamebookparagraph' => $gamebookparagraph,'title' => $title]);
 
     }
 
@@ -63,9 +63,6 @@ class GamebookParagraphController extends AbstractController
     {
         $gamebookparagraph = $gamebookparagraphRepository
             ->find($id);
-
-        $gamebookparagraph->getName();
-
 
         $form = $this->createForm(GamebookParagraphType::class, $gamebookparagraph);
 
@@ -78,9 +75,9 @@ class GamebookParagraphController extends AbstractController
             $em->persist($gamebookparagraph);
             $em->flush();
 
-            return $this->redirectToRoute('gamebook_paragraph_view');
+            return $this->redirectToRoute('gamebookparagraph_view');
         }
 
-        return $this->render('gamebookparagraph/edit.html.twig', ['gamebookparagraph' => $gamebookparagraph,'form' => $form->createView(),'title' => $title]);
+        return $this->render('gamebook_paragraph/edit.html.twig', ['gamebookparagraph' => $gamebookparagraph,'form' => $form->createView(),'title' => $title]);
     }
 }

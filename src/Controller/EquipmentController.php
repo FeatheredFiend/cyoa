@@ -64,9 +64,6 @@ class EquipmentController extends AbstractController
         $equipment = $equipmentRepository
             ->find($id);
 
-        $equipment->getName();
-
-
         $form = $this->createForm(EquipmentType::class, $equipment);
 
         $form->handleRequest($request);

@@ -56,10 +56,9 @@ class AdventureParagraphRepository extends ServiceEntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
-            ->select('ap','a','p')
+            ->select('ap','a')
             ->from('App\Entity\AdventureParagraph', 'ap')
             ->leftJoin('ap.adventure', 'a')
-            ->leftJoin('ap.paragraph', 'p')
             ->orderBy('ap.id', 'ASC');
 
         return $qb;

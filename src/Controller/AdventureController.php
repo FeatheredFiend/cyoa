@@ -64,8 +64,6 @@ class AdventureController extends AbstractController
         $adventure = $adventureRepository
             ->find($id);
 
-        $adventure->getName();
-
 
         $form = $this->createForm(AdventureType::class, $adventure);
 

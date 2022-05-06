@@ -64,9 +64,6 @@ class ParagraphActionCategoryController extends AbstractController
         $paragraphactioncategory = $paragraphactioncategoryRepository
             ->find($id);
 
-        $paragraphactioncategory->getName();
-
-
         $form = $this->createForm(ParagraphActionCategoryType::class, $paragraphactioncategory);
 
         $form->handleRequest($request);

@@ -8,19 +8,94 @@
     {% if app.user != null %}
         <div class="card col-sm-12 col-md-2 bg-red">
             <div class="card-body">
-                <a href="{{ path('gamebook_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Risk Rating</h3></a>
+                <a href="{{ path('adventure_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Adventure</h3></a>
             </div>
         </div>
         <div class="card col-sm-12 col-md-2 bg-red">
             <div class="card-body">
-                <a href="{{ path('paragraph_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Risk Rating</h3></a>
+                <a href="{{ path('adventureparagraph_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Adventure Paragraph</h3></a>
             </div>
         </div> 
         <div class="card col-sm-12 col-md-2 bg-red">
             <div class="card-body">
-                <a href="{{ path('gamebookparagraph_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Risk Rating</h3></a>
+                <a href="{{ path('battlecategory_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Battle Category</h3></a>
             </div>
-        </div>                
+        </div>       
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('enemy_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Enemy</h3></a>
+            </div>
+        </div>
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('equipment_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Equipment</h3></a>
+            </div>
+        </div> 
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('equipmenteffect_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Equipment Effect</h3></a>
+            </div>
+        </div> 
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('equipmenteffectattribute_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Equipment Effect Attribute</h3></a>
+            </div>
+        </div> 
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('equipmenteffectoperator_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Equipment Effect Operator</h3></a>
+            </div>
+        </div>       
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('gamebook_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Gamebook</h3></a>
+            </div>
+        </div>
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('gamebookparagraph_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Gamebook Paragraph</h3></a>
+            </div>
+        </div>       
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('hero_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Hero</h3></a>
+            </div>
+        </div>
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('heroattribute_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Hero Attribute</h3></a>
+            </div>
+        </div>    
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('heroequipment_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Hero Equipment</h3></a>
+            </div>
+        </div>       
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('paragraph_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Paragraph</h3></a>
+            </div>
+        </div>    
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('paragraphaction_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Paragraph Action</h3></a>
+            </div>
+        </div>  
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('paragraphactioncategory_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Paragraph Action Category</h3></a>
+            </div>
+        </div> 
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('paragraphactionoperator_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Paragraph Action Operator</h3></a>
+            </div>
+        </div>      
+        <div class="card col-sm-12 col-md-2 bg-red">
+            <div class="card-body">
+                <a href="{{ path('paragraphdirection_view') }}"><h3 class="card-title text-center pt-5 text-white">Add Paragraph Direction</h3></a>
+            </div>
+        </div>                                                                          
     {% else %}
         <p>Please Log in to view this page</p>
     {% endif %}           

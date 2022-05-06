@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-4">
       <a href="{{ path('adventureparagraph_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Adventure Paragaph</button></a>   
-      {{ knp_pagination_filter(pagination, {'a.name': 'Name'}) }}
+      {{ knp_pagination_filter(pagination, {'a.name': 'Adventure', 'ap.paragraph': 'Paragraph'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
       'align': 'center',
       'size': 'small',

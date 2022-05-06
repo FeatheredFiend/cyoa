@@ -64,9 +64,6 @@ class ParagraphActionOperatorController extends AbstractController
         $paragraphactionoperator = $paragraphactionoperatorRepository
             ->find($id);
 
-        $paragraphactionoperator->getName();
-
-
         $form = $this->createForm(ParagraphActionOperatorType::class, $paragraphactionoperator);
 
         $form->handleRequest($request);

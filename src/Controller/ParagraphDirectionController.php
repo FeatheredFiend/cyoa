@@ -64,9 +64,6 @@ class ParagraphDirectionController extends AbstractController
         $paragraphdirection = $paragraphdirectionRepository
             ->find($id);
 
-        $paragraphdirection->getName();
-
-
         $form = $this->createForm(ParagraphDirectionType::class, $paragraphdirection);
 
         $form->handleRequest($request);

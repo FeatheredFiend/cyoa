@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block title %}Edit Paragraph Action{% endblock %}
+{% block body %}
+<div class="container">
+  <div class="d-flex justify-content-center p-2 bd-highlight">
+    <div class="row col-sm-12 col-md-8">
+        <div class="card-body">
+          <div class="card-header">
+            <div class="text-center">Edit Paragraph Action Details</div>
+          </div>
+          {% if app.user != null %}
+          <p class="hidden" id="title">{{title}}</p> 
+          {{ form_start(form) }}
+          <div class="form-group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.paragraph, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div> 
+          <div class="form-group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.text, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>           
+          <div class="form-group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.paragraphactioncategory, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>     
+          <div class="form-group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.paragraphactionoperator, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div> 
+          <div class="form-group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.paragraphactionvalue, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>                 
+          <div class="form-group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.paragraphactionattribute, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>                                          
+          <div class="form-group">
+            <div class="col-md-12 col-md-offset-4" style="margin-top:5px;">
+              <button type="mit" class="col-12 btn-primary d-grid gap-2">
+              <i class="fa fa-btn fa-user"></i> Edit Paragraph Action
+              </button>
+            </div>
+          </div>
+          {{ form_end(form) }}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

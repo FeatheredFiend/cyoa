@@ -64,9 +64,6 @@ class AdventureParagraphController extends AbstractController
         $adventureparagraph = $adventureparagraphRepository
             ->find($id);
 
-        $adventureparagraph->getName();
-
-
         $form = $this->createForm(AdventureParagraphType::class, $adventureparagraph);
 
         $form->handleRequest($request);

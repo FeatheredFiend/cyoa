@@ -64,8 +64,6 @@ class GamebookController extends AbstractController
         $gamebook = $gamebookRepository
             ->find($id);
 
-        $gamebook->getName();
-
 
         $form = $this->createForm(GamebookType::class, $gamebook);
 

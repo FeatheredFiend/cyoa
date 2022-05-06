@@ -1,4 +1,8 @@
 @import '~bootstrap';
-.navBlue {
+.navRed {
+    background-color: #e51515;
+}
+
+.bg-red {
     background-color: #e51515;
 }

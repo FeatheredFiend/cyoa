@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hero Equipment{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-3 mb-3">
+  <p class="hidden" id="title">{{title}}</p> 
+  {% if app.user != null %}
+    <div class="row">
+      <div class="col-sm-12 col-md-4">
+      <a href="{{ path('heroequipment_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Hero Equipment</button></a>   
+      {{ knp_pagination_filter(pagination, {'h.name': 'Hero', 'e.name': 'Equipment', 'he.quantity': 'Quantity'}) }}
+      {{ knp_pagination_render(pagination, null, {}, {
+      'align': 'center',
+      'size': 'small',
+      'rounded': true,
+      }) }}
+      </div>
+      <div class="col-sm-12 col-md-8 table-responsive">
+        <table class="table table-striped table-light">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Hero</th>
+              <th>Equipment</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody name="heroequipmentTable" id="heroequipmentTable">
+            {% for heroequipment in pagination %}
+            {% set id = heroequipment.id %}
+              <tr>
+                <td><a class="nav-link" href="{{ path('heroequipment_edit', {'id': heroequipment.id}) }}">{{ heroequipment.id}}</a></td>
+                <td>{{ heroequipment.hero }}</td>
+                <td>{{ heroequipment.equipment }}</td>
+                <td>{{ heroequipment.quantity }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}           
+</div>
+{% endblock %}

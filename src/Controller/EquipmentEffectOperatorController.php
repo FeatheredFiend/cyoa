@@ -64,8 +64,6 @@ class EquipmentEffectOperatorController extends AbstractController
         $equipmenteffectoperator = $equipmenteffectoperatorRepository
             ->find($id);
 
-        $equipmenteffectoperator->getName();
-
 
         $form = $this->createForm(EquipmentEffectOperatorType::class, $equipmenteffectoperator);
 
