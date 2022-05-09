@@ -12,16 +12,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Repository\HeroRepository;
+use App\Repository\HeroEquipmentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Knp\Component\Pager\PaginatorInterface;
 
 class HeroController extends AbstractController
 {
-    #[Route('/hero/view', name: 'hero_view', defaults: ['title' => 'View Hero'])]
-    public function index(HeroRepository $heroRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    #[Route('/hero/view/{gamebook}/{hero}/{adventure}', name: 'hero_view', defaults: ['title' => 'View Hero'])]
+    public function index(HeroRepository $heroRepository,HeroEquipmentRepository $heroequipmentRepository, Request $request, PaginatorInterface $paginator, string $title, string $hero, string $gamebook, string $adventure): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $heroRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $heroRepository->getWithSearchQueryBuilderView($q, $hero);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
@@ -29,10 +30,20 @@ class HeroController extends AbstractController
             10/*limit per page*/
         );
 
+        $queryBuilderEq = $heroequipmentRepository->getWithSearchQueryBuilderView($q, $hero);
+
+        $paginationEq = $paginator->paginate(
+            $queryBuilderEq, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            10/*limit per page*/
+        );
 
         return $this->render('hero/view.html.twig', [
             'pagination' => $pagination,
-            'title' => $title
+            'paginationEq' => $paginationEq,
+            'title' => $title,
+            'gamebook' => $gamebook,
+            'adventure' => $adventure
         ]);
     }
 

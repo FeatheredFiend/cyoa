@@ -4,11 +4,12 @@
 
 {% block body %}
 <div class="container-fluid mt-3 mb-3">
-  <p class="hidden" id="title">{{title}}</p> 
+  <p class="hidden" id="title">{{title}}</p>
+  <p class="hidden" id="gamebook">{{gamebook}}</p>  
   {% if app.user != null %}
     <div class="row">
       <div class="col-sm-12 col-md-4">
-      <a href="{{ path('paragraphdirection_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph Direction</button></a>   
+      <a href="{{ path('paragraphdirection_create', {'gamebook': gamebook}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph Direction</button></a>   
       {{ knp_pagination_filter(pagination, {'p.number': 'Paragraph', 'pd.text': 'Text', 'pd.maxaccess': 'Max Access', 'pd.redirectparagraph': 'Redirect Paragraph'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
       'align': 'center',
@@ -21,6 +22,7 @@
           <thead>
             <tr>
               <th>ID</th>
+              <th>Gamebook</th>
               <th>Paragraph</th>
               <th>Text</th>
               <th>Max Access</th>
@@ -31,8 +33,9 @@
             {% for paragraphdirection in pagination %}
             {% set id = paragraphdirection.id %}
               <tr>
-                <td><a class="nav-link" href="{{ path('paragraphdirection_edit', {'id': paragraphdirection.id}) }}">{{ paragraphdirection.id}}</a></td>
-                <td>{{ paragraphdirection.paragraph }}</td>
+                <td><a class="nav-link" href="{{ path('paragraphdirection_edit', {'id': paragraphdirection.id, 'gamebook': gamebook}) }}">{{ paragraphdirection.id}}</a></td>
+                <td><a class="nav-link gamebookTable" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}"></a></td>
+                <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook}) }}">{{ paragraphdirection.paragraph }}</a></td>
                 <td>{{ paragraphdirection.text }}</td>
                 <td>{{ paragraphdirection.maxaccess }}</td>
                 <td>{{ paragraphdirection.redirectparagraph }}</td>

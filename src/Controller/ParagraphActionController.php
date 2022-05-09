@@ -17,11 +17,11 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class ParagraphActionController extends AbstractController
 {
-    #[Route('/paragraphaction/view/{id}', name: 'paragraphaction_view', defaults: ['title' => 'View Paragraph Action'])]
-    public function index(ParagraphActionRepository $paragraphactionRepository, Request $request, PaginatorInterface $paginator, string $title, int $id): Response
+    #[Route('/paragraphaction/view/{gamebook}/{paragraph}', name: 'paragraphaction_view', defaults: ['title' => 'View Paragraph Action'])]
+    public function index(ParagraphActionRepository $paragraphactionRepository, Request $request, PaginatorInterface $paginator, string $title, int $paragraph, string $gamebook): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphactionRepository->getWithSearchQueryBuilderViewParagraph($q, $id);
+        $queryBuilder = $paragraphactionRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
@@ -32,12 +32,13 @@ class ParagraphActionController extends AbstractController
 
         return $this->render('paragraph_action/view.html.twig', [
             'pagination' => $pagination,
-            'title' => $title
+            'title' => $title,
+            'gamebook' => $gamebook
         ]);
     }
 
-    #[Route('/paragraphaction/create', name: 'paragraphaction_create', defaults: ['title' => 'Create Paragraph Action'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    #[Route('/paragraphaction/create/{gamebook}', name: 'paragraphaction_create', defaults: ['title' => 'Create Paragraph Action'])]
+    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine): Response
     {
         $paragraphaction = new ParagraphAction();
 
@@ -52,14 +53,14 @@ class ParagraphActionController extends AbstractController
             $em->persist($paragraphaction);
             $em->flush();
 
-            return $this->redirectToRoute('paragraphaction_view');
+            return $this->redirectToRoute('paragraphaction_view', ['gamebook' => $gamebook, 'paragraph' => $paragraphaction->getParagraph()]);
         }
-        return $this->render('paragraph_action/create.html.twig', ['form' => $form->createView(),'paragraphaction' => $paragraphaction,'title' => $title]);
+        return $this->render('paragraph_action/create.html.twig', ['form' => $form->createView(),'paragraphaction' => $paragraphaction,'title' => $title, 'gamebook' => $gamebook]);
 
     }
 
-    #[Route('/paragraphaction/edit/{id}', name: 'paragraphaction_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Action'])]
-    public function edit(int $id, ParagraphActionRepository $paragraphactionRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    #[Route('/paragraphaction/edit/{gamebook}/{id}', name: 'paragraphaction_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Action'])]
+    public function edit(int $id, ParagraphActionRepository $paragraphactionRepository, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine): Response
     {
         $paragraphaction = $paragraphactionRepository
             ->find($id);
@@ -76,9 +77,9 @@ class ParagraphActionController extends AbstractController
             $em->persist($paragraphaction);
             $em->flush();
 
-            return $this->redirectToRoute('paragraphaction_view');
+            return $this->redirectToRoute('paragraphaction_view', ['gamebook' => $gamebook, 'paragraph' => $paragraphaction->getParagraph()]);
         }
 
-        return $this->render('paragraph_action/edit.html.twig', ['paragraphaction' => $paragraphaction,'form' => $form->createView(),'title' => $title]);
+        return $this->render('paragraph_action/edit.html.twig', ['paragraphaction' => $paragraphaction,'form' => $form->createView(),'title' => $title, 'gamebook' => $gamebook]);
     }
 }

@@ -51,7 +51,7 @@ class AdventureRepository extends ServiceEntityRepository
     /**
      * @param string|null $term
      */
-    public function getWithSearchQueryBuilderView(?string $term): QueryBuilder
+    public function getWithSearchQueryBuilderView(?string $term, ?int $user): QueryBuilder
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
@@ -60,6 +60,8 @@ class AdventureRepository extends ServiceEntityRepository
             ->leftJoin('a.gamebook', 'g')
             ->leftJoin('a.hero', 'h')
             ->leftJoin('a.user', 'u')
+            ->andWhere('a.user = :user')
+            ->setParameter('user', $user)
             ->orderBy('a.id', 'ASC');
 
         return $qb;

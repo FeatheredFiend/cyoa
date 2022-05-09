@@ -9,13 +9,19 @@
             <div class="text-center">Add Paragraph Action Details</div>
           </div>
           {% if app.user != null %}
-          <p class="hidden" id="title">{{title}}</p> 
+          <p class="hidden" id="title">{{title}}</p>
+          <p class="hidden" id="gamebook">{{gamebook}}</p> 
           {{ form_start(form) }}
+          <div class="form-group">
+            <div class="col-md-12 mb-3">
+              {{ form_row(form.gamebook, {'attr': {'class': 'form-control'}}) }}
+            </div>
+          </div>
           <div class="form-group">
             <div class="col-md-12 mb-3">
               {{ form_row(form.paragraph, {'attr': {'class': 'form-control'}}) }}
             </div>
-          </div> 
+          </div>           
           <div class="form-group">
             <div class="col-md-12 mb-3">
               {{ form_row(form.text, {'attr': {'class': 'form-control'}}) }}
@@ -33,7 +39,7 @@
           </div> 
           <div class="form-group">
             <div class="col-md-12 mb-3">
-              {{ form_row(form.paragraphactionvalue, {'attr': {'class': 'form-control'}}) }}
+              {{ form_row(form.actionvalue, {'attr': {'class': 'form-control'}}) }}
             </div>
           </div>                 
           <div class="form-group">

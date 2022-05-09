@@ -17,6 +17,7 @@ class ParagraphDirectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('gamebook', TextType::class,['label'=>'Gamebook', 'required' => false, 'mapped' => false])
             ->add('text', TextareaType::class,['label'=>'Text'])
             ->add('maxaccess', TextType::class,['label'=>'Max Access'])
             ->add('redirectparagraph', TextType::class,['label'=>'Redirect Paragraph'])

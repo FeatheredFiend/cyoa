@@ -13,3 +13,38 @@ const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
 // the bootstrap module doesn't export/return anything
 require('bootstrap');
+
+$(document).ready(function() {
+    if ($("#paragraph_gamebook").length > 0) {
+        var gamebook = $('#gamebook').text();
+        var dd = document.getElementById('paragraph_gamebook');
+        for (var i = 0; i < dd.options.length; i++) {
+            if (dd.options[i].text === gamebook) {
+                dd.selectedIndex = i;
+                $("#paragraph_gamebook").attr("readonly", true);
+                break;
+            }
+        }
+    }
+
+    if ($("#paragraph_action_gamebook").length > 0) {
+        var gamebook = $('#gamebook').text();
+        $("#paragraph_action_gamebook").val(gamebook);
+        $("#paragraph_action_gamebook").attr("readonly", true);
+        $("#paragraph_action_paragraph").attr("readonly", true);
+    }
+
+    if ($("#paragraph_direction_gamebook").length > 0) {
+        var gamebook = $('#gamebook').text();
+        $("#paragraph_direction_gamebook").val(gamebook);
+        $("#paragraph_direction_gamebook").attr("readonly", true);
+        $("#paragraph_direction_paragraph").attr("readonly", true);
+    }
+
+    if ($(".gamebookTable").length > 0) {
+        var gamebook = $('#gamebook').text();
+        $('.gamebookTable').each(function() {
+            $(this).text(gamebook);
+        });
+    }
+});

@@ -17,11 +17,11 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class ParagraphDirectionController extends AbstractController
 {
-    #[Route('/paragraphdirection/view', name: 'paragraphdirection_view', defaults: ['title' => 'View Paragraph Direction'])]
-    public function index(ParagraphDirectionRepository $paragraphdirectionRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    #[Route('/paragraphdirection/view/{gamebook}/{paragraph}', name: 'paragraphdirection_view', defaults: ['title' => 'View Paragraph Direction'])]
+    public function index(ParagraphDirectionRepository $paragraphdirectionRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, int $paragraph): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphdirectionRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $paragraphdirectionRepository->getWithSearchQueryBuilderView($q, $paragraph);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
@@ -32,12 +32,13 @@ class ParagraphDirectionController extends AbstractController
 
         return $this->render('paragraph_direction/view.html.twig', [
             'pagination' => $pagination,
-            'title' => $title
+            'title' => $title,
+            'gamebook' => $gamebook
         ]);
     }
 
-    #[Route('/paragraphdirection/create', name: 'paragraphdirection_create', defaults: ['title' => 'Create Paragraph Direction'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    #[Route('/paragraphdirection/create/{gamebook}', name: 'paragraphdirection_create', defaults: ['title' => 'Create Paragraph Direction'])]
+    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine): Response
     {
         $paragraphdirection = new ParagraphDirection();
 
@@ -52,14 +53,14 @@ class ParagraphDirectionController extends AbstractController
             $em->persist($paragraphdirection);
             $em->flush();
 
-            return $this->redirectToRoute('paragraphdirection_view');
+            return $this->redirectToRoute('paragraphdirection_view', ['gamebook' => $gamebook, 'paragraph' => $paragraphdirection->getParagraph()]);
         }
-        return $this->render('paragraph_direction/create.html.twig', ['form' => $form->createView(),'paragraphdirection' => $paragraphdirection,'title' => $title]);
+        return $this->render('paragraph_direction/create.html.twig', ['form' => $form->createView(),'paragraphdirection' => $paragraphdirection,'title' => $title, 'gamebook' => $gamebook]);
 
     }
 
-    #[Route('/paragraphdirection/edit/{id}', name: 'paragraphdirection_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Direction'])]
-    public function edit(int $id, ParagraphDirectionRepository $paragraphdirectionRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    #[Route('/paragraphdirection/edit/{gamebook}/{id}', name: 'paragraphdirection_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Direction'])]
+    public function edit(int $id, ParagraphDirectionRepository $paragraphdirectionRepository, Request $request,string $title, string $gamebook, ManagerRegistry $doctrine): Response
     {
         $paragraphdirection = $paragraphdirectionRepository
             ->find($id);
@@ -75,9 +76,9 @@ class ParagraphDirectionController extends AbstractController
             $em->persist($paragraphdirection);
             $em->flush();
 
-            return $this->redirectToRoute('paragraphdirection_view');
+            return $this->redirectToRoute('paragraphdirection_view', ['gamebook' => $gamebook, 'paragraph' => $paragraphdirection->getParagraph()]);
         }
 
-        return $this->render('paragraph_direction/edit.html.twig', ['paragraphdirection' => $paragraphdirection,'form' => $form->createView(),'title' => $title]);
+        return $this->render('paragraph_direction/edit.html.twig', ['paragraphdirection' => $paragraphdirection,'form' => $form->createView(),'title' => $title, 'gamebook' => $gamebook]);
     }
 }

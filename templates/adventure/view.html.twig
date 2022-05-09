@@ -26,6 +26,7 @@
               <th>Hero</th>
               <th>Time Elapsed</th>
               <th>Name</th>
+              <th>Play</th>
             </tr>
           </thead>
           <tbody name="adventureTable" id="adventureTable">
@@ -34,10 +35,11 @@
               <tr>
                 <td><a class="nav-link" href="{{ path('adventure_edit', {'id': adventure.id}) }}">{{ adventure.id}}</a></td>
                 <td>{{ adventure.user }}</td>
-                <td>{{ adventure.adventure }}</td>
-                <td>{{ adventure.hero }}</td>
+                <td>{{ adventure.gamebook }}</td>
+                <td><a class="nav-link" href="{{ path('hero_view', {'gamebook': adventure.gamebook, 'hero': adventure.hero, 'adventure': adventure.name}) }}">{{ adventure.hero }}</a></td>
                 <td>{{ adventure.timeelapsed }}</td>
-                <td>{{ adventure.name }}</td>-
+                <td>{{ adventure.name }}</td>
+                <td>Play</td>
               </tr>
             {% endfor %}
           </tbody>

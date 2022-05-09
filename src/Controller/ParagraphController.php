@@ -59,8 +59,8 @@ class ParagraphController extends AbstractController
 
     }
 
-    #[Route('/paragraph/edit/{id}', name: 'paragraph_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph'])]
-    public function edit(int $id, ParagraphRepository $paragraphRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    #[Route('/paragraph/edit/{gamebook}/{id}', name: 'paragraph_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph'])]
+    public function edit(int $id, ParagraphRepository $paragraphRepository, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine): Response
     {
         $paragraph = $paragraphRepository
             ->find($id);
@@ -76,9 +76,9 @@ class ParagraphController extends AbstractController
             $em->persist($paragraph);
             $em->flush();
 
-            return $this->redirectToRoute('paragraph_view');
+            return $this->redirectToRoute('paragraph_view', ['gamebook' => $gamebook]);
         }
 
-        return $this->render('paragraph/edit.html.twig', ['paragraph' => $paragraph,'form' => $form->createView(),'title' => $title]);
+        return $this->render('paragraph/edit.html.twig', ['paragraph' => $paragraph,'form' => $form->createView(),'title' => $title, 'gamebook' => $gamebook]);
     }
 }

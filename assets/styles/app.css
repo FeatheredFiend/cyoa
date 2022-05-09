@@ -6,3 +6,7 @@
 .bg-red {
     background-color: #e51515;
 }
+
+.hidden {
+    display:none;
+  }

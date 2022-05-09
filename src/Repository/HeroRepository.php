@@ -51,17 +51,20 @@ class HeroRepository extends ServiceEntityRepository
     /**
      * @param string|null $term
      */
-    public function getWithSearchQueryBuilderView(?string $term): QueryBuilder
+    public function getWithSearchQueryBuilderView(?string $term, ?string $hero): QueryBuilder
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
             ->select('h')
             ->from('App\Entity\Hero', 'h')
+            ->andWhere('h.name = :hero')
+            ->setParameter('hero', $hero)
             ->orderBy('h.id', 'ASC');
 
         return $qb;
 
-    }    
+    }   
+    
 
     // /**
     //  * @return Hero[] Returns an array of Hero objects

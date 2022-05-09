@@ -51,7 +51,7 @@ class HeroEquipmentRepository extends ServiceEntityRepository
     /**
      * @param string|null $term
      */
-    public function getWithSearchQueryBuilderView(?string $term): QueryBuilder
+    public function getWithSearchQueryBuilderView(?string $term, ?string $hero): QueryBuilder
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
@@ -59,6 +59,8 @@ class HeroEquipmentRepository extends ServiceEntityRepository
             ->from('App\Entity\HeroEquipment', 'he')
             ->leftJoin('he.equipment', 'e')
             ->leftJoin('he.hero', 'h')
+            ->andWhere('h.name = :hero')
+            ->setParameter('hero', $hero)
             ->orderBy('he.id', 'ASC');
 
         return $qb;

@@ -19,8 +19,9 @@ class ParagraphActionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('text', TextType::class,['label'=>'Round'])
-            ->add('actionvalue', TextType::class,['label'=>'Round'])
+            ->add('gamebook', TextType::class,['label'=>'Gamebook', 'required' => false, 'mapped' => false])
+            ->add('text', TextType::class,['label'=>'Text'])
+            ->add('actionvalue', TextType::class,['label'=>'Action Value'])
             ->add('paragraph', EntityType::class,['class' => Paragraph::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('p')->orderBy('p.id', 'ASC');}, 'choice_label' => 'number', 'label' => 'Paragraph'])
             ->add('paragraphactioncategory', EntityType::class,['class' => ParagraphActionCategory::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('pac')->orderBy('pac.id', 'ASC');}, 'choice_label' => 'name', 'label' => 'Paragraph Action Category'])
             ->add('paragraphactionoperator', EntityType::class,['class' => ParagraphActionOperator::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('pao')->orderBy('pao.id', 'ASC');}, 'choice_label' => 'name', 'label' => 'Paragraph Action Operator'])
