@@ -21,24 +21,25 @@ class ParagraphDirectionController extends AbstractController
     public function index(ParagraphDirectionRepository $paragraphdirectionRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, int $paragraph): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphdirectionRepository->getWithSearchQueryBuilderView($q, $paragraph);
+        $queryBuilder = $paragraphdirectionRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
-            10/*limit per page*/
+            5/*limit per page*/
         );
 
 
         return $this->render('paragraph_direction/view.html.twig', [
             'pagination' => $pagination,
             'title' => $title,
-            'gamebook' => $gamebook
+            'gamebook' => $gamebook,
+            'paragraph' => $paragraph
         ]);
     }
 
-    #[Route('/paragraphdirection/create/{gamebook}', name: 'paragraphdirection_create', defaults: ['title' => 'Create Paragraph Direction'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine): Response
+    #[Route('/paragraphdirection/create/{gamebook}/{paragraph}', name: 'paragraphdirection_create', defaults: ['title' => 'Create Paragraph Direction'])]
+    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, int $paragraph, ManagerRegistry $doctrine): Response
     {
         $paragraphdirection = new ParagraphDirection();
 
@@ -55,7 +56,7 @@ class ParagraphDirectionController extends AbstractController
 
             return $this->redirectToRoute('paragraphdirection_view', ['gamebook' => $gamebook, 'paragraph' => $paragraphdirection->getParagraph()]);
         }
-        return $this->render('paragraph_direction/create.html.twig', ['form' => $form->createView(),'paragraphdirection' => $paragraphdirection,'title' => $title, 'gamebook' => $gamebook]);
+        return $this->render('paragraph_direction/create.html.twig', ['form' => $form->createView(),'paragraphdirection' => $paragraphdirection,'title' => $title, 'gamebook' => $gamebook, 'paragraph' => $paragraph]);
 
     }
 
@@ -79,6 +80,6 @@ class ParagraphDirectionController extends AbstractController
             return $this->redirectToRoute('paragraphdirection_view', ['gamebook' => $gamebook, 'paragraph' => $paragraphdirection->getParagraph()]);
         }
 
-        return $this->render('paragraph_direction/edit.html.twig', ['paragraphdirection' => $paragraphdirection,'form' => $form->createView(),'title' => $title, 'gamebook' => $gamebook]);
+        return $this->render('paragraph_direction/edit.html.twig', ['paragraphdirection' => $paragraphdirection,'form' => $form->createView(),'title' => $title, 'gamebook' => $gamebook, 'paragraph' => $paragraphdirection->getParagraph()]);
     }
 }

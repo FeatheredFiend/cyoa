@@ -27,7 +27,7 @@ class HeroController extends AbstractController
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
-            10/*limit per page*/
+            5/*limit per page*/
         );
 
         $queryBuilderEq = $heroequipmentRepository->getWithSearchQueryBuilderView($q, $hero);
@@ -35,7 +35,7 @@ class HeroController extends AbstractController
         $paginationEq = $paginator->paginate(
             $queryBuilderEq, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
-            10/*limit per page*/
+            5/*limit per page*/
         );
 
         return $this->render('hero/view.html.twig', [

@@ -5,11 +5,12 @@
 {% block body %}
 <div class="container-fluid mt-3 mb-3">
   <p class="hidden" id="title">{{title}}</p>
-  <p class="hidden" id="gamebook">{{gamebook}}</p> 
+  <p class="hidden" id="gamebook">{{gamebook}}</p>
+  <p class="hidden" id="paragraph">{{paragraph}}</p> 
   {% if app.user != null %}
     <div class="row">
       <div class="col-sm-12 col-md-4">
-      <a href="{{ path('paragraphaction_create', {'gamebook': gamebook}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph Action</button></a>   
+      <a href="{{ path('paragraphaction_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph Action</button></a>   
       {{ knp_pagination_filter(pagination, {'p.number': 'Paragraph', 'pa.text': 'Text', 'pac.name': 'Paragraph Action Category', 'pao.name': 'Paragraph Action Operator', 'pa.actionvalue': 'Paragraph Action Value', 'paa.name': 'Paragraph Action Attribute'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
       'align': 'center',

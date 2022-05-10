@@ -18,20 +18,24 @@ class Equipment
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'equipment')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $paragraph;
-
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: HeroEquipment::class)]
     private $heroEquipment;
 
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: EquipmentEffect::class)]
     private $equipmentEffects;
 
+    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: EquipmentRequired::class)]
+    private $equipmentRequireds;
+
+    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: MerchantInventory::class)]
+    private $merchantInventories;
+
     public function __construct()
     {
         $this->heroEquipment = new ArrayCollection();
         $this->equipmentEffects = new ArrayCollection();
+        $this->equipmentRequireds = new ArrayCollection();
+        $this->merchantInventories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,18 +51,6 @@ class Equipment
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getParagraph(): ?Paragraph
-    {
-        return $this->paragraph;
-    }
-
-    public function setParagraph(?Paragraph $paragraph): self
-    {
-        $this->paragraph = $paragraph;
 
         return $this;
     }
@@ -125,5 +117,65 @@ class Equipment
 
     public function __toString() {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, EquipmentRequired>
+     */
+    public function getEquipmentRequireds(): Collection
+    {
+        return $this->equipmentRequireds;
+    }
+
+    public function addEquipmentRequired(EquipmentRequired $equipmentRequired): self
+    {
+        if (!$this->equipmentRequireds->contains($equipmentRequired)) {
+            $this->equipmentRequireds[] = $equipmentRequired;
+            $equipmentRequired->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEquipmentRequired(EquipmentRequired $equipmentRequired): self
+    {
+        if ($this->equipmentRequireds->removeElement($equipmentRequired)) {
+            // set the owning side to null (unless already changed)
+            if ($equipmentRequired->getEquipment() === $this) {
+                $equipmentRequired->setEquipment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MerchantInventory>
+     */
+    public function getMerchantInventories(): Collection
+    {
+        return $this->merchantInventories;
+    }
+
+    public function addMerchantInventory(MerchantInventory $merchantInventory): self
+    {
+        if (!$this->merchantInventories->contains($merchantInventory)) {
+            $this->merchantInventories[] = $merchantInventory;
+            $merchantInventory->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMerchantInventory(MerchantInventory $merchantInventory): self
+    {
+        if ($this->merchantInventories->removeElement($merchantInventory)) {
+            // set the owning side to null (unless already changed)
+            if ($merchantInventory->getEquipment() === $this) {
+                $merchantInventory->setEquipment(null);
+            }
+        }
+
+        return $this;
     }
 }

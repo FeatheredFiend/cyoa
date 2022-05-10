@@ -55,9 +55,8 @@ class EquipmentRepository extends ServiceEntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
-            ->select('e','p')
+            ->select('e')
             ->from('App\Entity\Equipment', 'e')
-            ->leftJoin('e.paragraph', 'p')
             ->orderBy('e.id', 'ASC');
 
         return $qb;

@@ -26,7 +26,7 @@ class BattleCategoryController extends AbstractController
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
-            10/*limit per page*/
+            5/*limit per page*/
         );
 
 

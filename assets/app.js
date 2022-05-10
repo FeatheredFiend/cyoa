@@ -29,15 +29,19 @@ $(document).ready(function() {
 
     if ($("#paragraph_action_gamebook").length > 0) {
         var gamebook = $('#gamebook').text();
+        var paragraph = $('#paragraph').text();
         $("#paragraph_action_gamebook").val(gamebook);
+        $("#paragraph_action_paragraph").val(paragraph);
         $("#paragraph_action_gamebook").attr("readonly", true);
         $("#paragraph_action_paragraph").attr("readonly", true);
     }
 
     if ($("#paragraph_direction_gamebook").length > 0) {
         var gamebook = $('#gamebook').text();
+        var paragraph = $('#paragraph').text();
         $("#paragraph_direction_gamebook").val(gamebook);
         $("#paragraph_direction_gamebook").attr("readonly", true);
+        $("#paragraph_direction_paragraph").val(paragraph);
         $("#paragraph_direction_paragraph").attr("readonly", true);
     }
 
@@ -46,5 +50,29 @@ $(document).ready(function() {
         $('.gamebookTable').each(function() {
             $(this).text(gamebook);
         });
+    }
+
+    if ($("#equipment_required_paragraph").length > 0) {
+        var paragraph = $('#paragraph').text();
+        $("#equipment_required_paragraph").val(paragraph);
+        $("#equipment_required_paragraph").attr("readonly", true);
+    }
+
+    if ($("#merchant_paragraph").length > 0) {
+        var paragraph = $('#paragraph').text();
+        $("#merchant_paragraph").val(paragraph);
+        $("#merchant_paragraph").attr("readonly", true);
+    }
+
+    if ($("#merchant_inventory_merchant").length > 0) {
+        var merchant = $('#merchant').text();
+        var dd = document.getElementById('merchant_inventory_merchant');
+        for (var i = 0; i < dd.options.length; i++) {
+            if (dd.options[i].text === merchant) {
+                dd.selectedIndex = i;
+                $("#merchant_inventory_merchant").attr("readonly", true);
+                break;
+            }
+        }
     }
 });

@@ -5,10 +5,12 @@
 {% block body %}
 <div class="container-fluid mt-3 mb-3">
   <p class="hidden" id="title">{{title}}</p> 
+  <p class="hidden" id="gamebook">{{gamebook}}</p>
+  <p class="hidden" id="paragraph">{{paragraph}}</p>   
   {% if app.user != null %}
     <div class="row">
       <div class="col-sm-12 col-md-4">
-      <a href="{{ path('enemy_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Enemy</button></a>   
+      <a href="{{ path('enemy_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Enemy</button></a>   
       {{ knp_pagination_filter(pagination, {'p.number': 'Paragraph', 'e.name': 'Enemy Name', 'e.skill': 'Skill', 'e.stamina': 'Stamina', 'bc.name': 'Battle Category'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
       'align': 'center',
@@ -32,8 +34,8 @@
             {% for enemy in pagination %}
             {% set id = enemy.id %}
               <tr>
-                <td><a class="nav-link" href="{{ path('enemy_edit', {'id': enemy.id}) }}">{{ enemy.id}}</a></td>
-                <td>{{ enemy.paragraph }}</td>
+                <td><a class="nav-link" href="{{ path('enemy_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': enemy.id}) }}">{{ enemy.id}}</a></td>
+                <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{ enemy.paragraph }}</a></td>
                 <td>{{ enemy.name }}</td>
                 <td>{{ enemy.skill }}</td>
                 <td>{{ enemy.stamina }}</td>

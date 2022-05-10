@@ -26,6 +26,7 @@ class HeroType extends AbstractType
             ->add('startingluck', TextType::class,['label'=>'Starting Luck'])
             ->add('startingprovision', TextType::class,['label'=>'Starting Provisions'])
             ->add('provision', TextType::class,['label'=>'Provisions'])
+            ->add('treasure', TextType::class,['label'=>'Treasure'])
             ->add('adventure', EntityType::class,['class' => Adventure::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('a')->orderBy('a.id', 'ASC');}, 'choice_label' => 'name', 'label' => 'Adventure'])
         ;
     }

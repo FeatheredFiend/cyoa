@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Merchant Inventory{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-3 mb-3">
+  <p class="hidden" id="title">{{title}}</p>
+  <p class="hidden" id="gamebook">{{gamebook}}</p>
+  <p class="hidden" id="paragraph">{{paragraph}}</p> 
+  <p class="hidden" id="merchant">{{merchant}}</p> 
+  {% if app.user != null %}
+    <div class="row">
+      <div class="col-sm-12 col-md-4">
+      <a href="{{ path('merchantinventory_create', {'gamebook': gamebook, 'paragraph': paragraph, 'merchant': merchant}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Merchant Inventory</button></a>   
+      {{ knp_pagination_filter(pagination, {'m.name': 'Merchant', 'e.name': 'Equipment Name', 'me.cost': 'Cost'}) }}
+      {{ knp_pagination_render(pagination, null, {}, {
+      'align': 'center',
+      'size': 'small',
+      'rounded': true,
+      }) }}
+      </div>
+      <div class="col-sm-12 col-md-8 table-responsive">
+        <table class="table table-striped table-light">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Merchant</th>
+              <th>Equipment</th>
+              <th>Cost</th>
+            </tr>
+          </thead>
+          <tbody name="merchantinventoryTable" id="merchantinventoryTable">
+            {% for merchantinventory in pagination %}
+            {% set id = merchantinventory.id %}
+              <tr>
+                <td><a class="nav-link" href="{{ path('merchantinventory_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'merchant': merchant, 'id': merchantinventory.id}) }}">{{ merchantinventory.id}}</a></td>
+                <td><a class="nav-link" href="{{ path('merchant_view', {'gamebook': gamebook, 'paragraph': paragraph, 'merchant': merchant}) }}">{{ merchantinventory.merchant }}</a></td>
+                <td>{{ merchantinventory.equipment }}</td>
+                <td>{{ merchantinventory.cost }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}           
+</div>
+{% endblock %}

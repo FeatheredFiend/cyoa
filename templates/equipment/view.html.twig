@@ -4,12 +4,15 @@
 
 {% block body %}
 <div class="container-fluid mt-3 mb-3">
-  <p class="hidden" id="title">{{title}}</p> 
+  <p class="hidden" id="title">{{title}}</p>
+  <p class="hidden" id="gamebook">{{gamebook}}</p>
+  <p class="hidden" id="paragraph">{{paragraph}}</p> 
   {% if app.user != null %}
     <div class="row">
       <div class="col-sm-12 col-md-4">
-      <a href="{{ path('equipment_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Equipment</button></a>   
-      {{ knp_pagination_filter(pagination, {'p.number': 'Paragraph', 'e.name': 'Equipment Name'}) }}
+      <a href="{{ path('equipmentrequired_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-warning d-grid gap-2 nav-link text-white">Return to Equipment Required</button></a>
+      <a href="{{ path('equipment_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Equipment</button></a>   
+      {{ knp_pagination_filter(pagination, {'e.name': 'Equipment Name'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
       'align': 'center',
       'size': 'small',
@@ -21,7 +24,6 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>Paragraph</th>
               <th>Name</th>
             </tr>
           </thead>
@@ -29,8 +31,7 @@
             {% for equipment in pagination %}
             {% set id = equipment.id %}
               <tr>
-                <td><a class="nav-link" href="{{ path('equipment_edit', {'id': equipment.id}) }}">{{ equipment.id}}</a></td>
-                <td>{{ equipment.paragraph }}</td>
+                <td><a class="nav-link" href="{{ path('equipment_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': equipment.id}) }}">{{ equipment.id}}</a></td>
                 <td>{{ equipment.name }}</td>
               </tr>
             {% endfor %}

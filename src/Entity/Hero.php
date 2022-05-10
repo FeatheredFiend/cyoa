@@ -51,6 +51,9 @@ class Hero
     #[ORM\OneToMany(mappedBy: 'hero', targetEntity: HeroEquipment::class)]
     private $heroEquipment;
 
+    #[ORM\Column(type: 'integer')]
+    private $treasure;
+
     public function __construct()
     {
         $this->heroEquipment = new ArrayCollection();
@@ -230,5 +233,17 @@ class Hero
 
     public function __toString() {
         return $this->name;
+    }
+
+    public function getTreasure(): ?int
+    {
+        return $this->treasure;
+    }
+
+    public function setTreasure(int $treasure): self
+    {
+        $this->treasure = $treasure;
+
+        return $this;
     }
 }
