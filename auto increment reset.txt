@@ -16,5 +16,6 @@ ALTER TABLE paragraph AUTO_INCREMENT = 1;
 ALTER TABLE paragraph_action AUTO_INCREMENT = 1;
 ALTER TABLE paragraph_action_category AUTO_INCREMENT = 1;
 ALTER TABLE paragraph_action_operator AUTO_INCREMENT = 1;
+ALTER TABLE paragraph_action_target AUTO_INCREMENT = 1;
 ALTER TABLE paragraph_direction AUTO_INCREMENT = 1;
 ALTER TABLE user AUTO_INCREMENT = 1;

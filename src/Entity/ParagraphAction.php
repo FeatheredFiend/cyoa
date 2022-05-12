@@ -35,6 +35,10 @@ class ParagraphAction
     #[ORM\JoinColumn(nullable: false)]
     private $paragraphactionattribute;
 
+    #[ORM\ManyToOne(targetEntity: ParagraphActionTarget::class, inversedBy: 'paragraphActions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $paragraphactiontarget;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,6 +112,18 @@ class ParagraphAction
     public function setParagraphactionattribute(?HeroAttribute $paragraphactionattribute): self
     {
         $this->paragraphactionattribute = $paragraphactionattribute;
+
+        return $this;
+    }
+
+    public function getParagraphactiontarget(): ?ParagraphActionTarget
+    {
+        return $this->paragraphactiontarget;
+    }
+
+    public function setParagraphactiontarget(?ParagraphActionTarget $paragraphactiontarget): self
+    {
+        $this->paragraphactiontarget = $paragraphactiontarget;
 
         return $this;
     }

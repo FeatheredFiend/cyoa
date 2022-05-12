@@ -55,11 +55,12 @@ class ParagraphActionRepository extends ServiceEntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
-            ->select('pa','pac','pao','paa')
+            ->select('pa','pac','pao','paa', 'pat')
             ->from('App\Entity\ParagraphAction', 'pa')
             ->leftJoin('pa.paragraphactioncategory', 'pac')
             ->leftJoin('pa.paragraphactionoperator', 'pao')
             ->leftJoin('pa.paragraphactionattribute', 'paa')
+            ->leftJoin('pa.paragraphactiontarget', 'pat')
             ->orderBy('pa.id', 'ASC');
 
         return $qb;

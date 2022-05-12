@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-4">
       <a href="{{ path('paragraphaction_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph Action</button></a>   
-      {{ knp_pagination_filter(pagination, {'p.number': 'Paragraph', 'pa.text': 'Text', 'pac.name': 'Paragraph Action Category', 'pao.name': 'Paragraph Action Operator', 'pa.actionvalue': 'Paragraph Action Value', 'paa.name': 'Paragraph Action Attribute'}) }}
+      {{ knp_pagination_filter(pagination, {'p.number': 'Paragraph', 'pa.text': 'Text', 'pat.name': 'Paragraph Action Target','pac.name': 'Paragraph Action Category', 'pao.name': 'Paragraph Action Operator', 'pa.actionvalue': 'Paragraph Action Value', 'paa.name': 'Paragraph Action Attribute'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
       'align': 'center',
       'size': 'small',
@@ -26,6 +26,7 @@
               <th>Gamebook</th>
               <th>Paragraph</th>
               <th>Text</th>
+              <th>Paragraph Action Target</th>
               <th>Paragraph Action Category</th>
               <th>Paragraph Action Operator</th>
               <th>Paragraph Action Value</th>
@@ -40,6 +41,7 @@
                 <td><a class="nav-link gamebookTable" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}"></a></td>
                 <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook}) }}">{{ paragraphaction.paragraph }}</a></td>
                 <td>{{ paragraphaction.text }}</td>
+                <td>{{ paragraphaction.paragraphactiontarget }}</td>
                 <td>{{ paragraphaction.paragraphactioncategory }}</td>
                 <td>{{ paragraphaction.paragraphactionoperator }}</td>
                 <td>{{ paragraphaction.actionvalue }}</td>
