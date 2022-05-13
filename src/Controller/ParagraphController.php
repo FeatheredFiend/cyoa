@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Repository\ParagraphRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Service\FileUploader;
 
 class ParagraphController extends AbstractController
 {
@@ -38,7 +39,7 @@ class ParagraphController extends AbstractController
     }
 
     #[Route('/paragraph/create/{gamebook}', name: 'paragraph_create', defaults: ['title' => 'Create Paragraph'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine): Response
+    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine, FileUploader $fileUploader): Response
     {
         $paragraph = new Paragraph();
 
@@ -47,7 +48,11 @@ class ParagraphController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $imageFileName = $fileUploader->uploadParagraph($imageFile);
+                $paragraph->setImage($imageFileName);
+            }
             // Save
             $em = $doctrine->getManager();
             $em->persist($paragraph);
@@ -60,7 +65,7 @@ class ParagraphController extends AbstractController
     }
 
     #[Route('/paragraph/edit/{gamebook}/{id}', name: 'paragraph_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph'])]
-    public function edit(int $id, ParagraphRepository $paragraphRepository, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine): Response
+    public function edit(int $id, ParagraphRepository $paragraphRepository, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine, FileUploader $fileUploader): Response
     {
         $paragraph = $paragraphRepository
             ->find($id);
@@ -70,7 +75,11 @@ class ParagraphController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $imageFileName = $fileUploader->uploadParagraph($imageFile);
+                $paragraph->setImage($imageFileName);
+            }
             // Save
             $em = $doctrine->getManager();
             $em->persist($paragraph);

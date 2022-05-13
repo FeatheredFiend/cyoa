@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+{% block title %}Play Adventure{% endblock %}
+{% block body %}
+{% if app.user != null %}
+    <p class="hidden" id="title">{{title}}</p>
+    <p class="hidden" id="adventure">{{adventure}}</p>
+    <p class="hidden" id="paragraph">{{paragraph}}</p> 
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-md-4">
+                <div class="table-responsive">
+                    {% for adventure in pagination %}    
+                        <table class="table table-striped table-light">
+                            <tr>
+                                <th>Gamebook</th>
+                                <td>{{ adventure.gamebook }}</td>
+                            </tr>
+                            <tr>
+                                <th>Adventure</th>
+                                <td>{{ adventure.name }}</td>
+                            </tr>          
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ adventure.hero }}</td>
+                            </tr>
+                            <tr>
+                                <th>Skill</th>
+                                <td>{{ adventure.hero.startingskill }} / {{ adventure.hero.skill }}</td>         
+                            </tr>
+                            <tr>
+                                <th>Stamina</th>
+                                <td>{{ adventure.hero.startingstamina }} / {{ adventure.hero.stamina }}</td>         
+                            </tr>   
+                            <tr>
+                                <th>Luck</th>
+                                <td>{{ adventure.hero.startingluck }} / {{ adventure.hero.luck }}</td>         
+                            </tr>  
+                            <tr>
+                                <th>Provisions</th>
+                                <td>{{ adventure.hero.startingprovision }} / {{ adventure.hero.provision }}</td>         
+                            </tr>      
+                            <tr>
+                                <th>Honour</th>
+                                <td>{{ adventure.hero.honour }}</td>         
+                            </tr>   
+                            <tr>
+                                <th>Treasure</th>
+                                <td>{{ adventure.hero.treasure }}</td>         
+                            </tr>                                                 
+                        </table>
+                    {% endfor %} 
+                    <table class="table table-striped table-light">
+                    <thead>
+                        <tr>
+                        <th>ID</th>
+                        <th>Equipment</th>
+                        <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody name="heroequipmentTable" id="heroequipmentTable">
+                        {% for heroequipment in paginationEquipment %}
+                        {% set id = heroequipment.id %}
+                        <tr>
+                            <td>{{ heroequipment.id}}</td>
+                            <td>{{ heroequipment.equipment }}</td>
+                            <td>{{ heroequipment.quantity }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>     
+                </div>                           
+            </div>
+            <div class="col-sm-12 col-md-8">
+                <div class="row" id="paragraphText">
+                    {% for paragraph in paginationParagraph %}
+                        <p>{{ paragraph.text}}</p>
+                    {% endfor %}
+                </div>
+                <div class="row" id="paragraphAction">
+                    {% for paragraphaction in paginationParagraphAction %}
+                        <p>{{ paragraphaction.text}}</p>
+                    {% endfor %}
+                </div>
+                <div class="row" id="paragraphBattle">
+                    {% for paragraphbattle in paginationBattle %}
+                        <p>{{ paragraphbattle.text}}</p>
+                    {% endfor %}
+                </div>
+                <div class="row" id="paragraphDirection">
+                    {% for paragraphdirection in paginationParagraphDirection %}
+                        <a href="{{ path('adventure_next', {'adventure': adventure, 'paragraph': paragraphdirection.redirectparagraph}) }}">{{ paragraphdirection.text}}</a>
+                    {% endfor %}
+                </div>                                                
+
+            </div>
+        </div>
+
+
+
+
+    </div>
+{% endif %}
+{% endblock %}

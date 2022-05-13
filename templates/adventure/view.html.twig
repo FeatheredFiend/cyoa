@@ -31,7 +31,6 @@
           </thead>
           <tbody name="adventureTable" id="adventureTable">
             {% for adventure in pagination %}
-            {% set id = adventure.id %}
               <tr>
                 <td><a class="nav-link" href="{{ path('adventure_edit', {'id': adventure.id}) }}">{{ adventure.id}}</a></td>
                 <td>{{ adventure.user }}</td>
@@ -39,7 +38,7 @@
                 <td><a class="nav-link" href="{{ path('hero_view', {'gamebook': adventure.gamebook, 'hero': adventure.hero, 'adventure': adventure.name}) }}">{{ adventure.hero }}</a></td>
                 <td>{{ adventure.timeelapsed }}</td>
                 <td>{{ adventure.name }}</td>
-                <td>Play</td>
+                <td><a class="nav-link" href="{{ path('adventure_play', {'adventure': adventure.id, 'paragraph': adventure.progressparagraph}) }}">Play</a></td>
               </tr>
             {% endfor %}
           </tbody>

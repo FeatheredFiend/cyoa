@@ -19,11 +19,13 @@ class AdventureParagraph
     #[ORM\JoinColumn(nullable: false)]
     private $adventure;
 
-    #[ORM\Column(type: 'integer')]
-    private $paragraph;
 
     #[ORM\OneToMany(mappedBy: 'adventureparagraph', targetEntity: Battle::class)]
     private $battles;
+
+    #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'adventureParagraphs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $paragraph;
 
     public function __construct()
     {
@@ -43,18 +45,6 @@ class AdventureParagraph
     public function setAdventure(?Adventure $adventure): self
     {
         $this->adventure = $adventure;
-
-        return $this;
-    }
-
-    public function getParagraph(): ?int
-    {
-        return $this->paragraph;
-    }
-
-    public function setParagraph(int $paragraph): self
-    {
-        $this->paragraph = $paragraph;
 
         return $this;
     }
@@ -85,6 +75,18 @@ class AdventureParagraph
                 $battle->setAdventureparagraph(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getParagraph(): ?Paragraph
+    {
+        return $this->paragraph;
+    }
+
+    public function setParagraph(?Paragraph $paragraph): self
+    {
+        $this->paragraph = $paragraph;
 
         return $this;
     }

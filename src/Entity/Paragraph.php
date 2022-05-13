@@ -40,6 +40,12 @@ class Paragraph
     #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: Merchant::class)]
     private $merchants;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $image;
+
+    #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: AdventureParagraph::class)]
+    private $adventureParagraphs;
+
     public function __construct()
     {
         $this->paragraphActions = new ArrayCollection();
@@ -48,6 +54,7 @@ class Paragraph
         $this->paragraphDirections = new ArrayCollection();
         $this->equipmentRequireds = new ArrayCollection();
         $this->merchants = new ArrayCollection();
+        $this->adventureParagraphs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -239,6 +246,48 @@ class Paragraph
             // set the owning side to null (unless already changed)
             if ($merchant->getParagraph() === $this) {
                 $merchant->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AdventureParagraph>
+     */
+    public function getAdventureParagraphs(): Collection
+    {
+        return $this->adventureParagraphs;
+    }
+
+    public function addAdventureParagraph(AdventureParagraph $adventureParagraph): self
+    {
+        if (!$this->adventureParagraphs->contains($adventureParagraph)) {
+            $this->adventureParagraphs[] = $adventureParagraph;
+            $adventureParagraph->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdventureParagraph(AdventureParagraph $adventureParagraph): self
+    {
+        if ($this->adventureParagraphs->removeElement($adventureParagraph)) {
+            // set the owning side to null (unless already changed)
+            if ($adventureParagraph->getParagraph() === $this) {
+                $adventureParagraph->setParagraph(null);
             }
         }
 

@@ -82,6 +82,27 @@ class ParagraphDirectionRepository extends ServiceEntityRepository
 
     } 
 
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderPlay(?string $term, ?int $adventure, ?int $paragraph): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('pd','p','ap')
+            ->from('App\Entity\ParagraphDirection', 'pd')
+            ->leftJoin('pd.paragraph', 'p')
+            ->leftJoin('p.adventureParagraphs','ap')
+            ->andWhere('ap.adventure = :adventure')
+            ->andWhere('p.id = :paragraph')
+            ->setParameter('adventure', $adventure)
+            ->setParameter('paragraph', $paragraph)
+            ->orderBy('pd.id', 'ASC');
+
+        return $qb;
+
+    }     
+
     // /**
     //  * @return ParagraphDirection[] Returns an array of ParagraphDirection objects
     //  */

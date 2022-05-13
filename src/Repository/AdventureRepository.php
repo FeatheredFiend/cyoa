@@ -55,11 +55,13 @@ class AdventureRepository extends ServiceEntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
-            ->select('a','g','h','u')
+            ->select('a','g','h','u', 'ap','p')
             ->from('App\Entity\Adventure', 'a')
             ->leftJoin('a.gamebook', 'g')
             ->leftJoin('a.hero', 'h')
             ->leftJoin('a.user', 'u')
+            ->leftJoin('a.adventureParagraphs', 'ap')
+            ->leftJoin('ap.paragraph', 'p')
             ->andWhere('a.user = :user')
             ->setParameter('user', $user)
             ->orderBy('a.id', 'ASC');
@@ -67,6 +69,33 @@ class AdventureRepository extends ServiceEntityRepository
         return $qb;
 
     }
+
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderHeroStats(?string $term, ?int $adventure): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('a','g','u','h','he')
+            ->from('App\Entity\Adventure', 'a')
+            ->leftJoin('a.gamebook', 'g')
+            ->leftJoin('a.hero', 'h')
+            ->leftJoin('h.heroEquipment','he')
+            ->leftJoin('a.user', 'u')
+            ->andWhere('a.id = :adventure')
+            ->setParameter('adventure', $adventure)
+            ->orderBy('a.id', 'ASC');
+
+        return $qb;
+
+    }
+
+
+
+
+
+
 
     // /**
     //  * @return Adventure[] Returns an array of Adventure objects

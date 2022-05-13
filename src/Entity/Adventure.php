@@ -36,6 +36,9 @@ class Adventure
     #[ORM\OneToMany(mappedBy: 'adventure', targetEntity: AdventureParagraph::class)]
     private $adventureParagraphs;
 
+    #[ORM\Column(type: 'integer')]
+    private $progressparagraph;
+
     public function __construct()
     {
         $this->adventureParagraphs = new ArrayCollection();
@@ -138,6 +141,18 @@ class Adventure
     
     public function __toString() {
         return $this->name;
+    }
+
+    public function getProgressparagraph(): ?int
+    {
+        return $this->progressparagraph;
+    }
+
+    public function setProgressparagraph(int $progressparagraph): self
+    {
+        $this->progressparagraph = $progressparagraph;
+
+        return $this;
     }
 
 }

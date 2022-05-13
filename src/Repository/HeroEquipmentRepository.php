@@ -67,6 +67,26 @@ class HeroEquipmentRepository extends ServiceEntityRepository
 
     }
 
+        /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderPlay(?string $term, ?int $adventure): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('he','e','h','a')
+            ->from('App\Entity\HeroEquipment', 'he')
+            ->leftJoin('he.equipment', 'e')
+            ->leftJoin('he.hero', 'h')
+            ->leftJoin('h.adventure', 'a')
+            ->andWhere('a.id = :adventure')
+            ->setParameter('adventure', $adventure)
+            ->orderBy('he.id', 'ASC');
+
+        return $qb;
+
+    }
+
     // /**
     //  * @return HeroEquipment[] Returns an array of HeroEquipment objects
     //  */

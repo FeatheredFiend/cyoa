@@ -75,4 +75,11 @@ $(document).ready(function() {
             }
         }
     }
+
+    if ($("#enemy_paragraph").length > 0) {
+        var paragraph = $('#paragraph').text();
+        $("#enemy_paragraph").val(paragraph);
+        $("#enemy_paragraph").attr("readonly", true);
+    }
+
 });

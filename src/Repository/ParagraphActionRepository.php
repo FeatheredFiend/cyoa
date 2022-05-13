@@ -67,7 +67,7 @@ class ParagraphActionRepository extends ServiceEntityRepository
 
     } 
 
-        /**
+    /**
      * @param string|null $term
      */
     public function getWithSearchQueryBuilderViewParagraph(?string $term, ?int $id): QueryBuilder
@@ -85,7 +85,31 @@ class ParagraphActionRepository extends ServiceEntityRepository
 
         return $qb;
 
-    } 
+    }
+    
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderPlay(?string $term, ?int $adventure, ?int $paragraph): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('pa','pac','pao','paa')
+            ->from('App\Entity\ParagraphAction', 'pa')
+            ->leftJoin('pa.paragraphactioncategory', 'pac')
+            ->leftJoin('pa.paragraphactionoperator', 'pao')
+            ->leftJoin('pa.paragraphactionattribute', 'paa')
+            ->leftJoin('pa.paragraph', 'p')
+            ->leftJoin('p.adventureParagraphs','ap')
+            ->andWhere('ap.adventure = :adventure')
+            ->andWhere('p.id = :paragraph')
+            ->setParameter('adventure', $adventure)
+            ->setParameter('paragraph', $paragraph)
+            ->orderBy('pa.id', 'ASC');
+
+        return $qb;
+
+    }    
       
     // /**
     //  * @return ParagraphAction[] Returns an array of ParagraphAction objects

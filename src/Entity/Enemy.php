@@ -35,7 +35,7 @@ class Enemy
     #[ORM\JoinColumn(nullable: false)]
     private $battlecategory;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $image;
 
     public function __construct()

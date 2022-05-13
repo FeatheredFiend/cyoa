@@ -64,7 +64,7 @@ class ParagraphRepository extends ServiceEntityRepository
 
     }
 
-        /**
+    /**
      * @param string|null $term
      */
     public function getWithSearchQueryBuilderViewGamebook(?string $term, ?string $gamebook): QueryBuilder
@@ -76,6 +76,27 @@ class ParagraphRepository extends ServiceEntityRepository
             ->leftJoin('p.gamebook', 'g')
             ->andWhere('g.name = :gamebook')
             ->setParameter('gamebook', $gamebook)
+            ->orderBy('p.id', 'ASC');
+
+        return $qb;
+
+    }
+
+
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderPlay(?string $term, ?int $adventure, ?int $paragraph): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('p', 'ap')
+            ->from('App\Entity\Paragraph', 'p')
+            ->leftJoin('p.adventureParagraphs', 'ap')
+            ->andWhere('ap.adventure = :adventure')
+            ->andWhere('p.id = :paragraph')
+            ->setParameter('adventure', $adventure)
+            ->setParameter('paragraph', $paragraph)
             ->orderBy('p.id', 'ASC');
 
         return $qb;

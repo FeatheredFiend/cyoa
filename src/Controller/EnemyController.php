@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Repository\EnemyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Service\FileUploader;
 
 class EnemyController extends AbstractController
 {
@@ -39,7 +40,7 @@ class EnemyController extends AbstractController
     }
 
     #[Route('/enemy/create/{gamebook}/{paragraph}', name: 'enemy_create', defaults: ['title' => 'Create Enemy'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, string $paragraph, ManagerRegistry $doctrine): Response
+    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, string $paragraph, ManagerRegistry $doctrine, FileUploader $fileUploader): Response
     {
         $enemy = new Enemy();
 
@@ -48,7 +49,11 @@ class EnemyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $imageFileName = $fileUploader->uploadEnemy($imageFile);
+                $enemy->setImage($imageFileName);
+            }
             // Save
             $em = $doctrine->getManager();
             $em->persist($enemy);
@@ -67,7 +72,7 @@ class EnemyController extends AbstractController
     }
 
     #[Route('/enemy/edit/{gamebook}/{paragraph}/{id}', name: 'enemy_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Enemy'])]
-    public function edit(int $id, EnemyRepository $enemyRepository, Request $request,string $title, string $gamebook, string $paragraph, ManagerRegistry $doctrine): Response
+    public function edit(int $id, EnemyRepository $enemyRepository, Request $request,string $title, string $gamebook, string $paragraph, ManagerRegistry $doctrine, FileUploader $fileUploader): Response
     {
         $enemy = $enemyRepository
             ->find($id);
@@ -78,7 +83,11 @@ class EnemyController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $imageFileName = $fileUploader->uploadEnemy($imageFile);
+                $enemy->setImage($imageFileName);
+            }
             // Save
             $em = $doctrine->getManager();
             $em->persist($enemy);

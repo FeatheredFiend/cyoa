@@ -65,6 +65,28 @@ class BattleRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderPlay(?string $term, ?int $adventure, ?int $paragraph): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('b','e','ap','p')
+            ->from('App\Entity\Battle', 'b')
+            ->leftJoin('b.enemy', 'e')
+            ->leftJoin('b.adventureparagraph', 'ap')
+            ->leftJoin('ap.paragraph', 'p')
+            ->andWhere('ap.adventure = :adventure')
+            ->andWhere('p.id = :paragraph')
+            ->setParameter('adventure', $adventure)
+            ->setParameter('paragraph', $paragraph)
+            ->orderBy('b.id', 'ASC');
+
+        return $qb;
+
+    }
+
     // /**
     //  * @return Battle[] Returns an array of Battle objects
     //  */
