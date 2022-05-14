@@ -82,4 +82,26 @@ $(document).ready(function() {
         $("#enemy_paragraph").attr("readonly", true);
     }
 
+    if ($("#battleEnemy").length > 0) {
+        $("#battleCreate").css('display', 'none');
+        $("#battleCreateLuck").css('display', 'none');
+    }
+
+    if ($("#luck").text() == 0) {
+        $("#battleNextLuck").css('display', 'none');
+    }
+
+    if (($("#stamina").text() < 0) || ($("#stamina").text() == 0)) {
+        $("#game").remove();
+        $("#gameover").css('display', 'block');
+    }
+
+    if ($("#enemystamina").length > 0) {
+        if (($("#enemystamina").text() < 0) || ($("#enemystamina").text() == 0)) {
+            $("#paragraphEnemy").remove();
+            $("#paragraphBattle").remove();
+            $("#paragraphDirection").css('display', 'block');
+        }
+    }
+
 });

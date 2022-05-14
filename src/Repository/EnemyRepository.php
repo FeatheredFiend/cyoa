@@ -65,6 +65,28 @@ class EnemyRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderPlay(?string $term, ?int $adventure, ?int $paragraph): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('e','bc','p', 'ap')
+            ->from('App\Entity\Enemy', 'e')
+            ->leftJoin('e.battlecategory', 'bc')
+            ->leftJoin('e.paragraph', 'p')
+            ->leftJoin('p.adventureParagraphs', 'ap')
+            ->andWhere('ap.adventure = :adventure')
+            ->andWhere('p.id = :paragraph')
+            ->setParameter('adventure', $adventure)
+            ->setParameter('paragraph', $paragraph)
+            ->orderBy('e.id', 'ASC');
+
+        return $qb;
+
+    }    
+
     // /**
     //  * @return Enemy[] Returns an array of Enemy objects
     //  */

@@ -26,6 +26,10 @@ services:
         arguments: 
             $createHero: '%kernel.project_dir%'
 
+    App\Service\CreateBattle:
+        arguments: 
+            $createBattle: '%kernel.project_dir%'            
+
     App\Service\StartAdventure:
         arguments: 
             $startAdventure: '%kernel.project_dir%'
@@ -33,6 +37,10 @@ services:
     App\Service\NextParagraph:
         arguments: 
             $nextParagraph: '%kernel.project_dir%'
+
+    App\Service\NextBattle:
+        arguments: 
+            $nextBattle: '%kernel.project_dir%'            
 
     App\Service\FileUploader:
         arguments:

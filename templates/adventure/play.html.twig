@@ -6,7 +6,12 @@
     <p class="hidden" id="adventure">{{adventure}}</p>
     <p class="hidden" id="paragraph">{{paragraph}}</p> 
     <div class="container-fluid">
-        <div class="row">
+        <div class="d-flex container position-absolute top-50 start-50 translate-middle justify-content-center">
+            <div class="d-flex">
+                <h1 id="gameover" class="hidden"><a class="nav-link" href="{{ path('homepage') }}">Game Over</a></h1>
+            </div>
+        </div>
+        <div class="row" id="game">
             <div class="col-sm-12 col-md-4">
                 <div class="table-responsive">
                     {% for adventure in pagination %}    
@@ -29,11 +34,13 @@
                             </tr>
                             <tr>
                                 <th>Stamina</th>
-                                <td>{{ adventure.hero.startingstamina }} / {{ adventure.hero.stamina }}</td>         
+                                <td>{{ adventure.hero.startingstamina }} / {{ adventure.hero.stamina }}</td>
+                                <td class="hidden" id="stamina">{{adventure.hero.stamina}}</td>         
                             </tr>   
                             <tr>
                                 <th>Luck</th>
-                                <td>{{ adventure.hero.startingluck }} / {{ adventure.hero.luck }}</td>         
+                                <td>{{ adventure.hero.startingluck }} / {{ adventure.hero.luck }}</td>  
+                                <td class="hidden" id="luck">{{adventure.hero.luck}}</td>       
                             </tr>  
                             <tr>
                                 <th>Provisions</th>
@@ -81,23 +88,58 @@
                         <p>{{ paragraphaction.text}}</p>
                     {% endfor %}
                 </div>
-                <div class="row" id="paragraphBattle">
-                    {% for paragraphbattle in paginationBattle %}
-                        <p>{{ paragraphbattle.text}}</p>
+                <div class="row" id="paragraphEnemy">
+                    {% for paragraphenemy in paginationEnemy %}
+                        {% if paragraphenemy.battlecategory == "Group" %}
+                            <div class="col">
+                                <p>{{ paragraphenemy.image}}</p>
+                                <p>{{ paragraphenemy.name}}</p>
+                                <p>Skill: {{ paragraphenemy.skill}}</p>
+                                <p>Stamina: {{ paragraphenemy.stamina}}</p>
+                            </div>
+                        {% else %}
+                            <p>{{ paragraphenemy.image}}</p>
+                            <p>{{ paragraphenemy.name}}</p>
+                            <p>Skill: {{ paragraphenemy.skill}}</p>
+                            <p>Stamina: {{ paragraphenemy.stamina}}</p>                          
+                        {% endif %}
+                            <div class="col">
+                                <button id="battleCreate" class="btn btn-danger col-12"><a class="nav-link text-white" href="{{ path('battle_create', {'adventure': adventure, 'paragraph': paragraphenemy.paragraph, 'enemy': paragraphenemy.id, 'luck': 0}) }}">Fight!</a></button>
+                            </div>
+                            <div class="col">
+                                <button id="battleCreateLuck" class="btn btn-warning col-12"><a class="nav-link text-white" href="{{ path('battle_create', {'adventure': adventure, 'paragraph': paragraphenemy.paragraph, 'enemy': paragraphenemy.id, 'luck': 1}) }}">Fight with Luck!</a></button>
+                            </div>                           
                     {% endfor %}
                 </div>
+                <div class="row" id="paragraphBattle">
+                    {% for paragraphbattle in paginationBattle %}
+                        <div class="card" id="battleEnemy">
+                            <p>Enemy Name: {{ paragraphbattle.enemy}}</p>
+                            <p>Battle Round: {{ paragraphbattle.round}}</p>
+                            <p>Player Stamina: {{ paragraphbattle.playerstamina}}</p>
+                            <p>Enemy Stamina: {{ paragraphbattle.enemystamina}}</p>
+                            <p class="hidden" id="enemystamina">{{ paragraphbattle.enemystamina }}</p>
+                            <p>Player Skill: {{ paragraphbattle.playerskill}}</p>                            
+                            <p>Enemy Skill: {{ paragraphbattle.enemyskill}}</p>
+                            <div class="col">
+                                <button id="battleNext" class="btn btn-danger col-12"><a class="nav-link text-white" href="{{ path('battle_next', {'adventure': adventure, 'paragraph': paragraph, 'battle': paragraphbattle.id, 'luck': 0}) }}">Next Round</a></button>
+                            </div>
+                            <div class="col">                            
+                                <button id="battleNextLuck" class="btn btn-warning col-12"><a class="nav-link text-white" href="{{ path('battle_next', {'adventure': adventure, 'paragraph': paragraph, 'battle': paragraphbattle.id, 'luck': 1}) }}">Next Round with Luck</a></button>                           
+                            </div>
+                        </div>                        
+                    {% endfor %}
+                </div>                
                 <div class="row" id="paragraphDirection">
                     {% for paragraphdirection in paginationParagraphDirection %}
-                        <a href="{{ path('adventure_next', {'adventure': adventure, 'paragraph': paragraphdirection.redirectparagraph}) }}">{{ paragraphdirection.text}}</a>
+                        <div class="col">
+                            <button class="btn btn-success col-12"><a class="nav-link text-white" href="{{ path('adventure_next', {'adventure': adventure, 'paragraph': paragraphdirection.redirectparagraph}) }}">{{ paragraphdirection.text}}</a></button>
+                        </div>
                     {% endfor %}
                 </div>                                                
 
             </div>
         </div>
-
-
-
-
     </div>
 {% endif %}
 {% endblock %}

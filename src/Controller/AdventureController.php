@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Repository\AdventureRepository;
 use App\Repository\BattleRepository;
+use App\Repository\EnemyRepository;
 use App\Repository\HeroEquipmentRepository;
 use App\Repository\HeroRepository;
 use App\Repository\ParagraphRepository;
@@ -33,7 +34,8 @@ class AdventureController extends AbstractController
     private $paragraphRepository;
     private $paragraphactionRepository;
     private $paragraphdirectionRepository; 
-    private $battleRepository;    
+    private $battleRepository;   
+    private $enemyRepository;    
     private $paginator;
     private $doctrine;
     private $validator;
@@ -41,7 +43,7 @@ class AdventureController extends AbstractController
     private $startAdventure;
     private $nextParagraph;
 
-    public function __construct(AdventureRepository $adventureRepository, HeroRepository $heroRepository, HeroEquipmentRepository $heroequipmentRepository, ParagraphRepository $paragraphRepository, ParagraphActionRepository $paragraphactionRepository, ParagraphDirectionRepository $paragraphdirectionRepository, BattleRepository $battleRepository, PaginatorInterface $paginator, ManagerRegistry $doctrine, ValidatorInterface $validator, CreateHero $createHero, StartAdventure $startAdventure, NextParagraph $nextParagraph)
+    public function __construct(AdventureRepository $adventureRepository, HeroRepository $heroRepository, HeroEquipmentRepository $heroequipmentRepository, ParagraphRepository $paragraphRepository, ParagraphActionRepository $paragraphactionRepository, ParagraphDirectionRepository $paragraphdirectionRepository, EnemyRepository $enemyRepository, BattleRepository $battleRepository, PaginatorInterface $paginator, ManagerRegistry $doctrine, ValidatorInterface $validator, CreateHero $createHero, StartAdventure $startAdventure, NextParagraph $nextParagraph)
     {
         $this->adventureRepository = $adventureRepository;
         $this->heroequipmentRepository = $heroequipmentRepository;
@@ -50,6 +52,7 @@ class AdventureController extends AbstractController
         $this->paragraphactionRepository = $paragraphactionRepository;
         $this->paragraphdirectionRepository = $paragraphdirectionRepository;
         $this->battleRepository = $battleRepository;
+        $this->enemyRepository = $enemyRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
         $this->doctrine = $doctrine;
@@ -172,12 +175,20 @@ class AdventureController extends AbstractController
             5/*limit per page*/
         );
 
+        $queryBuilderEnemy = $this->enemyRepository->getWithSearchQueryBuilderPlay($q, $adventure, $paragraph);
+
+        $paginationEnemy = $this->paginator->paginate(
+            $queryBuilderEnemy, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            5/*limit per page*/
+        );
+
         $queryBuilderBattle = $this->battleRepository->getWithSearchQueryBuilderPlay($q, $adventure, $paragraph);
 
         $paginationBattle = $this->paginator->paginate(
             $queryBuilderBattle, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
-            5/*limit per page*/
+            1/*limit per page*/
         );
 
         $queryBuilderParagraphDirection = $this->paragraphdirectionRepository->getWithSearchQueryBuilderPlay($q, $adventure, $paragraph);
@@ -197,6 +208,7 @@ class AdventureController extends AbstractController
             'paginationParagraph' => $paginationParagraph,
             'paginationParagraphAction' => $paginationParagraphAction,
             'paginationParagraphDirection' => $paginationParagraphDirection,
+            'paginationEnemy' => $paginationEnemy,
             'paginationBattle' => $paginationBattle,
             'title' => $title,
             'adventure' => $adventure,
@@ -213,4 +225,5 @@ class AdventureController extends AbstractController
 
         return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraph]);
     }
+
 }

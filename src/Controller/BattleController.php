@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Battle;
-use App\Form\BattleType;
+use App\Service\CreateBattle;
+use App\Service\NextBattle;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,72 +14,41 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Repository\BattleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Knp\Component\Pager\PaginatorInterface;
 
 class BattleController extends AbstractController
 {
-    #[Route('/battle/view', name: 'battle_view', defaults: ['title' => 'View Battle'])]
-    public function index(BattleRepository $battleRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+
+    private $battleRepository;      
+    private $doctrine;
+    private $validator;
+    private $createBattle;
+    private $nextBattle;
+
+    public function __construct(BattleRepository $battleRepository, ManagerRegistry $doctrine, ValidatorInterface $validator, CreateBattle $createBattle, NextBattle $nextBattle)
     {
-        $q = $request->query->get('q');
-        $queryBuilder = $battleRepository->getWithSearchQueryBuilderView($q);
-
-        $pagination = $paginator->paginate(
-            $queryBuilder, /* query NOT result */
-            $request->query->getInt('page', 1)/*page number*/,
-            5/*limit per page*/
-        );
-
-
-        return $this->render('battle/view.html.twig', [
-            'pagination' => $pagination,
-            'title' => $title
-        ]);
+        $this->battleRepository = $battleRepository;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;
+        $this->createBattle = $createBattle;
+        $this->nextBattle = $nextBattle;
     }
 
-    #[Route('/battle/create', name: 'battle_create', defaults: ['title' => 'Create Battle'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    #[Route('/battle/create/{adventure}/{paragraph}/{enemy}/{luck}', name: 'battle_create', defaults: ['title' => 'Create Battle'])]
+    public function create(Request $request, string $title, int $adventure, int $paragraph, int $enemy, int $luck): Response
     {
-        $battle = new Battle();
 
-        $form = $this->createForm(BattleType::class, $battle);
+        $this->createBattle->createBattle($adventure, $paragraph, $enemy, $luck);
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // Save
-            $em = $doctrine->getManager();
-            $em->persist($battle);
-            $em->flush();
-
-            return $this->redirectToRoute('battle_view');
-        }
-        return $this->render('battle/create.html.twig', ['form' => $form->createView(),'battle' => $battle,'title' => $title]);
-
+        return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraph]);
     }
 
-    #[Route('/battle/edit/{id}', name: 'battle_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Battle'])]
-    public function edit(int $id, BattleRepository $battleRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    #[Route('/battle/next/{adventure}/{paragraph}/{battle}/{luck}', name: 'battle_next', defaults: ['title' => 'Battle Next Round'])]
+    public function next(Request $request, string $title, int $adventure, int $paragraph, int $battle, int $luck): Response
     {
-        $battle = $battleRepository
-            ->find($id);
 
+        $this->nextBattle->nextBattle($adventure, $battle, $luck);
 
-        $form = $this->createForm(BattleType::class, $battle);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // Save
-            $em = $doctrine->getManager();
-            $em->persist($battle);
-            $em->flush();
-
-            return $this->redirectToRoute('battle_view');
-        }
-
-        return $this->render('battle/edit.html.twig', ['battle' => $battle,'form' => $form->createView(),'title' => $title]);
+        return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraph]);
     }
+
 }

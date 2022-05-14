@@ -81,7 +81,8 @@ class BattleRepository extends ServiceEntityRepository
             ->andWhere('p.id = :paragraph')
             ->setParameter('adventure', $adventure)
             ->setParameter('paragraph', $paragraph)
-            ->orderBy('b.id', 'ASC');
+            ->setMaxResults(1)
+            ->orderBy('b.id', 'DESC');
 
         return $qb;
 
