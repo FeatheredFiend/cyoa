@@ -9,7 +9,7 @@
   <p class="hidden" id="paragraph">{{paragraph}}</p> 
   {% if app.user != null %}
     <div class="row">
-      <div class="col-sm-12 col-md-4">
+      <div class="col-sm-12 col-md-4" id="searchBox">
       <a href="{{ path('paragraphaction_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph Action</button></a>   
       {{ knp_pagination_filter(pagination, {'p.number': 'Paragraph', 'pa.text': 'Text', 'pat.name': 'Paragraph Action Target','pac.name': 'Paragraph Action Category', 'pao.name': 'Paragraph Action Operator', 'pa.actionvalue': 'Paragraph Action Value', 'paa.name': 'Paragraph Action Attribute'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
@@ -18,7 +18,8 @@
       'rounded': true,
       }) }}
       </div>
-      <div class="col-sm-12 col-md-8 table-responsive">
+      <div class="col-sm-12 col-md-8 table-responsive" id="tableView">
+      <a id="toggleSearch" class="nav-link text-white text-center paleRed">Search</a>
         <table class="table table-striped table-light">
           <thead>
             <tr>

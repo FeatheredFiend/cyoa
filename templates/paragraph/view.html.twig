@@ -8,7 +8,7 @@
   <p class="hidden" id="gamebook">{{gamebook}}</p> 
   {% if app.user != null %}
     <div class="row">
-      <div class="col-sm-12 col-md-4">
+      <div class="col-sm-12 col-md-4" id="searchBox">
       <a href="{{ path('paragraph_create', {'gamebook':gamebook}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph</button></a>   
       {{ knp_pagination_filter(pagination, {'g.name': 'Gamebook', 'p.number': 'Number', 'p.text': 'Text'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
@@ -17,7 +17,8 @@
       'rounded': true,
       }) }}
       </div>
-      <div class="col-sm-12 col-md-8 table-responsive">
+      <div class="col-sm-12 col-md-8 table-responsive" id="tableView">
+        <a id="toggleSearch" class="nav-link text-white text-center paleRed">Search</a>
         <table class="table table-striped table-light">
           <thead>
             <tr>

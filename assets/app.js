@@ -9,12 +9,36 @@
 import './styles/app.css';
 
 // start the Stimulus application
-import $ from 'jquery';
+const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
 // the bootstrap module doesn't export/return anything
 import './bootstrap';
 
+
 $(document).ready(function() {
+
+    $("#toggleStats").click(function() {
+        if ($("#heroStats").hasClass("mobileHidden")) {
+            $("#heroStats").removeClass('mobileHidden');
+            $("#toggleStats").text('Close Stats');
+        } else {
+            $("#heroStats").addClass('mobileHidden');
+            $("#toggleStats").text('Open Stats');
+        }
+    });
+
+    $("#toggleSearch").click(function() {
+        if ($("#searchBox").hasClass("hidden")) {
+            $("#searchBox").removeClass('hidden');
+            $("#tableView").removeClass('col-md-12');
+            $("#toggleSearch").text('Close Search');
+        } else {
+            $("#searchBox").addClass('hidden');
+            $("#tableView").addClass('col-md-12');
+            $("#toggleSearch").text('Open Search');
+        }
+    });
+
     if ($("#paragraph_gamebook").length > 0) {
         var gamebook = $('#gamebook').text();
         var dd = document.getElementById('paragraph_gamebook');
@@ -82,25 +106,29 @@ $(document).ready(function() {
         $("#enemy_paragraph").attr("readonly", true);
     }
 
+    if ($("#enemy").length > 0) {
+        $("#paragraphDirection").addClass('hidden');
+    }
+
     if ($("#battleEnemy").length > 0) {
-        $("#battleCreate").css('display', 'none');
-        $("#battleCreateLuck").css('display', 'none');
+        $("#battleCreate").addClass('hidden');
+        $("#battleCreateLuck").addClass('hidden');
     }
 
     if ($("#luck").text() == 0) {
-        $("#battleNextLuck").css('display', 'none');
+        $("#battleNextLuck").addClass('hidden');
     }
 
     if (($("#stamina").text() < 0) || ($("#stamina").text() == 0)) {
         $("#game").remove();
-        $("#gameover").css('display', 'block');
+        $("#gameover").removeClass('hidden');
     }
 
     if ($("#enemystamina").length > 0) {
         if (($("#enemystamina").text() < 0) || ($("#enemystamina").text() == 0)) {
             $("#paragraphEnemy").remove();
             $("#paragraphBattle").remove();
-            $("#paragraphDirection").css('display', 'block');
+            $("#paragraphDirection").removeClass('hidden');
         }
     }
 
