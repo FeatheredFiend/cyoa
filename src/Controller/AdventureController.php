@@ -105,7 +105,7 @@ class AdventureController extends AbstractController
             $em = $this->doctrine->getManager();
             $em->persist($adventure);
             $em->flush();
-            $this->startAdventure->startAdventure($adventure->getId(), 1);
+            $this->startAdventure->startAdventure($adventure->getId());
 
             return $this->redirectToRoute('adventure_view');
         }
