@@ -17,13 +17,28 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class EquipmentController extends AbstractController
 {
+    private $equipmentRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;
+
+
+    public function __construct(EquipmentRepository $equipmentRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
+    {
+        $this->equipmentRepository = $equipmentRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;
+    }
+
+
     #[Route('/equipment/view/{gamebook}/{paragraph}', name: 'equipment_view', defaults: ['title' => 'View Equipment'])]
-    public function index(EquipmentRepository $equipmentRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, string $paragraph): Response
+    public function index(Request $request, string $title, string $gamebook, string $paragraph): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $equipmentRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $this->equipmentRepository->getWithSearchQueryBuilderView($q);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -40,7 +55,7 @@ class EquipmentController extends AbstractController
     }
 
     #[Route('/equipment/create/{gamebook}/{paragraph}', name: 'equipment_create', defaults: ['title' => 'Create Equipment'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, string $paragraph, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title, string $gamebook, string $paragraph): Response
     {
         $equipment = new Equipment();
 
@@ -51,7 +66,7 @@ class EquipmentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($equipment);
             $em->flush();
 
@@ -68,9 +83,9 @@ class EquipmentController extends AbstractController
     }
 
     #[Route('/equipment/edit/{gamebook}/{paragraph}/{id}', name: 'equipment_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Equipment'])]
-    public function edit(int $id, EquipmentRepository $equipmentRepository, Request $request,string $title, string $gamebook, string $paragraph, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request, string $title, string $gamebook, string $paragraph): Response
     {
-        $equipment = $equipmentRepository
+        $equipment = $this->equipmentRepository
             ->find($id);
 
         $form = $this->createForm(EquipmentType::class, $equipment);
@@ -80,7 +95,7 @@ class EquipmentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($equipment);
             $em->flush();
 

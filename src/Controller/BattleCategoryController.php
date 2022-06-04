@@ -17,8 +17,23 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class BattleCategoryController extends AbstractController
 {
+
+    private $battlecategoryRepository;   
+    private $paginator;
+    private $doctrine;
+    private $validator;
+
+
+    public function __construct(BattleCategoryRepository $battlecategoryRepository, PaginatorInterface $paginator, ManagerRegistry $doctrine, ValidatorInterface $validator)
+    {
+        $this->battlecategoryRepository = $battlecategoryRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;
+    }
+
     #[Route('/battlecategory/view', name: 'battlecategory_view', defaults: ['title' => 'View Battle Category'])]
-    public function index(BattleCategoryRepository $battlecategoryRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    public function index(Request $request, string $title): Response
     {
         $q = $request->query->get('q');
         $queryBuilder = $battlecategoryRepository->getWithSearchQueryBuilderView($q);
@@ -37,7 +52,7 @@ class BattleCategoryController extends AbstractController
     }
 
     #[Route('/battlecategory/create', name: 'battlecategory_create', defaults: ['title' => 'Create Battle Category'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title): Response
     {
         $battlecategory = new BattleCategory();
 
@@ -59,7 +74,7 @@ class BattleCategoryController extends AbstractController
     }
 
     #[Route('/battlecategory/edit/{id}', name: 'battlecategory_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Battle Category'])]
-    public function edit(int $id, BattleCategoryRepository $battlecategoryRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request,string $title): Response
     {
         $battlecategory = $battlecategoryRepository
             ->find($id);

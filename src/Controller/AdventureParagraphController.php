@@ -17,11 +17,26 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class AdventureParagraphController extends AbstractController
 {
+
+    private $adventureparagraphRepository;
+    private $paginator;
+    private $doctrine;
+    private $validator;
+
+
+    public function __construct(AdventureParagraphRepository $adventureparagraphRepository, PaginatorInterface $paginator, ManagerRegistry $doctrine, ValidatorInterface $validator)
+    {
+        $this->adventureparagraphRepository = $adventureparagraphRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;
+    }
+
     #[Route('/adventureparagraph/view', name: 'adventureparagraph_view', defaults: ['title' => 'View Adventure Paragraph'])]
-    public function index(AdventureParagraphRepository $adventureparagraphRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    public function index(Request $request, string $title): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $adventureparagraphRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $this->adventureparagraphRepository->getWithSearchQueryBuilderView($q);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
@@ -37,7 +52,7 @@ class AdventureParagraphController extends AbstractController
     }
 
     #[Route('/adventureparagraph/create', name: 'adventureparagraph_create', defaults: ['title' => 'Create Adventure Paragraph'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title): Response
     {
         $adventureparagraph = new AdventureParagraph();
 
@@ -59,9 +74,9 @@ class AdventureParagraphController extends AbstractController
     }
 
     #[Route('/adventureparagraph/edit/{id}', name: 'adventureparagraph_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Adventure Paragraph'])]
-    public function edit(int $id, AdventureParagraphRepository $adventureparagraphRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request, string $title): Response
     {
-        $adventureparagraph = $adventureparagraphRepository
+        $adventureparagraph = $this->adventureparagraphRepository
             ->find($id);
 
         $form = $this->createForm(AdventureParagraphType::class, $adventureparagraph);

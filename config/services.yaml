@@ -38,6 +38,11 @@ services:
         arguments: 
             $nextParagraph: '%kernel.project_dir%'
 
+    App\Service\ParagraphActionRun:
+        arguments: 
+            $paragraphActionRun: '%kernel.project_dir%'
+
+
     App\Service\NextBattle:
         arguments: 
             $nextBattle: '%kernel.project_dir%'            
