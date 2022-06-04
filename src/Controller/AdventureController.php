@@ -221,9 +221,10 @@ class AdventureController extends AbstractController
     public function nextParagraph(int $adventure, int $paragraph, string $title, Request $request): Response
     {
         $this->nextParagraph->nextParagraph($adventure, $paragraph);
-        $this->startAdventure->adventureProgress($adventure, $paragraph);
+        $gamebook = $this->nextParagraph->getAdventureGamebook($adventure);
+        $paragraphId = $this->nextParagraph->getGamebookParagraph($gamebook, $paragraph);
 
-        return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraph]);
+        return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraphId]);
     }
 
 }
