@@ -23,7 +23,6 @@
         <table class="table table-striped table-light">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Paragraph</th>
               <th>Name</th>
               <th>Skill</th>
@@ -36,9 +35,8 @@
             {% for enemy in pagination %}
             {% set id = enemy.id %}
               <tr>
-                <td><a class="nav-link" href="{{ path('enemy_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': enemy.id}) }}">{{ enemy.id}}</a></td>
                 <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{ enemy.paragraph }}</a></td>
-                <td>{{ enemy.name }}</td>
+                <td><a class="nav-link" href="{{ path('enemy_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': enemy.id}) }}">{{ enemy.name }}</a></td>
                 <td>{{ enemy.skill }}</td>
                 <td>{{ enemy.stamina }}</td>
                 <td>{{ enemy.battlecategory }}</td>

@@ -22,7 +22,6 @@
         <table class="table table-striped table-light">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Gamebook</th>
               <th>Paragraph Number</th>
               <th>Text</th>
@@ -38,9 +37,8 @@
             {% for paragraph in pagination %}
             {% set id = paragraph.id %}
               <tr>
-                <td><a class="nav-link" href="{{ path('paragraph_edit', {'id': paragraph.id, 'gamebook': gamebook}) }}">{{ paragraph.id}}</a></td>
                 <td><a class="nav-link" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}">{{ paragraph.gamebook }}</a></td>
-                <td>{{ paragraph.number }}</td>
+                <td><a class="nav-link" href="{{ path('paragraph_edit', {'id': paragraph.id, 'gamebook': gamebook}) }}">{{ paragraph.number }}</a></td>
                 <td>{{ paragraph.text }}</td>
                 <td>{{ paragraph.image }}</td>
                 <td><a class="nav-link" href="{{ path('paragraphaction_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Action</a></td>

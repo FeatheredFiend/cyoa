@@ -22,7 +22,7 @@ class EnemyController extends AbstractController
     public function index(EnemyRepository $enemyRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, string $paragraph): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $enemyRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $enemyRepository->getWithSearchQueryBuilderView($q, $paragraph);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */

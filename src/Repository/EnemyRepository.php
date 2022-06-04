@@ -51,7 +51,7 @@ class EnemyRepository extends ServiceEntityRepository
     /**
      * @param string|null $term
      */
-    public function getWithSearchQueryBuilderView(?string $term): QueryBuilder
+    public function getWithSearchQueryBuilderView(?string $term, ?int $paragraph): QueryBuilder
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
@@ -59,6 +59,8 @@ class EnemyRepository extends ServiceEntityRepository
             ->from('App\Entity\Enemy', 'e')
             ->leftJoin('e.battlecategory', 'bc')
             ->leftJoin('e.paragraph', 'p')
+            ->andWhere('e.paragraph = :paragraph')
+            ->setParameter('paragraph', $paragraph)            
             ->orderBy('e.id', 'ASC');
 
         return $qb;

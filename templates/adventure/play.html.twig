@@ -105,10 +105,10 @@
                             <p>Stamina: {{ paragraphenemy.stamina}}</p>                          
                         {% endif %}
                             <div class="col">
-                                <button id="battleCreate" class="btn btn-danger col-12"><a class="nav-link text-white" href="{{ path('battle_create', {'adventure': adventure, 'paragraph': paragraphenemy.paragraph, 'enemy': paragraphenemy.id, 'luck': 0}) }}">Fight!</a></button>
+                                <button id="battleCreate" class="btn btn-danger col-12"><a class="nav-link text-white" href="{{ path('battle_create', {'adventure': adventure, 'paragraph': paragraphenemy.paragraph.id, 'enemy': paragraphenemy.id, 'luck': 0}) }}">Fight!</a></button>
                             </div>
                             <div class="col">
-                                <button id="battleCreateLuck" class="btn btn-warning col-12"><a class="nav-link text-white" href="{{ path('battle_create', {'adventure': adventure, 'paragraph': paragraphenemy.paragraph, 'enemy': paragraphenemy.id, 'luck': 1}) }}">Fight with Luck!</a></button>
+                                <button id="battleCreateLuck" class="btn btn-warning col-12"><a class="nav-link text-white" href="{{ path('battle_create', {'adventure': adventure, 'paragraph': paragraphenemy.paragraph.id, 'enemy': paragraphenemy.id, 'luck': 1}) }}">Fight with Luck!</a></button>
                             </div>                           
                     {% endfor %}
                 </div>

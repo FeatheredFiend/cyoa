@@ -23,7 +23,6 @@
         <table class="table table-striped table-light">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Gamebook</th>
               <th>Paragraph</th>
               <th>Text</th>
@@ -35,10 +34,9 @@
             {% for paragraphdirection in pagination %}
             {% set id = paragraphdirection.id %}
               <tr>
-                <td><a class="nav-link" href="{{ path('paragraphdirection_edit', {'id': paragraphdirection.id, 'gamebook': gamebook}) }}">{{ paragraphdirection.id}}</a></td>
                 <td><a class="nav-link gamebookTable" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}"></a></td>
                 <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook}) }}">{{ paragraphdirection.paragraph }}</a></td>
-                <td>{{ paragraphdirection.text }}</td>
+                <td><a class="nav-link" href="{{ path('paragraphdirection_edit', {'id': paragraphdirection.id, 'gamebook': gamebook}) }}">{{ paragraphdirection.text }}</a></td>
                 <td>{{ paragraphdirection.maxaccess }}</td>
                 <td>{{ paragraphdirection.redirectparagraph }}</td>
               </tr>
