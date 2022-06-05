@@ -113,11 +113,4 @@ class ParagraphActionController extends AbstractController
         ]);
     }
 
-    #[Route('/paragraphaction/run/{adventure}/{paragraph}/{paragraphaction}', name: 'paragraphaction_run', defaults: ['return' => 'JsonResponse','title' => 'Run Paragraph Action'])]
-    public function paragraphActionRun(int $adventure, int $paragraph, int $paragraphaction, string $title, Request $request): Response
-    {
-        $this->paragraphActionRun->paragraphActionRun($adventure, $paragraph, $paragraphaction);
-
-        //return $this->redirectToRoute('homepage');
-    }
 }

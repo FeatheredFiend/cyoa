@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ParagraphActionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParagraphActionRepository::class)]
@@ -38,6 +40,14 @@ class ParagraphAction
     #[ORM\ManyToOne(targetEntity: ParagraphActionTarget::class, inversedBy: 'paragraphActions')]
     #[ORM\JoinColumn(nullable: false)]
     private $paragraphactiontarget;
+
+    #[ORM\OneToMany(mappedBy: 'paragraphaction', targetEntity: ParagraphActionEquipmentRequired::class)]
+    private $paragraphActionEquipmentRequireds;
+
+    public function __construct()
+    {
+        $this->paragraphActionEquipmentRequireds = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -124,6 +134,36 @@ class ParagraphAction
     public function setParagraphactiontarget(?ParagraphActionTarget $paragraphactiontarget): self
     {
         $this->paragraphactiontarget = $paragraphactiontarget;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphActionEquipmentRequired>
+     */
+    public function getParagraphActionEquipmentRequireds(): Collection
+    {
+        return $this->paragraphActionEquipmentRequireds;
+    }
+
+    public function addParagraphActionEquipmentRequired(ParagraphActionEquipmentRequired $paragraphActionEquipmentRequired): self
+    {
+        if (!$this->paragraphActionEquipmentRequireds->contains($paragraphActionEquipmentRequired)) {
+            $this->paragraphActionEquipmentRequireds[] = $paragraphActionEquipmentRequired;
+            $paragraphActionEquipmentRequired->setParagraphaction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphActionEquipmentRequired(ParagraphActionEquipmentRequired $paragraphActionEquipmentRequired): self
+    {
+        if ($this->paragraphActionEquipmentRequireds->removeElement($paragraphActionEquipmentRequired)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphActionEquipmentRequired->getParagraphaction() === $this) {
+                $paragraphActionEquipmentRequired->setParagraphaction(null);
+            }
+        }
 
         return $this;
     }

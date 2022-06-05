@@ -76,12 +76,6 @@ $(document).ready(function() {
         });
     }
 
-    if ($("#equipment_required_paragraph").length > 0) {
-        var paragraph = $('#paragraph').text();
-        $("#equipment_required_paragraph").val(paragraph);
-        $("#equipment_required_paragraph").attr("readonly", true);
-    }
-
     if ($("#merchant_paragraph").length > 0) {
         var paragraph = $('#paragraph').text();
         $("#merchant_paragraph").val(paragraph);

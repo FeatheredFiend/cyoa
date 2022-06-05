@@ -10,7 +10,7 @@
   {% if app.user != null %}
     <div class="row">
       <div class="col-sm-12 col-md-4" id="searchBox">
-      <a href="{{ path('enemy_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Enemy</button></a>   
+      <a class="text-decoration-none" href="{{ path('enemy_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Enemy</button></a>   
       {{ knp_pagination_filter(pagination, {'p.number': 'Paragraph', 'e.name': 'Enemy Name', 'e.skill': 'Skill', 'e.stamina': 'Stamina', 'bc.name': 'Battle Category'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
       'align': 'center',

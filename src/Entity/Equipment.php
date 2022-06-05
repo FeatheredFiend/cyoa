@@ -24,18 +24,26 @@ class Equipment
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: EquipmentEffect::class)]
     private $equipmentEffects;
 
-    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: EquipmentRequired::class)]
-    private $equipmentRequireds;
-
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: MerchantInventory::class)]
     private $merchantInventories;
+
+    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: ParagraphEquipmentRequired::class)]
+    private $paragraphEquipmentRequireds;
+
+    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: ParagraphActionEquipmentRequired::class)]
+    private $paragraphActionEquipmentRequireds;
+
+    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: ParagraphDirectionEquipmentRequired::class)]
+    private $paragraphDirectionEquipmentRequireds;
 
     public function __construct()
     {
         $this->heroEquipment = new ArrayCollection();
         $this->equipmentEffects = new ArrayCollection();
-        $this->equipmentRequireds = new ArrayCollection();
         $this->merchantInventories = new ArrayCollection();
+        $this->paragraphEquipmentRequireds = new ArrayCollection();
+        $this->paragraphActionEquipmentRequireds = new ArrayCollection();
+        $this->paragraphDirectionEquipmentRequireds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,36 +128,6 @@ class Equipment
     }
 
     /**
-     * @return Collection<int, EquipmentRequired>
-     */
-    public function getEquipmentRequireds(): Collection
-    {
-        return $this->equipmentRequireds;
-    }
-
-    public function addEquipmentRequired(EquipmentRequired $equipmentRequired): self
-    {
-        if (!$this->equipmentRequireds->contains($equipmentRequired)) {
-            $this->equipmentRequireds[] = $equipmentRequired;
-            $equipmentRequired->setEquipment($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEquipmentRequired(EquipmentRequired $equipmentRequired): self
-    {
-        if ($this->equipmentRequireds->removeElement($equipmentRequired)) {
-            // set the owning side to null (unless already changed)
-            if ($equipmentRequired->getEquipment() === $this) {
-                $equipmentRequired->setEquipment(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, MerchantInventory>
      */
     public function getMerchantInventories(): Collection
@@ -173,6 +151,96 @@ class Equipment
             // set the owning side to null (unless already changed)
             if ($merchantInventory->getEquipment() === $this) {
                 $merchantInventory->setEquipment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphEquipmentRequired>
+     */
+    public function getParagraphEquipmentRequireds(): Collection
+    {
+        return $this->paragraphEquipmentRequireds;
+    }
+
+    public function addParagraphEquipmentRequired(ParagraphEquipmentRequired $paragraphEquipmentRequired): self
+    {
+        if (!$this->paragraphEquipmentRequireds->contains($paragraphEquipmentRequired)) {
+            $this->paragraphEquipmentRequireds[] = $paragraphEquipmentRequired;
+            $paragraphEquipmentRequired->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphEquipmentRequired(ParagraphEquipmentRequired $paragraphEquipmentRequired): self
+    {
+        if ($this->paragraphEquipmentRequireds->removeElement($paragraphEquipmentRequired)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphEquipmentRequired->getEquipment() === $this) {
+                $paragraphEquipmentRequired->setEquipment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphActionEquipmentRequired>
+     */
+    public function getParagraphActionEquipmentRequireds(): Collection
+    {
+        return $this->paragraphActionEquipmentRequireds;
+    }
+
+    public function addParagraphActionEquipmentRequired(ParagraphActionEquipmentRequired $paragraphActionEquipmentRequired): self
+    {
+        if (!$this->paragraphActionEquipmentRequireds->contains($paragraphActionEquipmentRequired)) {
+            $this->paragraphActionEquipmentRequireds[] = $paragraphActionEquipmentRequired;
+            $paragraphActionEquipmentRequired->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphActionEquipmentRequired(ParagraphActionEquipmentRequired $paragraphActionEquipmentRequired): self
+    {
+        if ($this->paragraphActionEquipmentRequireds->removeElement($paragraphActionEquipmentRequired)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphActionEquipmentRequired->getEquipment() === $this) {
+                $paragraphActionEquipmentRequired->setEquipment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphDirectionEquipmentRequired>
+     */
+    public function getParagraphDirectionEquipmentRequireds(): Collection
+    {
+        return $this->paragraphDirectionEquipmentRequireds;
+    }
+
+    public function addParagraphDirectionEquipmentRequired(ParagraphDirectionEquipmentRequired $paragraphDirectionEquipmentRequired): self
+    {
+        if (!$this->paragraphDirectionEquipmentRequireds->contains($paragraphDirectionEquipmentRequired)) {
+            $this->paragraphDirectionEquipmentRequireds[] = $paragraphDirectionEquipmentRequired;
+            $paragraphDirectionEquipmentRequired->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphDirectionEquipmentRequired(ParagraphDirectionEquipmentRequired $paragraphDirectionEquipmentRequired): self
+    {
+        if ($this->paragraphDirectionEquipmentRequireds->removeElement($paragraphDirectionEquipmentRequired)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphDirectionEquipmentRequired->getEquipment() === $this) {
+                $paragraphDirectionEquipmentRequired->setEquipment(null);
             }
         }
 

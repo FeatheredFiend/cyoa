@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ParagraphDirectionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ParagraphDirectionRepository::class)]
@@ -25,6 +27,14 @@ class ParagraphDirection
     #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'paragraphDirections')]
     #[ORM\JoinColumn(nullable: false)]
     private $paragraph;
+
+    #[ORM\OneToMany(mappedBy: 'paragraphdirection', targetEntity: ParagraphDirectionEquipmentRequired::class)]
+    private $paragraphDirectionEquipmentRequireds;
+
+    public function __construct()
+    {
+        $this->paragraphDirectionEquipmentRequireds = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +85,36 @@ class ParagraphDirection
     public function setRedirectparagraph(int $redirectparagraph): self
     {
         $this->redirectparagraph = $redirectparagraph;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphDirectionEquipmentRequired>
+     */
+    public function getParagraphDirectionEquipmentRequireds(): Collection
+    {
+        return $this->paragraphDirectionEquipmentRequireds;
+    }
+
+    public function addParagraphDirectionEquipmentRequired(ParagraphDirectionEquipmentRequired $paragraphDirectionEquipmentRequired): self
+    {
+        if (!$this->paragraphDirectionEquipmentRequireds->contains($paragraphDirectionEquipmentRequired)) {
+            $this->paragraphDirectionEquipmentRequireds[] = $paragraphDirectionEquipmentRequired;
+            $paragraphDirectionEquipmentRequired->setParagraphdirection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphDirectionEquipmentRequired(ParagraphDirectionEquipmentRequired $paragraphDirectionEquipmentRequired): self
+    {
+        if ($this->paragraphDirectionEquipmentRequireds->removeElement($paragraphDirectionEquipmentRequired)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphDirectionEquipmentRequired->getParagraphdirection() === $this) {
+                $paragraphDirectionEquipmentRequired->setParagraphdirection(null);
+            }
+        }
 
         return $this;
     }

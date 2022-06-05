@@ -8,7 +8,7 @@
   {% if app.user != null %}
     <div class="row">
       <div class="col-sm-12 col-md-4" id="searchBox">
-      <a href="{{ path('adventure_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Adventure</button></a>   
+      <a class="text-decoration-none" href="{{ path('adventure_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Adventure</button></a>   
       {{ knp_pagination_filter(pagination, {'u.name': 'User', 'g.name': 'Gamebook', 'h.name': 'Hero', 'a.timeelapsed': 'Time Elapsed', 'a.name': 'Adventure Name'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
       'align': 'center',

@@ -86,7 +86,7 @@
                 </div>
                 <div class="row" id="paragraphAction">
                     {% for paragraphaction in paginationParagraphAction %}
-                        <a class="nav-link" href="{{ path('paragraphaction_run', {'adventure': adventure, 'paragraph': paragraph, 'paragraphaction': paragraphaction.id}) }}">{{ paragraphaction.text}}</a>
+                        {{ paragraphaction.text}}
                     {% endfor %}
                 </div>
                 <div class="row" id="paragraphEnemy">

@@ -9,7 +9,7 @@
   {% if app.user != null %}
     <div class="row">
       <div class="col-sm-12 col-md-4" id="searchBox">
-      <a href="{{ path('paragraph_create', {'gamebook':gamebook}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph</button></a>   
+      <a class="text-decoration-none" href="{{ path('paragraph_create', {'gamebook':gamebook}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph</button></a>   
       {{ knp_pagination_filter(pagination, {'g.name': 'Gamebook', 'p.number': 'Number', 'p.text': 'Text'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
       'align': 'center',
@@ -29,7 +29,6 @@
               <th>Paragraph Actions</th>
               <th>Paragraph Directions</th>
               <th>Enemy</th>
-              <th>Equipment Required</th>
               <th>Merchant</th>
             </tr>
           </thead>
@@ -44,7 +43,6 @@
                 <td><a class="nav-link" href="{{ path('paragraphaction_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Action</a></td>
                 <td><a class="nav-link" href="{{ path('paragraphdirection_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Direction</a></td>
                 <td><a class="nav-link" href="{{ path('enemy_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Enemy</a></td>
-                <td><a class="nav-link" href="{{ path('equipmentrequired_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Equipment Required</a></td>
                 <td><a class="nav-link" href="{{ path('merchant_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Merchant</a></td>
               </tr>
             {% endfor %}

@@ -34,9 +34,6 @@ class Paragraph
     #[ORM\JoinColumn(nullable: false)]
     private $gamebook;
 
-    #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: EquipmentRequired::class)]
-    private $equipmentRequireds;
-
     #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: Merchant::class)]
     private $merchants;
 
@@ -46,15 +43,18 @@ class Paragraph
     #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: AdventureParagraph::class)]
     private $adventureParagraphs;
 
+    #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: ParagraphEquipmentRequired::class)]
+    private $paragraphEquipmentRequireds;
+
     public function __construct()
     {
         $this->paragraphActions = new ArrayCollection();
         $this->equipment = new ArrayCollection();
         $this->enemies = new ArrayCollection();
         $this->paragraphDirections = new ArrayCollection();
-        $this->equipmentRequireds = new ArrayCollection();
         $this->merchants = new ArrayCollection();
         $this->adventureParagraphs = new ArrayCollection();
+        $this->paragraphEquipmentRequireds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -193,36 +193,6 @@ class Paragraph
     }
 
     /**
-     * @return Collection<int, EquipmentRequired>
-     */
-    public function getEquipmentRequireds(): Collection
-    {
-        return $this->equipmentRequireds;
-    }
-
-    public function addEquipmentRequired(EquipmentRequired $equipmentRequired): self
-    {
-        if (!$this->equipmentRequireds->contains($equipmentRequired)) {
-            $this->equipmentRequireds[] = $equipmentRequired;
-            $equipmentRequired->setParagraph($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEquipmentRequired(EquipmentRequired $equipmentRequired): self
-    {
-        if ($this->equipmentRequireds->removeElement($equipmentRequired)) {
-            // set the owning side to null (unless already changed)
-            if ($equipmentRequired->getParagraph() === $this) {
-                $equipmentRequired->setParagraph(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Merchant>
      */
     public function getMerchants(): Collection
@@ -288,6 +258,36 @@ class Paragraph
             // set the owning side to null (unless already changed)
             if ($adventureParagraph->getParagraph() === $this) {
                 $adventureParagraph->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphEquipmentRequired>
+     */
+    public function getParagraphEquipmentRequireds(): Collection
+    {
+        return $this->paragraphEquipmentRequireds;
+    }
+
+    public function addParagraphEquipmentRequired(ParagraphEquipmentRequired $paragraphEquipmentRequired): self
+    {
+        if (!$this->paragraphEquipmentRequireds->contains($paragraphEquipmentRequired)) {
+            $this->paragraphEquipmentRequireds[] = $paragraphEquipmentRequired;
+            $paragraphEquipmentRequired->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphEquipmentRequired(ParagraphEquipmentRequired $paragraphEquipmentRequired): self
+    {
+        if ($this->paragraphEquipmentRequireds->removeElement($paragraphEquipmentRequired)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphEquipmentRequired->getParagraph() === $this) {
+                $paragraphEquipmentRequired->setParagraph(null);
             }
         }
 
