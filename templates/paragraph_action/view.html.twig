@@ -31,6 +31,7 @@
               <th>Paragraph Action Operator</th>
               <th>Paragraph Action Value</th>
               <th>Paragraph Action Attribute</th>
+              <th>Number of Dice</th>
               <th>Paragraph Action Equipment Required</th>
             </tr>
           </thead>
@@ -46,6 +47,7 @@
                 <td>{{ paragraphaction.paragraphactionoperator }}</td>
                 <td>{{ paragraphaction.actionvalue }}</td>
                 <td>{{ paragraphaction.paragraphactionattribute }}</td>
+                <td>{{ paragraphaction.numberdice }}</td>                
                 <td><a class="nav-link" href="{{ path('paragraphactionequipmentrequired_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphaction': paragraphaction.id }) }}">Add Equipment Required</a></td>
               </tr>
             {% endfor %}

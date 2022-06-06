@@ -72,6 +72,11 @@ $(document).ready(function() {
         $("#paragraph_direction_equipment_required_paragraphdirection").attr("readonly", true);
     }
 
+    if ($("#playerattackstrength").length > 0) {
+        var playerattackstrength = $('#playerattackstrength').text();
+        $("#playerattackstrength").val(playerattackstrength + $('#playerskill').text());
+    }
+
     if ($("#paragraph_direction_gamebook").length > 0) {
         var gamebook = $('#gamebook').text();
         var paragraph = $('#paragraph').text();

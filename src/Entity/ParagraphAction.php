@@ -44,6 +44,9 @@ class ParagraphAction
     #[ORM\OneToMany(mappedBy: 'paragraphaction', targetEntity: ParagraphActionEquipmentRequired::class)]
     private $paragraphActionEquipmentRequireds;
 
+    #[ORM\Column(type: 'integer')]
+    private $numberdice;
+
     public function __construct()
     {
         $this->paragraphActionEquipmentRequireds = new ArrayCollection();
@@ -170,5 +173,17 @@ class ParagraphAction
 
     public function __toString() {
         return $this->text;
+    }
+
+    public function getNumberdice(): ?int
+    {
+        return $this->numberdice;
+    }
+
+    public function setNumberdice(int $numberdice): self
+    {
+        $this->numberdice = $numberdice;
+
+        return $this;
     }
 }
