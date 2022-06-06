@@ -149,7 +149,7 @@
                                     </tr>
                                     <tr>
                                         <th>Enemy Attack Strength</th>
-                                        <td>{{ paragraphenemy.skill + random(1,6) + random(1,6)  }}</td>
+                                        <td id="enemyattackstrength">{{ paragraphenemy.skill + random(1,6) + random(1,6)  }}</td>
                                     </tr>    
                                     <tr>
                                         <th>Player Attack Strength</th>
@@ -189,7 +189,7 @@
                 </div>                
                 <div class="row" id="paragraphDirection">
                     {% for paragraphdirection in paginationParagraphDirection %}
-                        <div class="col">
+                        <div class="col paragraphDirection">
                             <button class="btn btn-success col-12"><a class="nav-link text-white" href="{{ path('adventure_next', {'adventure': adventure, 'paragraph': paragraphdirection.redirectparagraph}) }}">{{ paragraphdirection.text}}</a></button>
                         </div>
                     {% endfor %}

@@ -74,7 +74,17 @@ $(document).ready(function() {
 
     if ($("#playerattackstrength").length > 0) {
         var playerattackstrength = $('#playerattackstrength').text();
-        $("#playerattackstrength").val(playerattackstrength + $('#playerskill').text());
+        var enemyattackstrength = $('#enemyattackstrength').text();
+        var playerskill = $('#playerskill').text();
+        var playerstrength = parseInt(playerattackstrength) + parseInt(playerskill);
+        $("#playerattackstrength").text(playerstrength);
+        if (parseInt(playerstrength) < parseInt(enemyattackstrength)) {
+            $(".paragraphDirection:first").addClass('hidden');
+        } else if (parseInt(playerstrength) > parseInt(enemyattackstrength)) {
+            $(".paragraphDirection:nth-child(2)").addClass('hidden');
+        } else {
+            location.reload();
+        }     
     }
 
     if ($("#paragraph_direction_gamebook").length > 0) {
@@ -141,6 +151,11 @@ $(document).ready(function() {
             $("#paragraphBattle").remove();
             $("#paragraphDirection").removeClass('hidden');
         }
+    }
+
+    if ($("#specialBattle").length > 0) {
+        $("#battleCreate").addClass('hidden');
+        $("#battleCreateLuck").addClass('hidden');
     }
 
 });
