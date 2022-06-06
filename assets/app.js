@@ -83,7 +83,7 @@ $(document).ready(function() {
         } else if (parseInt(playerstrength) > parseInt(enemyattackstrength)) {
             $(".paragraphDirection:nth-child(2)").addClass('hidden');
         } else {
-            location.reload();
+
         }     
     }
 
@@ -157,5 +157,84 @@ $(document).ready(function() {
         $("#battleCreate").addClass('hidden');
         $("#battleCreateLuck").addClass('hidden');
     }
+
+    if ($(".paragraphactionlist").length > 0) {
+        var  actions = $(".paragraphactionlist").length
+        for (let i = 0; i <= actions - 1; i++) { 
+            var x = 1;
+            var actionText = $(".paragraphactionlisttext:first").text();
+            var category = $(".paragraphactionlistcategory:first").text();
+            var operator = $(".paragraphactionlistoperator:first").text();
+            var attribute = $(".paragraphactionlistattribute:first").text();
+            var actionvalue = $(".paragraphactionlistactionvalue:first").text();
+            var target = $(".paragraphactionlisttarget:first").text();
+            var diceroll = $(".paragraphactionlistdiceroll:first").text();
+            var hero = $("#heroId").text();
+
+            $.ajax({
+                url: "/run-paragraph-action",
+                type: "GET",
+                dataType: "JSON",
+                async:false,
+                data: {
+                    category: category,
+                    operator: operator,
+                    attribute: attribute,
+                    actionvalue: actionvalue,
+                    target: target,
+                    diceroll: diceroll,   
+                    hero: hero                                     
+                },
+                success: function(score) {
+                    if (score.category == "Attribute Change") {
+                        if (score.operator == "Add") {
+                            if (score.attribute == "Stamina") {
+                                var stamina = $("#gamestamina").text();
+                                var adj = parseInt(stamina) + parseInt(score.actionvalue);
+                                $("#gamestamina").text(adj);
+                            } else if (score.attribute == "Skill") {
+                                var skill = $("#gamestamina").text();
+                                var adj = parseInt(skill) + parseInt(score.actionvalue);
+                                $("#gameskill").text(adj);
+                            } else if (score.attribute == "Luck") {
+                                var luck = $("#gameluck").text();
+                                var adj = parseInt(luck) + parseInt(score.actionvalue);
+                                $("#gameluck").text(adj);
+                            }
+                        } else {
+                            if (score.attribute == "Stamina") {
+                                var stamina = $("#gamestamina").text();
+                                var adj = parseInt(stamina) - parseInt(score.actionvalue);
+                                $("#gamestamina").text(adj);
+                            } else if (score.attribute == "Skill") {
+                                var skill = $("#gamestamina").text();
+                                var adj = parseInt(skill) - parseInt(score.actionvalue);
+                                $("#gameskill").text(adj);
+                            } else if (score.attribute == "Luck") {
+                                var luck = $("#gameluck").text();
+                                var adj = parseInt(luck) - parseInt(score.actionvalue);
+                                $("#gameluck").text(adj);
+                            }                      
+                        }
+                    } else if (score.category == "Battle") {
+
+                    }
+                },
+                error: function(err) {
+
+                    alert("An error ocurred while loading data ...");
+                }
+            });
+
+            $(".paragraphactionlist:nth-child(" + x + ")").remove();
+            $('#actionText').append('<tr><td>' + actionText + '</td></tr>');
+        }
+        var healthCheck = $("#gamestamina").text();
+        if (parseInt(healthCheck) < 1 ) {
+            $("#game").remove();
+            $("#gameover").removeClass('hidden');
+        }
+    }
+
 
 });

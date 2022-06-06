@@ -113,4 +113,93 @@ class ParagraphActionController extends AbstractController
         ]);
     }
 
+    #[Route('/run-paragraph-action', name: 'run_paragraph_action', defaults:['return' => 'JsonResponse', 'param' => 'Request $request'])]
+    public function listParagraphAction(Request $request, ManagerRegistry $doctrine )
+    {
+        // Get Entity manager and repository
+        $em = $doctrine->getManager();
+        
+        $category = $request->query->get("category");
+        $operator = $request->query->get("operator");
+        $attribute = $request->query->get("attribute");
+        $actionvalue = $request->query->get("actionvalue");
+        $target = $request->query->get("target");
+        $diceroll = $request->query->get("diceroll"); 
+        $hero = $request->query->get("hero");   
+
+        if ($diceroll == 1) {
+            $value = $actionvalue + rand(1,6);
+        } elseif ($diceroll == 2) {
+            $value = $actionvalue + rand(2,12);
+        }
+
+        if ($category === "Attribute Change") {
+            if ($target === "Player") {
+                if ($operator === "Add") {
+                    if ($attribute ===  "Skill") {
+                        $RAW_QUERY = "UPDATE hero SET skill = skill + :skillValue WHERE id = :player";        
+                        $statement = $em->getConnection()->prepare($RAW_QUERY);
+                        $statement->bindParam('skillValue', $value);
+                        $statement->bindParam('player', $hero);
+                        $statement->execute();
+                    } elseif ($attribute ===  "Stamina") {
+                        $RAW_QUERY = "UPDATE hero SET stamina = stamina + :staminaValue WHERE id = :player";        
+                        $statement = $em->getConnection()->prepare($RAW_QUERY);
+                        $statement->bindParam('staminaValue', $value);
+                        $statement->bindParam('player', $hero);
+                        $statement->execute();
+                    } elseif ($attribute ===  "Luck") {
+                        $RAW_QUERY = "UPDATE hero SET luck = luck + :luckValue WHERE id = :player";        
+                        $statement = $em->getConnection()->prepare($RAW_QUERY);
+                        $statement->bindParam('luckValue', $value);
+                        $statement->bindParam('player', $hero);
+                        $statement->execute();
+                    }
+                } else if ($operator === "Remove") {
+                    if ($attribute ===  "Skill") {
+                        $RAW_QUERY = "UPDATE hero SET skill = skill - :skillValue WHERE id = :player";        
+                        $statement = $em->getConnection()->prepare($RAW_QUERY);
+                        $statement->bindParam('skillValue', $value);
+                        $statement->bindParam('player', $hero);
+                        $statement->execute();
+                    } elseif ($attribute ===  "Stamina") {
+                        $RAW_QUERY = "UPDATE hero SET stamina = stamina - :staminaValue WHERE id = :player";        
+                        $statement = $em->getConnection()->prepare($RAW_QUERY);
+                        $statement->bindParam('staminaValue', $value);
+                        $statement->bindParam('player', $hero);
+                        $statement->execute();
+                    } elseif ($attribute ===  "Luck") {
+                        $RAW_QUERY = "UPDATE hero SET luck = luck - :luckValue WHERE id = :player";        
+                        $statement = $em->getConnection()->prepare($RAW_QUERY);
+                        $statement->bindParam('luckValue', $value);
+                        $statement->bindParam('player', $hero);
+                        $statement->execute();
+                    }
+
+
+                }
+            } elseif ($target === "Enemy") {
+
+            }
+        } elseif ($category === "Battle") {
+            
+        } elseif ($category === "Item Check") {
+
+        } elseif ($category === "Shop") {
+
+        }
+        $results = [
+            'category' => $category,
+            'operator' => $operator,
+            'attribute' => $attribute,
+            'actionvalue' => $value,
+            'target' => $target,
+            'diceroll' => $diceroll
+        ];
+        
+        // Return array with structure of the buildings of the providen organisation id
+        return new JsonResponse($results);
+
+    }
+
 }

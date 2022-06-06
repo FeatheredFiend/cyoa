@@ -18,42 +18,53 @@
                         <table class="table table-striped table-light">
                             <tr>
                                 <th>Gamebook</th>
-                                <td>{{ adventure.gamebook }}</td>
+                                <td colspan="2">{{ adventure.gamebook }}</td>
                             </tr>
                             <tr>
                                 <th>Adventure</th>
-                                <td>{{ adventure.name }}</td>
+                                <td colspan="2">{{ adventure.name }}</td>
                             </tr>          
                             <tr>
                                 <th>Name</th>
-                                <td>{{ adventure.hero }}</td>
+                                <td colspan="2">{{ adventure.hero }}</td>
+                                <td class="hidden" id="heroId">{{adventure.hero.id}}</td>
                             </tr>
                             <tr>
+                                <th>Attribute</th>
+                                <th>Starting</th>
+                                <th>Current</td>         
+                            </tr>                            
+                            <tr>
                                 <th>Skill</th>
-                                <td>{{ adventure.hero.startingskill }} / {{ adventure.hero.skill }}</td>
+                                <td>{{ adventure.hero.startingskill }}</td>
+                                <td id="gameskill">{{ adventure.hero.skill }}</td>
                                 <td class="hidden" id="playerskill">{{adventure.hero.skill}}</td>          
                             </tr>
                             <tr>
                                 <th>Stamina</th>
-                                <td>{{ adventure.hero.startingstamina }} / {{ adventure.hero.stamina }}</td>
+                                <td>{{ adventure.hero.startingstamina }}</td>
+                                <td id="gamestamina">{{ adventure.hero.stamina }}</td>
                                 <td class="hidden" id="stamina">{{adventure.hero.stamina}}</td>         
                             </tr>   
                             <tr>
                                 <th>Luck</th>
-                                <td>{{ adventure.hero.startingluck }} / {{ adventure.hero.luck }}</td>  
+                                <td>{{ adventure.hero.startingluck }}</td>  
+                                <td id="gameluck">{{ adventure.hero.luck }}</td>
                                 <td class="hidden" id="luck">{{adventure.hero.luck}}</td>       
                             </tr>  
                             <tr>
                                 <th>Provisions</th>
-                                <td>{{ adventure.hero.startingprovision }} / {{ adventure.hero.provision }}</td>         
+                                 <td>{{ adventure.hero.startingprovision }}</td>  
+                                <td id="gameprovision">{{ adventure.hero.provision }}</td>
+                                <td class="hidden" id="provision">{{adventure.hero.provision}}</td>              
                             </tr>      
                             <tr>
                                 <th>Honour</th>
-                                <td>{{ adventure.hero.honour }}</td>         
+                                <td colspan="2">{{ adventure.hero.honour }}</td>         
                             </tr>   
                             <tr>
                                 <th>Treasure</th>
-                                <td>{{ adventure.hero.treasure }}</td>         
+                                <td colspan="2">{{ adventure.hero.treasure }}</td>         
                             </tr>                                                 
                         </table>
                     {% endfor %} 
@@ -87,8 +98,41 @@
                 </div>
                 <div class="row" id="paragraphAction">
                     {% for paragraphaction in paginationParagraphAction %}
-                        {{ paragraphaction.text}}
+                        <div class="row paragraphactionlist">
+                            <table class="table table-light" id="paragraphactiontext">         
+                                <tr>
+                                    <th>Paragraph Action</th>
+                                    <td id="paragraphactionclick" class="paragraphactionlisttext">{{ paragraphaction.text }}</td>
+                                </tr>                     
+                                <tr>
+                                    <th>Category</th>
+                                    <td class="paragraphactionlistcategory">{{ paragraphaction.paragraphactioncategory }}</td>
+                                </tr>                            
+                                <tr>
+                                    <th>Operator</th>
+                                    <td class="paragraphactionlistoperator">{{ paragraphaction.paragraphactionoperator }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <td class="paragraphactionlistattribute">{{ paragraphaction.paragraphactionattribute }}</td>
+                                </tr>                                
+                                <tr>
+                                    <th>Action Value</th>
+                                    <td class="paragraphactionlistactionvalue">{{ paragraphaction.actionvalue }}</td>
+                                </tr>  
+                                <tr>
+                                    <th>Target</th>
+                                    <td class="paragraphactionlisttarget">{{ paragraphaction.paragraphactiontarget }}</td>
+                                </tr>                                         
+                                <tr>
+                                    <th>Dice Roll</th>
+                                    <td class="paragraphactionlistdiceroll">{{ paragraphaction.numberdice }}</td>
+                                </tr>                                                                          
+                            </table>
+                        </div>                        
                     {% endfor %}
+                    <table id="actionText">
+                    </table>                    
                 </div>
                 <div class="row" id="paragraphEnemy">
                     {% for paragraphenemy in paginationEnemy %}
