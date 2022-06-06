@@ -27,9 +27,6 @@ class Equipment
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: MerchantInventory::class)]
     private $merchantInventories;
 
-    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: ParagraphEquipmentRequired::class)]
-    private $paragraphEquipmentRequireds;
-
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: ParagraphActionEquipmentRequired::class)]
     private $paragraphActionEquipmentRequireds;
 
@@ -41,7 +38,6 @@ class Equipment
         $this->heroEquipment = new ArrayCollection();
         $this->equipmentEffects = new ArrayCollection();
         $this->merchantInventories = new ArrayCollection();
-        $this->paragraphEquipmentRequireds = new ArrayCollection();
         $this->paragraphActionEquipmentRequireds = new ArrayCollection();
         $this->paragraphDirectionEquipmentRequireds = new ArrayCollection();
     }
@@ -151,36 +147,6 @@ class Equipment
             // set the owning side to null (unless already changed)
             if ($merchantInventory->getEquipment() === $this) {
                 $merchantInventory->setEquipment(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ParagraphEquipmentRequired>
-     */
-    public function getParagraphEquipmentRequireds(): Collection
-    {
-        return $this->paragraphEquipmentRequireds;
-    }
-
-    public function addParagraphEquipmentRequired(ParagraphEquipmentRequired $paragraphEquipmentRequired): self
-    {
-        if (!$this->paragraphEquipmentRequireds->contains($paragraphEquipmentRequired)) {
-            $this->paragraphEquipmentRequireds[] = $paragraphEquipmentRequired;
-            $paragraphEquipmentRequired->setEquipment($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParagraphEquipmentRequired(ParagraphEquipmentRequired $paragraphEquipmentRequired): self
-    {
-        if ($this->paragraphEquipmentRequireds->removeElement($paragraphEquipmentRequired)) {
-            // set the owning side to null (unless already changed)
-            if ($paragraphEquipmentRequired->getEquipment() === $this) {
-                $paragraphEquipmentRequired->setEquipment(null);
             }
         }
 

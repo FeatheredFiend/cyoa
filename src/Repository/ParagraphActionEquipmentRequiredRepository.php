@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<ParagraphActionEquipmentRequired>
@@ -46,6 +47,26 @@ class ParagraphActionEquipmentRequiredRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderViewParagraph(?string $term, ?int $paragraph): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('paer','pa', 'p', 'e')
+            ->from('App\Entity\ParagraphActionEquipmentRequired', 'paer')
+            ->leftJoin('paer.paragraphaction', 'pa')
+            ->leftJoin('pa.paragraph', 'p')
+            ->leftJoin('paer.equipment', 'e')
+            ->andWhere('p.id = :paragraph')
+            ->setParameter('paragraph', $paragraph)
+            ->orderBy('paer.id', 'ASC');
+
+        return $qb;
+
+    }     
 
     // /**
     //  * @return ParagraphActionEquipmentRequired[] Returns an array of ParagraphActionEquipmentRequired objects

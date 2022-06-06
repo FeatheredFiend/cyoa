@@ -43,9 +43,6 @@ class Paragraph
     #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: AdventureParagraph::class)]
     private $adventureParagraphs;
 
-    #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: ParagraphEquipmentRequired::class)]
-    private $paragraphEquipmentRequireds;
-
     public function __construct()
     {
         $this->paragraphActions = new ArrayCollection();
@@ -54,7 +51,6 @@ class Paragraph
         $this->paragraphDirections = new ArrayCollection();
         $this->merchants = new ArrayCollection();
         $this->adventureParagraphs = new ArrayCollection();
-        $this->paragraphEquipmentRequireds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -258,36 +254,6 @@ class Paragraph
             // set the owning side to null (unless already changed)
             if ($adventureParagraph->getParagraph() === $this) {
                 $adventureParagraph->setParagraph(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ParagraphEquipmentRequired>
-     */
-    public function getParagraphEquipmentRequireds(): Collection
-    {
-        return $this->paragraphEquipmentRequireds;
-    }
-
-    public function addParagraphEquipmentRequired(ParagraphEquipmentRequired $paragraphEquipmentRequired): self
-    {
-        if (!$this->paragraphEquipmentRequireds->contains($paragraphEquipmentRequired)) {
-            $this->paragraphEquipmentRequireds[] = $paragraphEquipmentRequired;
-            $paragraphEquipmentRequired->setParagraph($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParagraphEquipmentRequired(ParagraphEquipmentRequired $paragraphEquipmentRequired): self
-    {
-        if ($this->paragraphEquipmentRequireds->removeElement($paragraphEquipmentRequired)) {
-            // set the owning side to null (unless already changed)
-            if ($paragraphEquipmentRequired->getParagraph() === $this) {
-                $paragraphEquipmentRequired->setParagraph(null);
             }
         }
 

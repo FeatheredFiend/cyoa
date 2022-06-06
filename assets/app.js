@@ -60,6 +60,18 @@ $(document).ready(function() {
         $("#paragraph_action_paragraph").attr("readonly", true);
     }
 
+    if ($("#paragraph_action_equipment_required_paragraphaction").length > 0) {
+        var paragraphaction = $('#paragraphaction').text();
+        $("#paragraph_action_equipment_required_paragraphaction").val(paragraphaction);
+        $("#paragraph_action_equipment_required_paragraphaction").attr("readonly", true);
+    }
+
+    if ($("#paragraph_direction_equipment_required_paragraphdirection").length > 0) {
+        var paragraphdirection = $('#paragraphdirection').text();
+        $("#paragraph_direction_equipment_required_paragraphdirection").val(paragraphdirection);
+        $("#paragraph_direction_equipment_required_paragraphdirection").attr("readonly", true);
+    }
+
     if ($("#paragraph_direction_gamebook").length > 0) {
         var gamebook = $('#gamebook').text();
         var paragraph = $('#paragraph').text();

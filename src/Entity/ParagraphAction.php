@@ -167,4 +167,8 @@ class ParagraphAction
 
         return $this;
     }
+
+    public function __toString() {
+        return $this->text;
+    }
 }
