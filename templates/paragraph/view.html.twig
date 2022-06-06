@@ -28,7 +28,6 @@
               <th>Image</th>
               <th>Paragraph Actions</th>
               <th>Paragraph Directions</th>
-              <th>Equipment Required</th>
               <th>Enemy</th>
               <th>Merchant</th>
             </tr>
@@ -43,7 +42,6 @@
                 <td>{{ paragraph.image }}</td>
                 <td><a class="nav-link" href="{{ path('paragraphaction_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Action</a></td>
                 <td><a class="nav-link" href="{{ path('paragraphdirection_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Direction</a></td>
-                <td><a class="nav-link" href="{{ path('paragraphequipmentrequired_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Equipment Required</a></td>
                 <td><a class="nav-link" href="{{ path('enemy_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Enemy</a></td>
                 <td><a class="nav-link" href="{{ path('merchant_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Merchant</a></td>
               </tr>
