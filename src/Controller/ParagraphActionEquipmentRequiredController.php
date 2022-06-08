@@ -61,8 +61,8 @@ class ParagraphActionEquipmentRequiredController extends AbstractController
 
     }
 
-    #[Route('/paragraphactionequipmentrequired/edit/{gamebook}/{id}', name: 'paragraphactionequipmentrequired_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Action Equipment Required'])]
-    public function edit(int $id, ParagraphActionEquipmentRequiredRepository $paragraphactionequipmentrequiredRepository, Request $request,string $title, string $gamebook, ManagerRegistry $doctrine): Response
+    #[Route('/paragraphactionequipmentrequired/edit/{gamebook}/{paragraph}/{paragraphaction}/{id}', name: 'paragraphactionequipmentrequired_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Action Equipment Required'])]
+    public function edit(int $id, ParagraphActionEquipmentRequiredRepository $paragraphactionequipmentrequiredRepository, Request $request,string $title, string $gamebook, ManagerRegistry $doctrine, int $paragraphaction, int $paragraph): Response
     {
         $paragraphactionequipmentrequired = $paragraphactionequipmentrequiredRepository
             ->find($id);
@@ -78,9 +78,9 @@ class ParagraphActionEquipmentRequiredController extends AbstractController
             $em->persist($paragraphactionequipmentrequired);
             $em->flush();
 
-            return $this->redirectToRoute('paragraphactionequipmentrequired_view', ['gamebook' => $gamebook, 'paragraph' => $paragraphactionequipmentrequired->getParagraphaction()]);
+            return $this->redirectToRoute('paragraphactionequipmentrequired_view', ['gamebook' => $gamebook, 'paragraph' => $paragraph, 'paragraphaction' => $paragraphaction]);
         }
 
-        return $this->render('paragraph_action_equipment_required/edit.html.twig', ['paragraphactionequipmentrequired' => $paragraphactionequipmentrequired,'form' => $form->createView(),'title' => $title, 'gamebook' => $gamebook, 'paragraph' => $paragraphactionequipmentrequired->getParagraphaction()]);
+        return $this->render('paragraph_action_equipment_required/edit.html.twig', ['paragraphactionequipmentrequired' => $paragraphactionequipmentrequired,'form' => $form->createView(),'title' => $title, 'gamebook' => $gamebook, 'paragraph' => $paragraph, 'paragraphaction' => $paragraphaction]);
     }
 }

@@ -175,7 +175,6 @@ $(document).ready(function() {
                 url: "/run-paragraph-action",
                 type: "GET",
                 dataType: "JSON",
-                async:false,
                 data: {
                     category: category,
                     operator: operator,
@@ -221,13 +220,13 @@ $(document).ready(function() {
                     }
                 },
                 error: function(err) {
-
+                    console.log(err);
                     alert("An error ocurred while loading data ...");
                 }
             });
 
             $(".paragraphactionlist:nth-child(" + x + ")").remove();
-            $('#actionText').append('<tr><td>' + actionText + '</td></tr>');
+            $('#actionText').append('<tr><td class="text-center py-5">' + actionText + '</td></tr>');
         }
         var healthCheck = $("#gamestamina").text();
         if (parseInt(healthCheck) < 1 ) {

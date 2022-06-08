@@ -61,8 +61,8 @@ class ParagraphDirectionEquipmentRequiredController extends AbstractController
 
     }
 
-    #[Route('/paragraphdirectionequipmentrequired/edit/{gamebook}/{id}', name: 'paragraphdirectionequipmentrequired_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Direction Equipment Required'])]
-    public function edit(int $id, ParagraphDirectionEquipmentRequiredRepository $paragraphdirectionequipmentrequiredRepository, Request $request,string $title, string $gamebook, ManagerRegistry $doctrine): Response
+    #[Route('/paragraphdirectionequipmentrequired/edit/{gamebook}/{paragraph}/{paragraphdirection}/{id}', name: 'paragraphdirectionequipmentrequired_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Direction Equipment Required'])]
+    public function edit(int $id, ParagraphDirectionEquipmentRequiredRepository $paragraphdirectionequipmentrequiredRepository, Request $request,string $title, string $gamebook, ManagerRegistry $doctrine, int $paragraphdirection, int $paragraph): Response
     {
         $paragraphdirectionequipmentrequired = $paragraphdirectionequipmentrequiredRepository
             ->find($id);
@@ -78,9 +78,9 @@ class ParagraphDirectionEquipmentRequiredController extends AbstractController
             $em->persist($paragraphdirectionequipmentrequired);
             $em->flush();
 
-            return $this->redirectToRoute('paragraphdirectionequipmentrequired_view', ['gamebook' => $gamebook, 'paragraph' => $paragraphdirectionequipmentrequired->getParagraphdirection()]);
+            return $this->redirectToRoute('paragraphdirectionequipmentrequired_view', ['gamebook' => $gamebook, 'paragraph' => $paragraph, 'paragraphdirection' => $paragraphdirection]);
         }
 
-        return $this->render('paragraph_direction_equipment_required/edit.html.twig', ['paragraphdirectionequipmentrequired' => $paragraphdirectionequipmentrequired,'form' => $form->createView(),'title' => $title, 'gamebook' => $gamebook, 'paragraph' => $paragraphdirectionequipmentrequired->getParagraphdirection()]);
+        return $this->render('paragraph_direction_equipment_required/edit.html.twig', ['paragraphdirectionequipmentrequired' => $paragraphdirectionequipmentrequired,'form' => $form->createView(),'title' => $title, 'gamebook' => $gamebook, 'paragraph' => $paragraph, 'paragraphdirection' => $paragraphdirection]);
     }
 }

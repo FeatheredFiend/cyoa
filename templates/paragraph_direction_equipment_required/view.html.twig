@@ -11,6 +11,7 @@
   {% if app.user != null %}
     <div class="row">
       <div class="col-sm-12 col-md-4" id="searchBox">
+      <a class="text-decoration-none" href="{{ path('equipment_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Equipment</button></a>
       <a class="text-decoration-none" href="{{ path('paragraphdirectionequipmentrequired_create', {'gamebook': gamebook, 'paragraph': paragraph, 'paragraphdirection': paragraphdirection}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph Direction Equipment Required</button></a>   
       {{ knp_pagination_filter(pagination, {'paer.text': 'Paragraph Direction', 'e.name': 'Equipment'}) }}
       {{ knp_pagination_render(pagination, null, {}, {
@@ -24,6 +25,8 @@
         <table class="table table-striped table-light">
           <thead>
             <tr>
+              <th>Gamebook</th>
+              <th>Paragraph</th>
               <th>Paragraph Direction</th>
               <th>Equipment</th>
             </tr>
@@ -32,8 +35,10 @@
             {% for paragraphdirectionequipmentrequired in pagination %}
             {% set id = paragraphdirectionequipmentrequired.id %}
               <tr>
-                <td><a class="nav-link gamebookTable" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}">{{ paragraphdirectionequipmentrequired.paragraphdirection }}</a></td>
-                <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook}) }}">{{ paragraphdirectionequipmentrequired.equipment }}</a></td>
+                <td><a class="nav-link gamebookTable" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}">{{gamebook}}</a></td>
+                <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{paragraph}}</a></td>
+                <td><a class="nav-link" href="{{ path('paragraphdirection_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{ paragraphdirectionequipmentrequired.paragraphdirection.id }}</a></td>
+                <td><a class="nav-link" href="{{ path('paragraphdirectionequipmentrequired_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'paragraphdirection': paragraphdirection, 'id': paragraphdirectionequipmentrequired.id}) }}">{{ paragraphdirectionequipmentrequired.equipment }}</a></td>
               </tr>
             {% endfor %}
           </tbody>
