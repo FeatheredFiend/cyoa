@@ -214,13 +214,34 @@
                     {% for paragraphbattle in paginationBattle %}
                         <div class="card">
                             <div class="row" id="battleEnemy">
-                                <p>Enemy Name: {{ paragraphbattle.enemy}}</p>
-                                <p>Battle Round: {{ paragraphbattle.round}}</p>
-                                <p>Player Stamina: {{ paragraphbattle.playerstamina}}</p>
-                                <p>Enemy Stamina: {{ paragraphbattle.enemystamina}}</p>
-                                <p class="hidden" id="enemystamina">{{ paragraphbattle.enemystamina }}</p>
-                                <p>Player Skill: {{ paragraphbattle.playerskill}}</p>                            
-                                <p>Enemy Skill: {{ paragraphbattle.enemyskill}}</p>
+                                <table class="table table-striped table-light">
+                                    <tr>
+                                        <th>Enemy Name</th>
+                                        <td>{{ paragraphbattle.enemy }}</td>
+                                    </tr>                                
+                                    <tr>
+                                        <th>Battle Round</th>
+                                        <td>{{ paragraphbattle.round }}</td>
+                                    </tr>                            
+                                    <tr>
+                                        <th>Player Stamina</th>
+                                        <td id="battleplayerstamina">{{ paragraphbattle.playerstamina }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Enemy Stamina</th>
+                                        <td>{{ paragraphbattle.enemystamina }}</td>
+                                        <td class="hidden" id="enemystamina">{{ paragraphbattle.enemystamina }}</td>
+                                    </tr> 
+                                    <tr>
+                                        <th>Player Skill</th>
+                                        <td id="battleplayerskill">{{ paragraphbattle.playerskill }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Enemy Skill</th>
+                                        <td id="enemyskill">{{ paragraphbattle.enemyskill }}</td>
+                                    </tr>                                                                        
+                                                                 
+                                </table>
                                 <div class="col">
                                     <button id="battleNext" class="btn btn-danger col-12"><a class="nav-link text-white" href="{{ path('battle_next', {'adventure': adventure, 'paragraph': paragraph, 'battle': paragraphbattle.id, 'luck': 0}) }}">Next Round</a></button>
                                 </div>

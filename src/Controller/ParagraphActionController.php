@@ -184,7 +184,7 @@ class ParagraphActionController extends AbstractController
 
             }
         } elseif ($category === "Battle") {
-            
+
         } elseif ($category === "Item Check") {
 
         } elseif ($category === "Shop") {
