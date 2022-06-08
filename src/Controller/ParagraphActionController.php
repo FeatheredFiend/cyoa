@@ -84,8 +84,8 @@ class ParagraphActionController extends AbstractController
 
     }
 
-    #[Route('/paragraphaction/edit/{gamebook}/{id}', name: 'paragraphaction_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Action'])]
-    public function edit(int $id, Request $request, string $title, string $gamebook): Response
+    #[Route('/paragraphaction/edit/{gamebook}/{paragraph}/{id}', name: 'paragraphaction_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Action'])]
+    public function edit(int $id, Request $request, string $title, string $gamebook, int $paragraph): Response
     {
         $paragraphaction = $this->paragraphactionRepository
             ->find($id);
