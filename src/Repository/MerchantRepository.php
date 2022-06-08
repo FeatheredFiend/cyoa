@@ -51,13 +51,15 @@ class MerchantRepository extends ServiceEntityRepository
     /**
      * @param string|null $term
      */
-    public function getWithSearchQueryBuilderView(?string $term): QueryBuilder
+    public function getWithSearchQueryBuilderView(?string $term, ?int $paragraph): QueryBuilder
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
             ->select('m','p')
             ->from('App\Entity\Merchant', 'm')
             ->leftJoin('m.paragraph', 'p')
+            ->andWhere('p.id = :paragraph')
+            ->setParameter('paragraph', $paragraph)
             ->orderBy('m.id', 'ASC');
 
         return $qb;

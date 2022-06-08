@@ -21,7 +21,7 @@ class MerchantController extends AbstractController
     public function index(MerchantRepository $merchantRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, string $paragraph): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $merchantRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $merchantRepository->getWithSearchQueryBuilderView($q, $paragraph);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
