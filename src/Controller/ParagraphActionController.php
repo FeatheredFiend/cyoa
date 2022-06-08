@@ -131,6 +131,8 @@ class ParagraphActionController extends AbstractController
             $value = $actionvalue + rand(1,6);
         } elseif ($diceroll == 2) {
             $value = $actionvalue + rand(2,12);
+        } else {
+            $value = $actionvalue;
         }
 
         if ($category === "Attribute Change") {
