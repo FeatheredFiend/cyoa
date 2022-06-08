@@ -128,7 +128,7 @@ $(document).ready(function() {
     }
 
     if ($("#enemy").length > 0) {
-        $("#paragraphDirection").addClass('hidden');
+        $("#paragraphDirections").addClass('hidden');
     }
 
     if ($("#battleEnemy").length > 0) {
@@ -149,7 +149,7 @@ $(document).ready(function() {
         if (($("#enemystamina").text() < 0) || ($("#enemystamina").text() == 0)) {
             $("#paragraphEnemy").remove();
             $("#paragraphBattle").remove();
-            $("#paragraphDirection").removeClass('hidden');
+            $("#paragraphDirections").removeClass('hidden');
         }
     }
 

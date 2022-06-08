@@ -158,7 +158,7 @@
                                 </table>
                             </div>
                         {% elseif paragraphenemy.battlecategory == "Single" %}
-                                <table class="table table-striped table-light">
+                                <table id="enemy" class="table table-striped table-light">
                                     <tr>
                                         <th>Image</th>
                                         <td>{{ paragraphenemy.image }}</td>
@@ -252,7 +252,7 @@
                         </div>                        
                     {% endfor %}
                 </div>                
-                <div class="row" id="paragraphDirection">
+                <div class="row" id="paragraphDirections">
                     {% for paragraphdirection in paginationParagraphDirection %}
                         <div class="col paragraphDirection">
                             <button class="btn btn-success col-12"><a class="nav-link text-white" href="{{ path('adventure_next', {'adventure': adventure, 'paragraph': paragraphdirection.redirectparagraph}) }}">{{ paragraphdirection.text}}</a></button>
