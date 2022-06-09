@@ -15,15 +15,6 @@
     display:none;
 }
 
-.continer-fluid .navbarCYOA {
-    display: flex;
-}
-
-.navbar-toggler {
-    position: absolute;
-    right: 0;
-}
-
 
 .image {
     object-fit: contain;
@@ -40,6 +31,11 @@
 @media screen and (min-width: 767px) {
     .largeHidden {
         display:none;
+    }
+
+    .navbar-right {
+        position: absolute;
+        right: 0;
     }
 } 
 
