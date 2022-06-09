@@ -22,7 +22,6 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>License</th>
               <th>Paragraphs</th>
             </tr>
           </thead>
@@ -31,7 +30,6 @@
             {% set id = gamebook.id %}
               <tr>
                 <td><a class="nav-link" href="{{ path('gamebook_edit', {'id': gamebook.id}) }}">{{ gamebook.name }}</a></td>
-                <td>{{ gamebook.license }}</td>
                 <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook.name}) }}">Paragraphs</a></td>
               </tr>
             {% endfor %}
