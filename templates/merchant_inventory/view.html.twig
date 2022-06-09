@@ -26,6 +26,7 @@
             <tr>
               <th>Merchant</th>
               <th>Equipment</th>
+              <th>Quantity</th>
               <th>Cost</th>
             </tr>
           </thead>
@@ -35,6 +36,7 @@
               <tr>
                 <td><a class="nav-link" href="{{ path('merchant_view', {'gamebook': gamebook, 'paragraph': paragraph, 'merchant': merchant}) }}">{{ merchantinventory.merchant }}</a></td>
                 <td><a class="nav-link" href="{{ path('merchantinventory_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'merchant': merchant, 'id': merchantinventory.id}) }}">{{ merchantinventory.equipment }}</a></td>
+                <td>{{ merchantinventory.quantity }}</td>
                 <td>{{ merchantinventory.cost }}</td>
               </tr>
             {% endfor %}

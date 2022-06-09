@@ -39,9 +39,13 @@ class Adventure
     #[ORM\Column(type: 'integer')]
     private $progressparagraph;
 
+    #[ORM\OneToMany(mappedBy: 'adventure', targetEntity: AdventureMerchantInventory::class)]
+    private $adventureMerchantInventories;
+
     public function __construct()
     {
         $this->adventureParagraphs = new ArrayCollection();
+        $this->adventureMerchantInventories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -151,6 +155,36 @@ class Adventure
     public function setProgressparagraph(int $progressparagraph): self
     {
         $this->progressparagraph = $progressparagraph;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AdventureMerchantInventory>
+     */
+    public function getAdventureMerchantInventories(): Collection
+    {
+        return $this->adventureMerchantInventories;
+    }
+
+    public function addAdventureMerchantInventory(AdventureMerchantInventory $adventureMerchantInventory): self
+    {
+        if (!$this->adventureMerchantInventories->contains($adventureMerchantInventory)) {
+            $this->adventureMerchantInventories[] = $adventureMerchantInventory;
+            $adventureMerchantInventory->setAdventure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdventureMerchantInventory(AdventureMerchantInventory $adventureMerchantInventory): self
+    {
+        if ($this->adventureMerchantInventories->removeElement($adventureMerchantInventory)) {
+            // set the owning side to null (unless already changed)
+            if ($adventureMerchantInventory->getAdventure() === $this) {
+                $adventureMerchantInventory->setAdventure(null);
+            }
+        }
 
         return $this;
     }

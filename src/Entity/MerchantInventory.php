@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MerchantInventoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MerchantInventoryRepository::class)]
@@ -23,6 +25,17 @@ class MerchantInventory
 
     #[ORM\Column(type: 'integer')]
     private $cost;
+
+    #[ORM\OneToMany(mappedBy: 'merchantinventory', targetEntity: AdventureMerchantInventory::class)]
+    private $adventureMerchantInventories;
+
+    #[ORM\Column(type: 'integer')]
+    private $quantity;
+
+    public function __construct()
+    {
+        $this->adventureMerchantInventories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -61,6 +74,48 @@ class MerchantInventory
     public function setCost(int $cost): self
     {
         $this->cost = $cost;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AdventureMerchantInventory>
+     */
+    public function getAdventureMerchantInventories(): Collection
+    {
+        return $this->adventureMerchantInventories;
+    }
+
+    public function addAdventureMerchantInventory(AdventureMerchantInventory $adventureMerchantInventory): self
+    {
+        if (!$this->adventureMerchantInventories->contains($adventureMerchantInventory)) {
+            $this->adventureMerchantInventories[] = $adventureMerchantInventory;
+            $adventureMerchantInventory->setMerchantinventory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdventureMerchantInventory(AdventureMerchantInventory $adventureMerchantInventory): self
+    {
+        if ($this->adventureMerchantInventories->removeElement($adventureMerchantInventory)) {
+            // set the owning side to null (unless already changed)
+            if ($adventureMerchantInventory->getMerchantinventory() === $this) {
+                $adventureMerchantInventory->setMerchantinventory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }

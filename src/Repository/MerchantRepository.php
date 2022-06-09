@@ -66,6 +66,28 @@ class MerchantRepository extends ServiceEntityRepository
 
     }
 
+    
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderPlay(?string $term, ?int $paragraph): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('m','mi','p','e','ami')
+            ->from('App\Entity\Merchant', 'm')
+            ->leftJoin('m.paragraph', 'p')
+            ->leftJoin('m.merchantInventories', 'mi')
+            ->leftJoin('mi.equipment', 'e')
+            ->leftJoin('mi.adventureMerchantInventories', 'ami')
+            ->andWhere('p.id = :paragraph')
+            ->setParameter('paragraph', $paragraph)
+            ->orderBy('m.id', 'ASC');
+
+        return $qb;
+
+    }
+
     // /**
     //  * @return Merchant[] Returns an array of Merchant objects
     //  */

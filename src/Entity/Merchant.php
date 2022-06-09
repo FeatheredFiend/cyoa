@@ -25,9 +25,13 @@ class Merchant
     #[ORM\OneToMany(mappedBy: 'merchant', targetEntity: MerchantInventory::class)]
     private $merchantInventories;
 
+    #[ORM\OneToMany(mappedBy: 'merchant', targetEntity: AdventureMerchantInventory::class)]
+    private $adventureMerchantInventories;
+
     public function __construct()
     {
         $this->merchantInventories = new ArrayCollection();
+        $this->adventureMerchantInventories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,6 +95,36 @@ class Merchant
 
     public function __toString() {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, AdventureMerchantInventory>
+     */
+    public function getAdventureMerchantInventories(): Collection
+    {
+        return $this->adventureMerchantInventories;
+    }
+
+    public function addAdventureMerchantInventory(AdventureMerchantInventory $adventureMerchantInventory): self
+    {
+        if (!$this->adventureMerchantInventories->contains($adventureMerchantInventory)) {
+            $this->adventureMerchantInventories[] = $adventureMerchantInventory;
+            $adventureMerchantInventory->setMerchant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdventureMerchantInventory(AdventureMerchantInventory $adventureMerchantInventory): self
+    {
+        if ($this->adventureMerchantInventories->removeElement($adventureMerchantInventory)) {
+            // set the owning side to null (unless already changed)
+            if ($adventureMerchantInventory->getMerchant() === $this) {
+                $adventureMerchantInventory->setMerchant(null);
+            }
+        }
+
+        return $this;
     }
 
 }

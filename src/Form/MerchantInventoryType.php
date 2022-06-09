@@ -18,6 +18,7 @@ class MerchantInventoryType extends AbstractType
     {
         $builder
             ->add('cost', TextType::class,['label'=>'Cost'])
+            ->add('quantity', TextType::class,['label'=>'Quantity'])
             ->add('merchant', EntityType::class,['class' => Merchant::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('m')->orderBy('m.id', 'ASC');}, 'choice_label' => 'name', 'label' => 'Merchant'])
             ->add('equipment', EntityType::class,['class' => Equipment::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('e')->orderBy('e.id', 'ASC');}, 'choice_label' => 'name', 'label' => 'Equipment'])
         ;

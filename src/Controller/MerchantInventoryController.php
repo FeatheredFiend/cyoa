@@ -98,4 +98,5 @@ class MerchantInventoryController extends AbstractController
             'merchant' => $merchant
         ]);
     }
+
 }

@@ -50,7 +50,11 @@ services:
     App\Service\FileUploader:
         arguments:
             $targetDirectoryEnemy: '%enemy_images_directory%' 
-            $targetDirectoryParagraph: '%paragraph_images_directory%'                        
+            $targetDirectoryParagraph: '%paragraph_images_directory%'       
+
+    App\Service\BuyEquipment:
+        arguments: 
+            $buyEquipment: '%kernel.project_dir%'                             
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

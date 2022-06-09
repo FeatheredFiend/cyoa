@@ -19,6 +19,7 @@ use App\Repository\BattleRepository;
 use App\Repository\EnemyRepository;
 use App\Repository\HeroEquipmentRepository;
 use App\Repository\HeroRepository;
+use App\Repository\MerchantRepository;
 use App\Repository\ParagraphRepository;
 use App\Repository\ParagraphActionRepository;
 use App\Repository\ParagraphDirectionRepository;
@@ -35,7 +36,8 @@ class AdventureController extends AbstractController
     private $paragraphactionRepository;
     private $paragraphdirectionRepository; 
     private $battleRepository;   
-    private $enemyRepository;    
+    private $enemyRepository;   
+    private $merchantRepository;    
     private $paginator;
     private $doctrine;
     private $validator;
@@ -43,7 +45,7 @@ class AdventureController extends AbstractController
     private $startAdventure;
     private $nextParagraph;
 
-    public function __construct(AdventureRepository $adventureRepository, HeroRepository $heroRepository, HeroEquipmentRepository $heroequipmentRepository, ParagraphRepository $paragraphRepository, ParagraphActionRepository $paragraphactionRepository, ParagraphDirectionRepository $paragraphdirectionRepository, EnemyRepository $enemyRepository, BattleRepository $battleRepository, PaginatorInterface $paginator, ManagerRegistry $doctrine, ValidatorInterface $validator, CreateHero $createHero, StartAdventure $startAdventure, NextParagraph $nextParagraph)
+    public function __construct(AdventureRepository $adventureRepository, MerchantRepository $merchantRepository, HeroRepository $heroRepository, HeroEquipmentRepository $heroequipmentRepository, ParagraphRepository $paragraphRepository, ParagraphActionRepository $paragraphactionRepository, ParagraphDirectionRepository $paragraphdirectionRepository, EnemyRepository $enemyRepository, BattleRepository $battleRepository, PaginatorInterface $paginator, ManagerRegistry $doctrine, ValidatorInterface $validator, CreateHero $createHero, StartAdventure $startAdventure, NextParagraph $nextParagraph)
     {
         $this->adventureRepository = $adventureRepository;
         $this->heroequipmentRepository = $heroequipmentRepository;
@@ -53,6 +55,7 @@ class AdventureController extends AbstractController
         $this->paragraphdirectionRepository = $paragraphdirectionRepository;
         $this->battleRepository = $battleRepository;
         $this->enemyRepository = $enemyRepository;
+        $this->merchantRepository = $merchantRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
         $this->doctrine = $doctrine;
@@ -106,6 +109,7 @@ class AdventureController extends AbstractController
             $em->persist($adventure);
             $em->flush();
             $this->startAdventure->startAdventure($adventure->getId());
+            $this->startAdventure->stockMerchant($adventure->getId());
 
             return $this->redirectToRoute('adventure_view');
         }
@@ -175,6 +179,14 @@ class AdventureController extends AbstractController
             5/*limit per page*/
         );
 
+        $queryBuilderMerchant = $this->merchantRepository->getWithSearchQueryBuilderPlay($q, $paragraph);
+
+        $paginationMerchant = $this->paginator->paginate(
+            $queryBuilderMerchant, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            5/*limit per page*/
+        );
+
         $queryBuilderEnemy = $this->enemyRepository->getWithSearchQueryBuilderPlay($q, $adventure, $paragraph);
 
         $paginationEnemy = $this->paginator->paginate(
@@ -210,6 +222,7 @@ class AdventureController extends AbstractController
             'paginationParagraphDirection' => $paginationParagraphDirection,
             'paginationEnemy' => $paginationEnemy,
             'paginationBattle' => $paginationBattle,
+            'paginationMerchant' => $paginationMerchant,
             'title' => $title,
             'adventure' => $adventure,
             'paragraph' => $paragraph,

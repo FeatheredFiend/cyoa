@@ -54,6 +54,26 @@ class StartAdventure
         $statement->execute();
     }
 
+
+    public function stockMerchant($adventure)
+    {
+        $gamebook = $this->getAdventureGamebook($adventure);
+        $em = $this->entityManager;
+
+        $RAW_QUERY = "INSERT INTO adventure_merchant_inventory (merchantinventory_id, adventure_id, merchant_id)
+            SELECT merchant_inventory.id as merchantinventory_id, :adventure as adventure_id, merchant.id as merchant_id
+            FROM paragraph
+                LEFT JOIN gamebook ON paragraph.gamebook_id = gamebook.id
+                LEFT JOIN merchant ON merchant.paragraph_id = paragraph.id
+                LEFT JOIN merchant_inventory ON merchant_inventory.merchant_id = merchant.id
+                LEFT JOIN equipment ON merchant_inventory.equipment_id = equipment.id
+            WHERE gamebook.id = :gamebook and merchant.name is not null";         
+        $statement = $em->getConnection()->prepare($RAW_QUERY);
+        $statement->bindParam('gamebook', $gamebook);
+        $statement->bindParam('adventure', $adventure);
+        $statement->execute();
+    }    
+
     
     public function getAdventureGamebook($adventure)
     {

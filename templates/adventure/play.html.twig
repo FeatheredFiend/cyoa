@@ -134,6 +134,32 @@
                     <table id="actionText">
                     </table>                    
                 </div>
+                <div class="row" id="paragraphMerchant">        
+                    {% for paragraphmerchant in paginationMerchant %}
+                            <table class="table table-striped table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <td colspan="3">{{ paragraphmerchant.name }}</td>
+                                </tr>   
+                                    <tr>
+                                        <th>Item Name</th>
+                                        <th>Item Cost</th>
+                                        <th>Quantity</th>
+                                        <th>Buy</th>
+                                    </tr>                                 
+                                {% for adventureGame in paragraphmerchant.merchantInventories %}
+                                    {% for wares in adventureGame.adventureMerchantInventories %}
+                                        <tr>
+                                            <td>{{ wares.merchantinventory.equipment }}</td>
+                                            <td>{{ wares.merchantinventory.cost }}</td>
+                                            <td>{{ wares.merchantinventory.quantity }}</td>
+                                            <td><button class="py-0 btn btn-danger col-6"><a class="nav-link text-white" href="{{ path('buy_equipment', {'adventure': adventure, 'paragraph': paragraph, 'merchantinventory': wares.merchantinventory.id, 'equipment': wares.merchantinventory.equipment.id, 'quantity': wares.merchantinventory.quantity}) }}">Buy Item</a></button></td>
+                                        </tr> 
+                                    {% endfor %}      
+                                {% endfor %}                                                                                         
+                            </table>                         
+                    {% endfor %}
+                </div>                
                 <div class="row" id="paragraphEnemy">
                     {% for paragraphenemy in paginationEnemy %}
                         {% if paragraphenemy.battlecategory == "Group" %}

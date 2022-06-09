@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Merchant;
 use App\Form\MerchantType;
+use App\Service\BuyEquipment;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
@@ -94,5 +95,15 @@ class MerchantController extends AbstractController
             'gamebook' => $gamebook,
             'paragraph' => $paragraph
         ]);
+    }
+
+    #[Route('/buyequipment/{adventure}/{paragraph}/{merchantinventory}/{equipment}/{quantity}', name: 'buy_equipment', defaults: ['title' => 'Buy Equipment'])]
+    public function next(Request $request, string $title, int $adventure, int $paragraph, int $merchantinventory, int $equipment, int $quantity, BuyEquipment $buyEquipment): Response
+    {
+
+        $buyEquipment->buyEquipment($adventure, $equipment, $quantity);
+        $buyEquipment->removeEquipment($merchantinventory);
+
+        return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraph]);
     }
 }
