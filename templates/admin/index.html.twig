@@ -6,11 +6,32 @@
 <div class="container-fluid">
     <p class="hidden" id="title">{{title}}</p> 
     {% if app.user != null %}     
-        <div class="card col-sm-12 col-md-2 bg-red">
-            <div class="card-body">
-                <a class="text-decoration-none" href="{{ path('gamebookpermission_view') }}"><h3 class="card-title text-center pt-5 text-white">Gamebook Permissions</h3></a>
-            </div>
-        </div>                                                                                     
+        <div class="row">
+            <div class="card col-sm-12 col-md-2 bg-red">
+                <div class="card-body">
+                    <a class="text-decoration-none" href="{{ path('gamebookpermission_view') }}"><h3 class="card-title text-center pt-5 text-white">Gamebook Permissions</h3></a>
+                </div>
+            </div>   
+            <div class="col-sm-12 col-md-10 table-responsive" id="tableView">
+                <table class="table table-striped table-light">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Admin</th>
+                    </tr>
+                </thead>
+                <tbody name="userTable" id="userTable">
+                    {% for user in pagination %}
+                    {% set id = user.id %}
+                    <tr>
+                        <td><a class="nav-link" href="{{ path('elevate_user', {'id': user.id}) }}">{{ user.name }}</a></td>
+                        <td>{{user.admin == 1 ? "TRUE" :  "FALSE"}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>     
+        </div>                                                                                  
     {% else %}
         <p>Please Log in to view this page</p>
     {% endif %}           

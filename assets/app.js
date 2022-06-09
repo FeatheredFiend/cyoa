@@ -39,6 +39,10 @@ $(document).ready(function() {
         }
     });
 
+    if ($("#elevate_user_name").length > 0) {
+        $("#elevate_user_name").attr("readonly", true);
+    }
+
     if ($("#paragraph_gamebook").length > 0) {
         var gamebook = $('#gamebook').text();
         var dd = document.getElementById('paragraph_gamebook');
