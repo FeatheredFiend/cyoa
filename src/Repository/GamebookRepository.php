@@ -51,12 +51,16 @@ class GamebookRepository extends ServiceEntityRepository
     /**
      * @param string|null $term
      */
-    public function getWithSearchQueryBuilderView(?string $term): QueryBuilder
+    public function getWithSearchQueryBuilderView(?string $term, ?int $user): QueryBuilder
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
-            ->select('g')
+            ->select('g', 'gp', 'u')
             ->from('App\Entity\Gamebook', 'g')
+            ->leftJoin('g.gamebookPermissions', 'gp')
+            ->leftJoin('gp.user', 'u')
+            ->andWhere('u.id = :user')
+            ->setParameter('user', $user)
             ->orderBy('g.id', 'ASC');
 
         return $qb;

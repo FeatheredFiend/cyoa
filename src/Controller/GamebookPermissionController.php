@@ -17,6 +17,15 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class GamebookPermissionController extends AbstractController
 {
+
+    private $doctrine;
+
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     #[Route('/gamebookpermission/view', name: 'gamebookpermission_view', defaults: ['title' => 'View Gamebook Permission'])]
     public function index(GamebookPermissionRepository $gamebookpermissionRepository, Request $request, PaginatorInterface $paginator, string $title): Response
     {
@@ -47,10 +56,20 @@ class GamebookPermissionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $gamebook = $form['gamebook']->getData();
+            $license = $form['license']->getData();
+
+            $gamebookLicense = $this->getGamebookLicense($gamebook);
+
+            if ($license == $gamebookLicense) {
             // Save
-            $em = $doctrine->getManager();
-            $em->persist($gamebookpermission);
-            $em->flush();
+                $em = $doctrine->getManager();
+                $em->persist($gamebookpermission);
+                $em->flush();
+            }
+            
+
+
 
             return $this->redirectToRoute('gamebookpermission_view');
         }
@@ -80,5 +99,21 @@ class GamebookPermissionController extends AbstractController
         }
 
         return $this->render('gamebook_permission/edit.html.twig', ['gamebookpermission' => $gamebookpermission,'form' => $form->createView(),'title' => $title]);
+    }
+
+    public function getGamebookLicense($gamebook)
+    {
+        $em = $this->doctrine->getManager();
+        $gamebooksRepository = $em->getRepository("App\Entity\Gamebook");
+        
+        // Search the buildings that belongs to the organisation with the given id as GET parameter "organisationid"
+        $gamebookLicense = $gamebooksRepository->createQueryBuilder("g")
+            ->select('g.license')
+            ->andWhere('g.id = :gamebook')
+            ->setParameter('gamebook', $gamebook)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $gamebookLicense;
     }
 }

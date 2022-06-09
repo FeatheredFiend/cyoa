@@ -14,14 +14,24 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Repository\GamebookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\Security;
 
 class GamebookController extends AbstractController
 {
+
+    private $security;
+
+    public function __construct(Security $security)
+    {
+       $this->security = $security;
+    }
+
     #[Route('/gamebook/view', name: 'gamebook_view', defaults: ['title' => 'View Gamebook'])]
     public function index(GamebookRepository $gamebookRepository, Request $request, PaginatorInterface $paginator, string $title): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $gamebookRepository->getWithSearchQueryBuilderView($q);
+        $user = $this->security->getUser();
+        $queryBuilder = $gamebookRepository->getWithSearchQueryBuilderView($q, $user->getId());
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
