@@ -23,12 +23,12 @@ class RegistrationController extends AbstractController
         $user = new User();
 
         $form = $this->createForm(UserType::class, $user);
-
+        $form->remove('admin');
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Encode the new users password
-
+            $user->setAdmin(0);
             $hashedPassword = $passwordHasher->hashPassword(
                 $user,
                 $user->getPassword()

@@ -15,6 +15,22 @@
     display:none;
 }
 
+.continer-fluid .navbarCYOA {
+    display: flex;
+}
+
+.navbar-toggler {
+    position: absolute;
+    right: 0;
+}
+
+
+.image {
+    object-fit: contain;
+    width: 100%;
+    height: 50px;
+  }
+
 @media screen and (max-width: 767px) {
     .mobileHidden {
         display:none;

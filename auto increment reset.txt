@@ -8,6 +8,7 @@ ALTER TABLE equipment_effect AUTO_INCREMENT = 1;
 ALTER TABLE equipment_effect_attribute AUTO_INCREMENT = 1;
 ALTER TABLE equipment_effect_operator AUTO_INCREMENT = 1;
 ALTER TABLE gamebook AUTO_INCREMENT = 1;
+ALTER TABLE gamebook_permission AUTO_INCREMENT = 1;
 ALTER TABLE hero AUTO_INCREMENT = 1;
 ALTER TABLE hero_attribute AUTO_INCREMENT = 1;
 ALTER TABLE hero_equipment AUTO_INCREMENT = 1;

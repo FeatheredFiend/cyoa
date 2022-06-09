@@ -18,29 +18,37 @@
         {% endblock %}
     </head>
     <body>
-        <nav class="navbar navbar-expand-md navbar-light navRed sticky-top border border-dark">
-            <a class="navbar-brand mx-2" href="{{ path('homepage') }}">Create Your Own Adventure Symfony</a>
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo01">                    
-                    <ul class="nav navbar-nav justify-content-center mx-auto">
-                        {% if app.user %}
-                            <li><a class="nav-link text-white text-center" href="" id="adventureTitle"></a></li>
-                        {% endif %}
-                    </ul>
-                    <ul class="navbar-nav">
-                        {% if app.user %}
-                            <li><a class="nav-link text-white p-2" href="{{ path('app_logout') }}"><strong>Logout</strong></a></li>
-                        {% else %}
-                            <li><a class="nav-link text-white p-2" href="{{ path('app_login') }}">Login</a></li>
-                            <li><a class="nav-link text-white p-2" href="{{ path('registration') }}">Register</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>            
-        </nav>        
+        <div class="continer-fluid">
+            <nav class="navbarCYOA navbar-expand-md navbar-light navRed sticky-top border border-dark">
+                {% if app.user %}
+                    <a class="navbar-brand mx-2" href="{{ path('homepage') }}">Symfony CYOA</a>
+                {% else %}
+                    <a class="navbar-brand mx-2" href="{{ path('app_login') }}">Symfony CYOA</a>
+                {% endif %}
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">                    
+                        <ul class="nav navbar-nav justify-content-center mx-auto">
+                            {% if app.user %}
+                                <li><a class="nav-link text-white text-center" href="" id="adventureTitle"></a></li>
+                            {% endif %}
+                        </ul>
+                        <ul class="navbar-nav">
+                            {% if app.user %}
+                                {% if app.user.admin == 1 %}
+                                    <li><a class="nav-link text-white p-2" href="{{ path('admin') }}"><img class="image p-2" src="{{ asset('images/admin.png') }}" alt="Admin"></a></li>
+                                {% endif %}
+                                <li><a class="nav-link text-white p-2" href="{{ path('app_logout') }}"><img class="image p-2" src="{{ asset('images/logout.png') }}" alt="Logout"></a></li>
+                            {% else %}
+                                <li><a class="nav-link text-white p-2" href="{{ path('registration') }}">Register</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>            
+            </nav>     
+        </div>   
         {% block body %}{% endblock %}
     </body>
 </html>

@@ -35,9 +35,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Adventure::class)]
     private $adventures;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: GamebookPermission::class)]
+    private $gamebookPermissions;
+
+    #[ORM\Column(type: 'boolean')]
+    private $admin;
+
     public function __construct()
     {
         $this->adventures = new ArrayCollection();
+        $this->gamebookPermissions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -154,5 +161,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString() {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, GamebookPermission>
+     */
+    public function getGamebookPermissions(): Collection
+    {
+        return $this->gamebookPermissions;
+    }
+
+    public function addGamebookPermission(GamebookPermission $gamebookPermission): self
+    {
+        if (!$this->gamebookPermissions->contains($gamebookPermission)) {
+            $this->gamebookPermissions[] = $gamebookPermission;
+            $gamebookPermission->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGamebookPermission(GamebookPermission $gamebookPermission): self
+    {
+        if ($this->gamebookPermissions->removeElement($gamebookPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($gamebookPermission->getUser() === $this) {
+                $gamebookPermission->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAdmin(): ?bool
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(bool $admin): self
+    {
+        $this->admin = $admin;
+
+        return $this;
     }
 }

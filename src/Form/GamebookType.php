@@ -14,6 +14,7 @@ class GamebookType extends AbstractType
     {
         $builder
             ->add('name', TextType::class,['label'=>'Name'])
+            ->add('license', TextType::class,['label'=>'License'])
         ;
     }
 

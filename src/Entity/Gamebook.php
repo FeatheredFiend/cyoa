@@ -24,10 +24,17 @@ class Gamebook
     #[ORM\OneToMany(mappedBy: 'gamebook', targetEntity: Paragraph::class)]
     private $paragraphs;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $license;
+
+    #[ORM\OneToMany(mappedBy: 'gamebook', targetEntity: GamebookPermission::class)]
+    private $gamebookPermissions;
+
     public function __construct()
     {
         $this->adventures = new ArrayCollection();
         $this->paragraphs = new ArrayCollection();
+        $this->gamebookPermissions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,6 +112,48 @@ class Gamebook
             // set the owning side to null (unless already changed)
             if ($paragraph->getGamebook() === $this) {
                 $paragraph->setGamebook(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLicense(): ?string
+    {
+        return $this->license;
+    }
+
+    public function setLicense(string $license): self
+    {
+        $this->license = $license;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GamebookPermission>
+     */
+    public function getGamebookPermissions(): Collection
+    {
+        return $this->gamebookPermissions;
+    }
+
+    public function addGamebookPermission(GamebookPermission $gamebookPermission): self
+    {
+        if (!$this->gamebookPermissions->contains($gamebookPermission)) {
+            $this->gamebookPermissions[] = $gamebookPermission;
+            $gamebookPermission->setGamebook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGamebookPermission(GamebookPermission $gamebookPermission): self
+    {
+        if ($this->gamebookPermissions->removeElement($gamebookPermission)) {
+            // set the owning side to null (unless already changed)
+            if ($gamebookPermission->getGamebook() === $this) {
+                $gamebookPermission->setGamebook(null);
             }
         }
 
