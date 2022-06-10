@@ -41,6 +41,39 @@ class BuyEquipment
         $statement->execute();
     }
 
+    public function getHeroTreasure($adventure)
+    {
+        $em = $this->entityManager;
+        $heroesRepository = $em->getRepository("App\Entity\Adventure");
+        
+        // Search the buildings that belongs to the organisation with the given id as GET parameter "organisationid"
+        $treasure = $heroesRepository->createQueryBuilder("a")
+            ->select('h.treasure')
+            ->leftJoin('a.hero', 'h')
+            ->andWhere('a.id = :adventure')
+            ->setParameter('adventure', $adventure)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $treasure;
+    }
+
+    public function getEquipmentCost($equipment)
+    {
+        $em = $this->entityManager;
+        $heroesRepository = $em->getRepository("App\Entity\MerchantInventory");
+        
+        // Search the buildings that belongs to the organisation with the given id as GET parameter "organisationid"
+        $cost = $heroesRepository->createQueryBuilder("mi")
+            ->select('mi.cost')
+            ->andWhere('mi.equipment = :equipment')
+            ->setParameter('equipment', $equipment)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $cost;
+    }
+
     public function getHero($adventure)
     {
         $em = $this->entityManager;

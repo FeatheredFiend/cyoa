@@ -64,7 +64,7 @@
                             </tr>   
                             <tr>
                                 <th>Treasure</th>
-                                <td colspan="2">{{ adventure.hero.treasure }}</td>         
+                                <td colspan="2" id="playerTreasure">{{ adventure.hero.treasure }}</td>         
                             </tr>                                                 
                         </table>
                     {% endfor %} 
@@ -88,8 +88,18 @@
                     </tbody>
                     </table>     
                 </div>                           
-            </div>
+            </div>     
             <div class="col-sm-12 col-md-8" id="gameWindow">
+                {% for message in app.flashes('success') %}
+                    <div class="row alert alert-success text-center" id="successMessage">
+                        <p class="text-center">{{ message }}</p>
+                    </div>       
+                {% endfor %}   
+                {% for message in app.flashes('failure') %}
+                    <div class="row alert alert-danger" id="warningMessage">
+                        <p class="text-center">{{ message }}</p>
+                    </div>       
+                {% endfor %}                              
                 <a id="toggleStats" class="nav-link text-white text-center paleRed largeHidden">Stats</a>
                 <div class="row" id="paragraphText">
                     {% for paragraph in paginationParagraph %}

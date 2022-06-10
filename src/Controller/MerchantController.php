@@ -100,10 +100,22 @@ class MerchantController extends AbstractController
     #[Route('/buyequipment/{adventure}/{paragraph}/{merchantinventory}/{equipment}/{quantity}', name: 'buy_equipment', defaults: ['title' => 'Buy Equipment'])]
     public function next(Request $request, string $title, int $adventure, int $paragraph, int $merchantinventory, int $equipment, int $quantity, BuyEquipment $buyEquipment): Response
     {
+        $heroTreasure = $buyEquipment->getHeroTreasure($adventure);
+        $equipmentCost = $buyEquipment->getEquipmentCost($equipment);
 
-        $buyEquipment->buyEquipment($adventure, $equipment, $quantity);
-        $buyEquipment->removeEquipment($merchantinventory);
+        if ($heroTreasure >= $equipmentCost) {
+            $buyEquipment->buyEquipment($adventure, $equipment, $quantity);
+            $buyEquipment->removeEquipment($merchantinventory);
+            $this->addFlash("success", "You have brought this Equipment!");
 
-        return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraph]);
+            return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraph]);
+        } else {
+
+            $this->addFlash("failure", "You don't have enough Treasure to buy this!");
+
+            return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraph]);
+        }
+
+
     }
 }

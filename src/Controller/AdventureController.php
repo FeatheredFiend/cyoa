@@ -211,7 +211,6 @@ class AdventureController extends AbstractController
             5/*limit per page*/
         );
 
-        
 
 
         return $this->render('adventure/play.html.twig', [
