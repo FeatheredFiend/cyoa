@@ -100,6 +100,42 @@ $(document).ready(function() {
         $("#paragraph_direction_paragraph").attr("readonly", true);
     }
 
+    if ($("#paragraphDirections").length > 0) {
+        $('.paragraphDirectionsEquipment').each(function() {
+            var paragraphDirection = $(this);
+            $(this).children('table').children('tbody').children('tr').children('.equipmentRequiredId').each(function() {
+                var equipmentId = $(this).text();
+                $('.heroEquipmentList').each(function() {
+                    var heroEquipmentId = $(this).text();
+                    var parent = $(this).parent();
+                    var qty = parent.children('.heroEquipmentQuantity').text();
+                    if (qty > 0) {
+                        if (equipmentId == heroEquipmentId) {
+                            paragraphDirection.children('div').removeClass('hiddenDirection');
+                            paragraphDirection.removeClass("hidden");
+                        } else {
+                            paragraphDirection.children('div').addClass('hiddenDirection');
+                            paragraphDirection.addClass("hidden");
+                        }
+                    }
+
+                });
+            });
+        });
+        var length = $('.directionButton:visible').length;
+        if (length >= 2) {
+        } else {
+            $('.paragraphDirectionsEquipment:hidden').remove();
+
+
+        }
+    }
+
+
+
+
+
+
     if ($(".gamebookTable").length > 0) {
         var gamebook = $('#gamebook').text();
         $('.gamebookTable').each(function() {

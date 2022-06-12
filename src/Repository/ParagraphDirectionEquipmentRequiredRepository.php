@@ -52,7 +52,7 @@ class ParagraphDirectionEquipmentRequiredRepository extends ServiceEntityReposit
     /**
      * @param string|null $term
      */
-    public function getWithSearchQueryBuilderViewParagraph(?string $term, ?int $paragraph): QueryBuilder
+    public function getWithSearchQueryBuilderViewParagraph(?string $term, ?int $paragraph, ?int $paragraphdirection): QueryBuilder
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb
@@ -62,7 +62,9 @@ class ParagraphDirectionEquipmentRequiredRepository extends ServiceEntityReposit
             ->leftJoin('pd.paragraph', 'p')
             ->leftJoin('pder.equipment', 'e')
             ->andWhere('p.id = :paragraph')
-            ->setParameter('paragraph', $paragraph)            
+            ->andWhere('pd.id = :paragraphdirection')
+            ->setParameter('paragraph', $paragraph)               
+            ->setParameter('paragraphdirection', $paragraphdirection)                        
             ->orderBy('pder.id', 'ASC');
 
         return $qb;

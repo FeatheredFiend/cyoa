@@ -80,9 +80,10 @@
                         {% for heroequipment in paginationEquipment %}
                         {% set id = heroequipment.id %}
                         <tr>
+                            <td class="hidden heroEquipmentList">{{ heroequipment.equipment.id}}</td>
                             <td>{{ heroequipment.id}}</td>
                             <td>{{ heroequipment.equipment }}</td>
-                            <td>{{ heroequipment.quantity }}</td>
+                            <td class="heroEquipmentQuantity">{{ heroequipment.quantity }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -290,12 +291,29 @@
                 </div>                
                 <div class="row" id="paragraphDirections">
                     {% for paragraphdirection in paginationParagraphDirection %}
-                        <div class="col paragraphDirection">
-                            <button class="btn btn-success col-12"><a class="nav-link text-white" href="{{ path('adventure_next', {'adventure': adventure, 'paragraph': paragraphdirection.redirectparagraph}) }}">{{ paragraphdirection.text}}</a></button>
+                        <div class="col paragraphDirectionsEquipment">
+                            {% for equipmentrequired in paragraphdirection.paragraphDirectionEquipmentRequireds %}
+                                <table class="hidden equipmentTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Equipment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="hidden">{{equipmentrequired.equipment.name}}</td>
+                                            <td class="hidden equipmentRequiredId">{{equipmentrequired.equipment.id}}</td>
+                                            <td class="hidden directionRequiredId">{{paragraphdirection.id}}</td>
+                                        </tr>                            
+                                    </tbody>
+                                </table>
+                            {% endfor %}
+                            <div class="col">
+                                <button class="btn btn-success col-12 directionButton"><a class="nav-link text-white" href="{{ path('adventure_next', {'adventure': adventure, 'paragraph': paragraphdirection.redirectparagraph}) }}">{{paragraphdirection.text}}</a></button>                        
+                            </div>
                         </div>
                     {% endfor %}
                 </div>                                                
-
             </div>
         </div>
     </div>

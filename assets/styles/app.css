@@ -15,6 +15,9 @@
     display:none;
 }
 
+.hiddenDirection {
+    display:none;
+}
 
 .image {
     object-fit: contain;

@@ -21,7 +21,7 @@ class ParagraphDirectionEquipmentRequiredController extends AbstractController
     public function index(ParagraphDirectionEquipmentRequiredRepository $paragraphdirectionequipmentrequiredRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, int $paragraph, int $paragraphdirection): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphdirectionequipmentrequiredRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph);
+        $queryBuilder = $paragraphdirectionequipmentrequiredRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph, $paragraphdirection);
 
         $pagination = $paginator->paginate(
             $queryBuilder, /* query NOT result */
