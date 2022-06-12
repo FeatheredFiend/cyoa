@@ -72,6 +72,74 @@ class CreateBattle
         $statement->execute();
     }
 
+    public function createBattleFromAction($adventure, $paragraph, $enemy, $luck)
+    {
+        $em = $this->entityManager;
+
+        $playerskill = $this->getHeroSkill($adventure);
+        $playerstamina = $this->getHeroStamina($adventure);
+        $enemyskill = $this->getEnemySkill($enemy);
+        $enemystamina = $this->getEnemyStamina($enemy);        
+        $round = 1;
+        $paragraph = $this->getAdventureParagraph($adventure, $paragraph); 
+        $playerluck = $this->getHeroLuck($adventure);
+        $paragraph = $paragraph;
+
+        $RAW_QUERY = "INSERT INTO battle(enemy_id, round, playerstamina, playerskill, enemystamina, enemyskill, adventureparagraph_id) VALUES (:enemy, :round, :playerstamina, :playerskill, :enemystamina, :enemyskill, :adventureparagraph)";         
+        $statement = $em->getConnection()->prepare($RAW_QUERY);
+        $statement->bindParam('enemy', $enemy);
+        $statement->bindParam('round', $round);
+        $statement->bindParam('playerskill', $playerskill);
+        $statement->bindParam('playerstamina', $playerstamina);
+        $statement->bindParam('enemyskill', $enemyskill);
+        $statement->bindParam('enemystamina', $enemystamina);        
+        $statement->bindParam('adventureparagraph', $paragraph); 
+        $statement->execute();
+    }
+
+    public function updateBattleAdventureParagraph($adventureparagraph)
+    {
+        $em = $this->entityManager;
+        $RAW_QUERY = "UPDATE battle SET adventureparagraph_id = :adventureparagraph ORDER BY battle.id DESC LIMIT 1";         
+        $statement = $em->getConnection()->prepare($RAW_QUERY);
+        $statement->bindParam('adventureparagraph', $adventureparagraph);
+        $statement->execute();
+    }
+
+    public function findAdventureParagraph($adventure)
+    {
+        $em = $this->entityManager;
+        $adventuresRepository = $em->getRepository("App\Entity\AdventureParagraph");
+        
+        // Search the buildings that belongs to the organisation with the given id as GET parameter "organisationid"
+        $adventureParagraph = $adventuresRepository->createQueryBuilder("ap")
+            ->select('MAX(ap.id)')
+            ->andWhere('ap.adventure = :adventure')
+            ->setParameter('adventure', $adventure)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $adventureParagraph;
+    }
+
+    public function findLastBattle($paragraph, $enemy)
+    {
+        $em = $this->entityManager;
+        $enemiesRepository = $em->getRepository("App\Entity\Battle");
+        
+        // Search the buildings that belongs to the organisation with the given id as GET parameter "organisationid"
+        $enemy = $enemiesRepository->createQueryBuilder("b")
+            ->select('b.id')
+            ->andWhere('b.enemy = :enemy')
+            ->andWhere('b.adventureparagraph = :paragraph')
+            ->setParameter('enemy', $enemy)
+            ->setParameter('paragraph', $paragraph)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $enemy;
+    }
+
     public function reduceLuck($adventure)
     {
         $em = $this->entityManager;

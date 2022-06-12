@@ -110,7 +110,7 @@
                 <div class="row" id="paragraphAction">
                     {% for paragraphaction in paginationParagraphAction %}
                         <div class="row paragraphactionlist">
-                            <table class="table table-light" id="paragraphactiontext">         
+                            <table class="table table-light" id="paragraphactiontext">                                        
                                 <tr>
                                     <th>Paragraph Action</th>
                                     <td id="paragraphactionclick" class="paragraphactionlisttext">{{ paragraphaction.text }}</td>
@@ -280,10 +280,10 @@
                                                                  
                                 </table>
                                 <div class="col">
-                                    <button id="battleNext" class="btn btn-danger col-12"><a class="nav-link text-white" href="{{ path('battle_next', {'adventure': adventure, 'paragraph': paragraph, 'battle': paragraphbattle.id, 'luck': 0}) }}">Next Round</a></button>
+                                    <button id="battleNext" class="btn btn-danger col-12"><a class="nav-link text-white" href="{{ path('battle_next', {'adventure': adventure, 'paragraph': paragraph, 'battle': paragraphbattle.id, 'enemy': paragraphbattle.enemy.id, 'luck': 0}) }}">Next Round</a></button>
                                 </div>
                                 <div class="col">                            
-                                    <button id="battleNextLuck" class="btn btn-warning col-12"><a class="nav-link text-white" href="{{ path('battle_next', {'adventure': adventure, 'paragraph': paragraph, 'battle': paragraphbattle.id, 'luck': 1}) }}">Next Round with Luck</a></button>                           
+                                    <button id="battleNextLuck" class="btn btn-warning col-12"><a class="nav-link text-white" href="{{ path('battle_next', {'adventure': adventure, 'paragraph': paragraph, 'battle': paragraphbattle.id, 'enemy': paragraphbattle.enemy.id, 'luck': 1}) }}">Next Round with Luck</a></button>                           
                                 </div>
                             </div>
                         </div>                        

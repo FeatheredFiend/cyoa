@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ParagraphAction;
 use App\Form\ParagraphActionType;
 use App\Service\ParagraphActionRun;
+use App\Service\CreateBattle;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,14 +26,16 @@ class ParagraphActionController extends AbstractController
     private $validator;
     private $paginator;
     private $paragraphActionRun;
+    private $createBattle;
 
-    public function __construct(ParagraphActionRepository $paragraphactionRepository, ManagerRegistry $doctrine, ValidatorInterface $validator, PaginatorInterface $paginator, ParagraphActionRun $paragraphActionRun)
+    public function __construct(ParagraphActionRepository $paragraphactionRepository, ManagerRegistry $doctrine, ValidatorInterface $validator, PaginatorInterface $paginator, ParagraphActionRun $paragraphActionRun, CreateBattle $createBattle)
     {
         $this->paragraphactionRepository = $paragraphactionRepository;
         $this->validator = $validator;
         $this->paginator = $paginator;
         $this->doctrine = $doctrine;
         $this->paragraphActionRun = $paragraphActionRun;
+        $this->createBattle = $createBattle;
     }
 
     #[Route('/paragraphaction/view/{gamebook}/{paragraph}', name: 'paragraphaction_view', defaults: ['title' => 'View Paragraph Action'])]
@@ -126,6 +129,10 @@ class ParagraphActionController extends AbstractController
         $target = $request->query->get("target");
         $diceroll = $request->query->get("diceroll"); 
         $hero = $request->query->get("hero");   
+        $paragraph = $request->query->get("paragraph");   
+        $adventure = $request->query->get("adventure"); 
+
+
 
         if ($diceroll == 1) {
             $value = $actionvalue + rand(1,6);
@@ -181,7 +188,45 @@ class ParagraphActionController extends AbstractController
 
                 }
             } elseif ($target === "Enemy") {
+                $enemy = $this->findEnemy($paragraph);
+                $adventureParagraph = $this->createBattle->findAdventureParagraph($adventure);
 
+                $lastBattle = $this->createBattle->findLastBattle($adventureParagraph,$enemy);
+
+                if (!$lastBattle) {
+                    $this->createBattle->createBattleFromAction($adventure, $paragraph, $enemy, 0);
+                }
+                if ($operator === "Add") {
+                    if ($attribute ===  "Skill") {
+                        $RAW_QUERY = "UPDATE battle SET enemyskill = enemyskill + :skillValue ORDER BY id DESC LIMIT 1";        
+                        $statement = $em->getConnection()->prepare($RAW_QUERY);
+                        $statement->bindParam('skillValue', $value);
+                        $statement->execute();
+                    } elseif ($attribute ===  "Stamina") {
+                        $RAW_QUERY = "UPDATE battle SET enemystamina = enemystamina + :staminaValue ORDER BY id DESC LIMIT 1";        
+                        $statement = $em->getConnection()->prepare($RAW_QUERY);
+                        $statement->bindParam('staminaValue', $value);
+                        $statement->execute();
+                    } elseif ($attribute ===  "Luck") {
+
+                    }
+                } else if ($operator === "Remove") {
+                    if ($attribute ===  "Skill") {
+                        $RAW_QUERY = "UPDATE battle SET enemyskill = enemyskill - :skillValue ORDER BY id DESC LIMIT 1";        
+                        $statement = $em->getConnection()->prepare($RAW_QUERY);
+                        $statement->bindParam('skillValue', $value);
+                        $statement->execute();
+                    } elseif ($attribute ===  "Stamina") {
+                        $RAW_QUERY = "UPDATE battle SET enemystamina = enemystamina - :staminaValue ORDER BY id DESC LIMIT 1";        
+                        $statement = $em->getConnection()->prepare($RAW_QUERY);
+                        $statement->bindParam('staminaValue', $value);
+                        $statement->execute();
+                    } elseif ($attribute ===  "Luck") {
+
+                    }
+
+
+                }
             }
         } elseif ($category === "Battle") {
 
@@ -203,5 +248,24 @@ class ParagraphActionController extends AbstractController
         return new JsonResponse($results);
 
     }
+
+    public function findEnemy($paragraph)
+    {
+        $em = $this->doctrine->getManager();
+        $enemiesRepository = $em->getRepository("App\Entity\ParagraphActionEnemy");
+        
+        // Search the buildings that belongs to the organisation with the given id as GET parameter "organisationid"
+        $enemy = $enemiesRepository->createQueryBuilder("pae")
+            ->select('IDENTITY(pae.enemy)')
+            ->leftJoin('pae.paragraphaction', 'pa')
+            ->leftJoin('pa.paragraph', 'p')
+            ->andWhere('p.id = :paragraph')
+            ->setParameter('paragraph', $paragraph)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $enemy;
+    }
+
 
 }

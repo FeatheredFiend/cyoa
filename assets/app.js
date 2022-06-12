@@ -70,6 +70,12 @@ $(document).ready(function() {
         $("#paragraph_action_equipment_required_paragraphaction").attr("readonly", true);
     }
 
+    if ($("#paragraph_action_enemy_paragraphaction").length > 0) {
+        var paragraphaction = $('#paragraphaction').text();
+        $("#paragraph_action_enemy_paragraphaction").val(paragraphaction);
+        $("#paragraph_action_enemy_paragraphaction").attr("readonly", true);
+    }    
+
     if ($("#paragraph_direction_equipment_required_paragraphdirection").length > 0) {
         var paragraphdirection = $('#paragraphdirection').text();
         $("#paragraph_direction_equipment_required_paragraphdirection").val(paragraphdirection);
@@ -209,6 +215,8 @@ $(document).ready(function() {
             var actionvalue = $(".paragraphactionlistactionvalue:first").text();
             var target = $(".paragraphactionlisttarget:first").text();
             var diceroll = $(".paragraphactionlistdiceroll:first").text();
+            var paragraph = $("#paragraph").text();
+            var adventure = $("#adventure").text();
             var hero = $("#heroId").text();
 
             $.ajax({
@@ -222,7 +230,9 @@ $(document).ready(function() {
                     attribute: attribute,
                     actionvalue: actionvalue,
                     target: target,
-                    diceroll: diceroll,   
+                    diceroll: diceroll,
+                    paragraph: paragraph,   
+                    adventure: adventure,   
                     hero: hero                                     
                 },
                 success: function(score) {

@@ -38,9 +38,13 @@ class Enemy
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $image;
 
+    #[ORM\OneToMany(mappedBy: 'enemy', targetEntity: ParagraphActionEnemy::class)]
+    private $paragraphActionEnemies;
+
     public function __construct()
     {
         $this->battles = new ArrayCollection();
+        $this->paragraphActionEnemies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +154,36 @@ class Enemy
     public function setImage(string $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphActionEnemy>
+     */
+    public function getParagraphActionEnemies(): Collection
+    {
+        return $this->paragraphActionEnemies;
+    }
+
+    public function addParagraphActionEnemy(ParagraphActionEnemy $paragraphActionEnemy): self
+    {
+        if (!$this->paragraphActionEnemies->contains($paragraphActionEnemy)) {
+            $this->paragraphActionEnemies[] = $paragraphActionEnemy;
+            $paragraphActionEnemy->setEnemy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphActionEnemy(ParagraphActionEnemy $paragraphActionEnemy): self
+    {
+        if ($this->paragraphActionEnemies->removeElement($paragraphActionEnemy)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphActionEnemy->getEnemy() === $this) {
+                $paragraphActionEnemy->setEnemy(null);
+            }
+        }
 
         return $this;
     }

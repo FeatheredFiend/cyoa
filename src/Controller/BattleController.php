@@ -37,16 +37,23 @@ class BattleController extends AbstractController
     public function create(Request $request, string $title, int $adventure, int $paragraph, int $enemy, int $luck): Response
     {
 
-        $this->createBattle->createBattle($adventure, $paragraph, $enemy, $luck);
+        $this->createBattle->updateBattleAdventureParagraph($adventure);
+        $adventureParagraph = $this->createBattle->findAdventureParagraph($adventure);
+        $lastBattle = $this->createBattle->findLastBattle($adventureParagraph,$enemy);
+
+        if (!$lastBattle) {
+            $this->createBattle->createBattle($adventure, $paragraph, $enemy, $luck);
+        }
 
         return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraph]);
     }
 
-    #[Route('/battle/next/{adventure}/{paragraph}/{battle}/{luck}', name: 'battle_next', defaults: ['title' => 'Battle Next Round'])]
-    public function next(Request $request, string $title, int $adventure, int $paragraph, int $battle, int $luck): Response
+    #[Route('/battle/next/{adventure}/{paragraph}/{battle}/{enemy}/{luck}', name: 'battle_next', defaults: ['title' => 'Battle Next Round'])]
+    public function next(Request $request, string $title, int $adventure, int $paragraph, int $battle, int $enemy, int $luck): Response
     {
 
         $this->nextBattle->nextBattle($adventure, $battle, $luck);
+
 
         return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraph]);
     }

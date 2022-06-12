@@ -18,7 +18,7 @@ class ParagraphActionCategory
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\OneToMany(mappedBy: 'paragraphactiontype', targetEntity: ParagraphAction::class)]
+    #[ORM\OneToMany(mappedBy: 'paragraphactioncategory', targetEntity: ParagraphAction::class)]
     private $paragraphActions;
 
     public function __construct()

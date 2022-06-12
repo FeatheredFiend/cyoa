@@ -47,9 +47,13 @@ class ParagraphAction
     #[ORM\Column(type: 'integer')]
     private $numberdice;
 
+    #[ORM\OneToMany(mappedBy: 'paragraphaction', targetEntity: ParagraphActionEnemy::class)]
+    private $paragraphActionEnemies;
+
     public function __construct()
     {
         $this->paragraphActionEquipmentRequireds = new ArrayCollection();
+        $this->paragraphActionEnemies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -183,6 +187,36 @@ class ParagraphAction
     public function setNumberdice(int $numberdice): self
     {
         $this->numberdice = $numberdice;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphActionEnemy>
+     */
+    public function getParagraphActionEnemies(): Collection
+    {
+        return $this->paragraphActionEnemies;
+    }
+
+    public function addParagraphActionEnemy(ParagraphActionEnemy $paragraphActionEnemy): self
+    {
+        if (!$this->paragraphActionEnemies->contains($paragraphActionEnemy)) {
+            $this->paragraphActionEnemies[] = $paragraphActionEnemy;
+            $paragraphActionEnemy->setParagraphaction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphActionEnemy(ParagraphActionEnemy $paragraphActionEnemy): self
+    {
+        if ($this->paragraphActionEnemies->removeElement($paragraphActionEnemy)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphActionEnemy->getParagraphaction() === $this) {
+                $paragraphActionEnemy->setParagraphaction(null);
+            }
+        }
 
         return $this;
     }
