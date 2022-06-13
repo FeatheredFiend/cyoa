@@ -36,11 +36,10 @@ class BattleController extends AbstractController
     #[Route('/battle/create/{adventure}/{paragraph}/{enemy}/{luck}', name: 'battle_create', defaults: ['title' => 'Create Battle'])]
     public function create(Request $request, string $title, int $adventure, int $paragraph, int $enemy, int $luck): Response
     {
-
-        $this->createBattle->updateBattleAdventureParagraph($adventure);
         $adventureParagraph = $this->createBattle->findAdventureParagraph($adventure);
+        $this->createBattle->updateBattleAdventureParagraph($adventureParagraph);
         $lastBattle = $this->createBattle->findLastBattle($adventureParagraph,$enemy);
-
+        var_dump($lastBattle);
         if (!$lastBattle) {
             $this->createBattle->createBattle($adventure, $paragraph, $enemy, $luck);
         }
