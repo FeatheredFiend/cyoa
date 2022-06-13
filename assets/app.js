@@ -373,8 +373,8 @@ $(document).ready(function() {
               success: function (equipments) {
                 var heroEquipment = $("#heroequipmentTable");
                 heroEquipment.html('');
-                $.each(assetsubcategories, function (key, equipment) {
-                    heroEquipment.append('<tr><td class="hidden heroEquipmentList">' + equipment.herequipment + '</td><td>' + equipment.id + '</td><td>' + equipment.name + '</td><td class="heroEquipmentQuantity">' + equipment.quantity + '</td></tr>');
+                $.each(equipments, function (key, equipment) {
+                    heroEquipment.append('<tr><td class="hidden heroEquipmentList">' + equipment.heroequipment + '</td><td>' + equipment.id + '</td><td>' + equipment.name + '</td><td class="heroEquipmentQuantity">' + equipment.quantity + '</td></tr>');
                 });
               },
               error: function (err) {
