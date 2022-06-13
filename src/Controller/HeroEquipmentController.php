@@ -83,15 +83,15 @@ class HeroEquipmentController extends AbstractController
         return $this->render('hero_equipment/edit.html.twig', ['heroequipment' => $heroequipment,'form' => $form->createView(),'title' => $title]);
     }
 
-    #[Route('/run-paragraph-equipment', name: 'run_paragraph_equipment', defaults:['return' => 'JsonResponse', 'param' => 'Request $request'])]
-    public function listParagraphEquipmentAction(Request $request, ManagerRegistry $doctrine )
+    #[Route('/get-hero-equipment', name: 'get_hero_equipment', defaults:['return' => 'JsonResponse', 'param' => 'Request $request'])]
+    public function listHeroEquipmentAction(Request $request, ManagerRegistry $doctrine )
     {
         // Get Entity manager and repository
 
         $adventure = $request->query->get("adventure");
 
-        $em = $this->getDoctrine()->getManager();
-        $heroequipmentsRepository = $em->getRepository("App:HeroEquipment");
+        $em = $doctrine->getManager();
+        $heroequipmentsRepository = $em->getRepository("App\Entity\HeroEquipment");
         
         // Search the departments that belongs to the building with the given id as GET parameter "buildingid"
         $heroequipments = $heroequipmentsRepository->createQueryBuilder("he")
