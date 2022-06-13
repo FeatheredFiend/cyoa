@@ -77,7 +77,7 @@
                         </tr>
                     </thead>
                     <tbody name="heroequipmentTable" id="heroequipmentTable">
-                        {% for heroequipment in paginationEquipment %}
+                        {% for heroequipment in paginationHeroEquipment %}
                         {% set id = heroequipment.id %}
                         <tr>
                             <td class="hidden heroEquipmentList">{{ heroequipment.equipment.id}}</td>
@@ -107,6 +107,28 @@
                         <p>{{ paragraph.text}}</p>
                     {% endfor %}
                 </div>
+                <div class="row paragraphEquipments" id="paragraphEquipment">
+                    {% for paragraphequipment in paginationEquipment %}
+                        <div class="row paragraphEquipmentlist">
+                            <table class="table table-light">                                        
+                               <tr>
+                                    <th>Category</th>
+                                    <td class="paragraphequipmentcategory">{{ paragraphequipment.paragraphequipmentcategory }}</td>
+                                </tr>                              
+                                <tr>
+                                    <th>Equipment</th>
+                                    <td class="paragraphequipmentequipment">{{ paragraphequipment.equipment }}</td>
+                                </tr>                     
+                                <tr>
+                                    <th>Quantity</th>
+                                    <td class="paragraphequipmentquantity">{{ paragraphequipment.quantity }}</td>
+                                </tr>                                                                                                     
+                            </table>
+                        </div>    
+                    {% endfor %}
+                    <table id="equipmentText">
+                    </table>                     
+                </div>                
                 <div class="row" id="paragraphAction">
                     {% for paragraphaction in paginationParagraphAction %}
                         <div class="row paragraphactionlist">

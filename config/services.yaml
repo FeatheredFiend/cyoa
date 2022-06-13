@@ -54,7 +54,11 @@ services:
 
     App\Service\BuyEquipment:
         arguments: 
-            $buyEquipment: '%kernel.project_dir%'                             
+            $buyEquipment: '%kernel.project_dir%'
+
+    App\Service\UseEquipment:
+        arguments: 
+            $useEquipment: '%kernel.project_dir%'                                         
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

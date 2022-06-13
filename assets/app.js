@@ -82,6 +82,12 @@ $(document).ready(function() {
         $("#paragraph_direction_equipment_required_paragraphdirection").attr("readonly", true);
     }
 
+    if ($("#paragraph_equipment_paragraph").length > 0) {
+        var paragraph = $('#paragraph').text();
+        $("#paragraph_equipment_paragraph").val(paragraph);
+        $("#paragraph_equipment_paragraph").attr("readonly", true);
+    }    
+
     if ($("#playerattackstrength").length > 0) {
         var playerattackstrength = $('#playerattackstrength').text();
         var enemyattackstrength = $('#enemyattackstrength').text();
@@ -303,8 +309,7 @@ $(document).ready(function() {
                     }
                 },
                 error: function(err) {
-                    console.log(err);
-                    alert("An error ocurred while loading data ...");
+
                 }
             });
 
@@ -318,5 +323,65 @@ $(document).ready(function() {
         }
     }
 
+    if ($(".paragraphEquipmentlist").length > 0) {
+        var  equipments = $(".paragraphEquipmentlist").length
+        for (var i = 0; i < equipments; i++) { 
+            var x = 1;
+            var equipment = $(".paragraphequipmentequipment:first").text();
+            var adventure = $("#adventure").text();
+            var quantity = $(".paragraphequipmentquantity:first").text();
+            var category = $(".paragraphequipmentcategory:first").text();
+            var equipmentText = category + " " + equipment;
+
+            $.ajax({
+                url: "/run-paragraph-equipment",
+                //url: "/public/run-paragraph-equipment",
+                type: "GET",
+                dataType: "JSON",
+                data: {
+                    adventure: adventure,
+                    equipment: equipment,                    
+                    quantity: quantity,
+                    category: category                               
+                },
+                success: function(use) {
+
+                },
+                error: function(err) {
+
+                }
+            });
+            $(".paragraphEquipmentlist:nth-child(" + x + ")").remove();
+            $('#equipmentText').append('<tr><td class="text-center py-5">' + equipmentText + '</td></tr>');
+            x++;
+            
+        }
+        rebuildHeroEquipment();
+
+    }
+
+    function rebuildHeroEquipment() {
+        var adventure = $("#adventure").text();
+          $.ajax({
+            url: "/get-hero-equipment",
+            //url: "/public/get-hero-equipment",
+              type: "GET",
+              dataType: "JSON",
+              data: {
+                  adventure: adventure
+              },
+              success: function (equipments) {
+                var heroEquipment = $("#heroequipmentTable");
+                heroEquipment.html('');
+                $.each(assetsubcategories, function (key, equipment) {
+                    heroEquipment.append('<tr><td class="hidden heroEquipmentList">' + equipment.herequipment + '</td><td>' + equipment.id + '</td><td>' + equipment.name + '</td><td class="heroEquipmentQuantity">' + equipment.quantity + '</td></tr>');
+                });
+              },
+              error: function (err) {
+
+              }
+          });
+
+      }
 
 });

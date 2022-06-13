@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Repository\HeroEquipmentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HeroEquipmentController extends AbstractController
 {
@@ -80,5 +81,42 @@ class HeroEquipmentController extends AbstractController
         }
 
         return $this->render('hero_equipment/edit.html.twig', ['heroequipment' => $heroequipment,'form' => $form->createView(),'title' => $title]);
+    }
+
+    #[Route('/run-paragraph-equipment', name: 'run_paragraph_equipment', defaults:['return' => 'JsonResponse', 'param' => 'Request $request'])]
+    public function listParagraphEquipmentAction(Request $request, ManagerRegistry $doctrine )
+    {
+        // Get Entity manager and repository
+
+        $adventure = $request->query->get("adventure");
+
+        $em = $this->getDoctrine()->getManager();
+        $heroequipmentsRepository = $em->getRepository("App:HeroEquipment");
+        
+        // Search the departments that belongs to the building with the given id as GET parameter "buildingid"
+        $heroequipments = $heroequipmentsRepository->createQueryBuilder("he")
+            ->leftJoin("he.hero", "h")
+            ->leftJoin("h.adventure", "a")
+            ->where("a.id = :adventure")
+            ->setParameter("adventure", $adventure)
+            ->getQuery()
+            ->getResult();
+        
+        // Serialize into an array the data that we need, in this case only name and id
+        // Note: you can use a serializer as well, for explanation purposes, we'll do it manually
+        $responseArray = array();
+        foreach($heroequipments as $heroequipment){
+            $responseArray[] = array(
+                "heroequipment" => $heroequipment->getId(),
+                "id" => $heroequipment->getEquipment()->getId(),
+                "name" => $heroequipment->getEquipment()->getName(),
+                "quantity" => $heroequipment->getQuantity()
+            );
+        }
+        
+        
+        // Return array with structure of the buildings of the providen organisation id
+        return new JsonResponse($responseArray);
+
     }
 }

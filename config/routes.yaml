@@ -10,3 +10,13 @@ paragraph_action:
     path:     /run-paragraph-action
     defaults: { _controller: "App:ParagraphAction:listParagraphAction" }
     methods:  GET 
+
+paragraph_equipment:
+    path:     /run-paragraph-equipment
+    defaults: { _controller: "App:ParagraphEquipment:listParagraphEquipmentAction" }
+    methods:  GET  
+
+hero_equipment:
+    path:     /get-hero-equipment
+    defaults: { _controller: "App:HeroEquipment:listHeroEquipmentAction" }
+    methods:  GET         

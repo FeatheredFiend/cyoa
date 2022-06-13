@@ -21,6 +21,7 @@ use App\Repository\HeroEquipmentRepository;
 use App\Repository\HeroRepository;
 use App\Repository\MerchantRepository;
 use App\Repository\ParagraphRepository;
+use App\Repository\ParagraphEquipmentRepository;
 use App\Repository\ParagraphActionRepository;
 use App\Repository\ParagraphDirectionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,11 +34,12 @@ class AdventureController extends AbstractController
     private $heroequipmentRepository;
     private $heroRepository;
     private $paragraphRepository;
+    private $paragraphequipmentRepository;    
     private $paragraphactionRepository;
     private $paragraphdirectionRepository; 
     private $battleRepository;   
     private $enemyRepository;   
-    private $merchantRepository;    
+    private $merchantRepository; 
     private $paginator;
     private $doctrine;
     private $validator;
@@ -45,12 +47,13 @@ class AdventureController extends AbstractController
     private $startAdventure;
     private $nextParagraph;
 
-    public function __construct(AdventureRepository $adventureRepository, MerchantRepository $merchantRepository, HeroRepository $heroRepository, HeroEquipmentRepository $heroequipmentRepository, ParagraphRepository $paragraphRepository, ParagraphActionRepository $paragraphactionRepository, ParagraphDirectionRepository $paragraphdirectionRepository, EnemyRepository $enemyRepository, BattleRepository $battleRepository, PaginatorInterface $paginator, ManagerRegistry $doctrine, ValidatorInterface $validator, CreateHero $createHero, StartAdventure $startAdventure, NextParagraph $nextParagraph)
+    public function __construct(AdventureRepository $adventureRepository, MerchantRepository $merchantRepository, HeroRepository $heroRepository, HeroEquipmentRepository $heroequipmentRepository, ParagraphRepository $paragraphRepository, ParagraphEquipmentRepository $paragraphequipmentRepository, ParagraphActionRepository $paragraphactionRepository, ParagraphDirectionRepository $paragraphdirectionRepository, EnemyRepository $enemyRepository, BattleRepository $battleRepository, PaginatorInterface $paginator, ManagerRegistry $doctrine, ValidatorInterface $validator, CreateHero $createHero, StartAdventure $startAdventure, NextParagraph $nextParagraph)
     {
         $this->adventureRepository = $adventureRepository;
         $this->heroequipmentRepository = $heroequipmentRepository;
         $this->heroRepository = $heroRepository;
         $this->paragraphRepository = $paragraphRepository;
+        $this->paragraphequipmentRepository = $paragraphequipmentRepository;
         $this->paragraphactionRepository = $paragraphactionRepository;
         $this->paragraphdirectionRepository = $paragraphdirectionRepository;
         $this->battleRepository = $battleRepository;
@@ -155,13 +158,22 @@ class AdventureController extends AbstractController
             5/*limit per page*/
         );
 
-        $queryBuilderEquipment = $this->heroequipmentRepository->getWithSearchQueryBuilderPlay($q, $adventure);
+        $queryBuilderHeroEquipment = $this->heroequipmentRepository->getWithSearchQueryBuilderPlay($q, $adventure);
 
-        $paginationEquipment = $this->paginator->paginate(
-            $queryBuilderEquipment, /* query NOT result */
+        $paginationHeroEquipment = $this->paginator->paginate(
+            $queryBuilderHeroEquipment, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
         );
+
+
+        $queryBuilderParagraphEquipment = $this->paragraphequipmentRepository->getWithSearchQueryBuilderPlay($q, $adventure, $paragraph);
+
+        $paginationParagraphEquipment = $this->paginator->paginate(
+            $queryBuilderParagraphEquipment, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            5/*limit per page*/
+        );        
 
         $queryBuilderParagraph = $this->paragraphRepository->getWithSearchQueryBuilderPlay($q, $adventure, $paragraph);
 
@@ -215,7 +227,8 @@ class AdventureController extends AbstractController
 
         return $this->render('adventure/play.html.twig', [
             'pagination' => $pagination,
-            'paginationEquipment' => $paginationEquipment,
+            'paginationHeroEquipment' => $paginationHeroEquipment,
+            'paginationEquipment' => $paginationParagraphEquipment,
             'paginationParagraph' => $paginationParagraph,
             'paginationParagraphAction' => $paginationParagraphAction,
             'paginationParagraphDirection' => $paginationParagraphDirection,

@@ -43,6 +43,9 @@ class Paragraph
     #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: AdventureParagraph::class)]
     private $adventureParagraphs;
 
+    #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: ParagraphEquipment::class)]
+    private $paragraphEquipment;
+
     public function __construct()
     {
         $this->paragraphActions = new ArrayCollection();
@@ -51,6 +54,7 @@ class Paragraph
         $this->paragraphDirections = new ArrayCollection();
         $this->merchants = new ArrayCollection();
         $this->adventureParagraphs = new ArrayCollection();
+        $this->paragraphEquipment = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -254,6 +258,36 @@ class Paragraph
             // set the owning side to null (unless already changed)
             if ($adventureParagraph->getParagraph() === $this) {
                 $adventureParagraph->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphEquipment>
+     */
+    public function getParagraphEquipment(): Collection
+    {
+        return $this->paragraphEquipment;
+    }
+
+    public function addParagraphEquipment(ParagraphEquipment $paragraphEquipment): self
+    {
+        if (!$this->paragraphEquipment->contains($paragraphEquipment)) {
+            $this->paragraphEquipment[] = $paragraphEquipment;
+            $paragraphEquipment->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphEquipment(ParagraphEquipment $paragraphEquipment): self
+    {
+        if ($this->paragraphEquipment->removeElement($paragraphEquipment)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphEquipment->getParagraph() === $this) {
+                $paragraphEquipment->setParagraph(null);
             }
         }
 
