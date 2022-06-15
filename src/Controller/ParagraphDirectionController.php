@@ -17,13 +17,27 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class ParagraphDirectionController extends AbstractController
 {
+
+    private $paragraphdirectionRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;   
+
+    public function __construct(ParagraphDirectionRepository $paragraphdirectionRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
+    {
+        $this->paragraphdirectionRepository = $paragraphdirectionRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
+    }
+
     #[Route('/paragraphdirection/view/{gamebook}/{paragraph}', name: 'paragraphdirection_view', defaults: ['title' => 'View Paragraph Direction'])]
-    public function index(ParagraphDirectionRepository $paragraphdirectionRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, int $paragraph): Response
+    public function index(Request $request, string $title, string $gamebook, int $paragraph): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphdirectionRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph);
+        $queryBuilder = $this->paragraphdirectionRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -39,7 +53,7 @@ class ParagraphDirectionController extends AbstractController
     }
 
     #[Route('/paragraphdirection/create/{gamebook}/{paragraph}', name: 'paragraphdirection_create', defaults: ['title' => 'Create Paragraph Direction'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, int $paragraph, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title, string $gamebook, int $paragraph): Response
     {
         $paragraphdirection = new ParagraphDirection();
 
@@ -50,7 +64,7 @@ class ParagraphDirectionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphdirection);
             $em->flush();
 
@@ -61,9 +75,9 @@ class ParagraphDirectionController extends AbstractController
     }
 
     #[Route('/paragraphdirection/edit/{gamebook}/{id}', name: 'paragraphdirection_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Direction'])]
-    public function edit(int $id, ParagraphDirectionRepository $paragraphdirectionRepository, Request $request,string $title, string $gamebook, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request,string $title, string $gamebook): Response
     {
-        $paragraphdirection = $paragraphdirectionRepository
+        $paragraphdirection = $this->paragraphdirectionRepository
             ->find($id);
 
         $form = $this->createForm(ParagraphDirectionType::class, $paragraphdirection);
@@ -73,7 +87,7 @@ class ParagraphDirectionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphdirection);
             $em->flush();
 

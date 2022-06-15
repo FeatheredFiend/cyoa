@@ -20,24 +20,30 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ParagraphEquipmentController extends AbstractController
 {
     private $useEquipment; 
-    private $paginator;
+    private $paragraphequipmentRepository; 
+    private $paginator; 
+    private $doctrine;
+    private $validator;  
 
 
-    public function __construct(UseEquipment $useEquipment, PaginatorInterface $paginator)
+    public function __construct(ParagraphEquipmentRepository $paragraphequipmentRepository, UseEquipment $useEquipment, PaginatorInterface $paginator, ValidatorInterface $validator, ManagerRegistry $doctrine)
     {
         $this->useEquipment = $useEquipment;
+        $this->paragraphequipmentRepository = $paragraphequipmentRepository;
         $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;  
 
     }
 
 
     #[Route('/paragraphequipment/view/{gamebook}/{paragraph}', name: 'paragraphequipment_view', defaults: ['title' => 'View Paragraph Equipment'])]
-    public function index(ParagraphEquipmentRepository $paragraphequipmentRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, int $paragraph): Response
+    public function index(Request $request, string $title, string $gamebook, int $paragraph): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphequipmentRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph);
+        $queryBuilder = $this->paragraphequipmentRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -53,7 +59,7 @@ class ParagraphEquipmentController extends AbstractController
     }
 
     #[Route('/paragraphequipment/create/{gamebook}/{paragraph}', name: 'paragraphequipment_create', defaults: ['title' => 'Create Paragraph Equipment'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, int $paragraph, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title, string $gamebook, int $paragraph): Response
     {
         $paragraphequipment = new ParagraphEquipment();
 
@@ -64,7 +70,7 @@ class ParagraphEquipmentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphequipment);
             $em->flush();
 
@@ -75,9 +81,9 @@ class ParagraphEquipmentController extends AbstractController
     }
 
     #[Route('/paragraphequipment/edit/{gamebook}/{paragraph}/{id}', name: 'paragraphequipment_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Equipment'])]
-    public function edit(int $id, ParagraphEquipmentRepository $paragraphequipmentRepository, Request $request,string $title, string $gamebook, ManagerRegistry $doctrine, int $paragraph): Response
+    public function edit(int $id, Request $request,string $title, string $gamebook, int $paragraph): Response
     {
-        $paragraphequipment = $paragraphequipmentRepository
+        $paragraphequipment = $this->paragraphequipmentRepository
             ->find($id);
 
         $form = $this->createForm(ParagraphEquipmentType::class, $paragraphequipment);
@@ -87,7 +93,7 @@ class ParagraphEquipmentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphequipment);
             $em->flush();
 
@@ -98,10 +104,10 @@ class ParagraphEquipmentController extends AbstractController
     }
 
     #[Route('/run-paragraph-equipment', name: 'run_paragraph_equipment', defaults:['return' => 'JsonResponse', 'param' => 'Request $request'])]
-    public function listParagraphEquipmentAction(Request $request, ManagerRegistry $doctrine )
+    public function listParagraphEquipmentAction(Request $request )
     {
         // Get Entity manager and repository
-        $em = $doctrine->getManager();
+        $em = $this->doctrine->getManager();
         
         $equipment = $request->query->get("equipment");
         $adventure = $request->query->get("adventure");

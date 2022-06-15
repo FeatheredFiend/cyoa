@@ -17,13 +17,27 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class EquipmentEffectOperatorController extends AbstractController
 {
+    private $equipmenteffectoperatorRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;
+
+
+    public function __construct(EquipmentEffectOperatorRepository $equipmenteffectoperatorRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
+    {
+        $this->equipmenteffectoperatorRepository = $equipmenteffectoperatorRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;
+    }
+
     #[Route('/equipmenteffectoperator/view', name: 'equipmenteffectoperator_view', defaults: ['title' => 'View Equipment Effect Operator'])]
-    public function index(EquipmentEffectOperatorRepository $equipmenteffectoperatorRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    public function index(Request $request, string $title): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $equipmenteffectoperatorRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $this->equipmenteffectoperatorRepository->getWithSearchQueryBuilderView($q);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -37,7 +51,7 @@ class EquipmentEffectOperatorController extends AbstractController
     }
 
     #[Route('/equipmenteffectoperator/create', name: 'equipmenteffectoperator_create', defaults: ['title' => 'Create Equipment Effect Operator'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title): Response
     {
         $equipmenteffectoperator = new EquipmentEffectOperator();
 
@@ -48,7 +62,7 @@ class EquipmentEffectOperatorController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($equipmenteffectoperator);
             $em->flush();
 
@@ -59,9 +73,9 @@ class EquipmentEffectOperatorController extends AbstractController
     }
 
     #[Route('/equipmenteffectoperator/edit/{id}', name: 'equipmenteffectoperator_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Equipment Effect Operator'])]
-    public function edit(int $id, EquipmentEffectOperatorRepository $equipmenteffectoperatorRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request,string $title): Response
     {
-        $equipmenteffectoperator = $equipmenteffectoperatorRepository
+        $equipmenteffectoperator = $this->equipmenteffectoperatorRepository
             ->find($id);
 
 
@@ -72,7 +86,7 @@ class EquipmentEffectOperatorController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($equipmenteffectoperator);
             $em->flush();
 

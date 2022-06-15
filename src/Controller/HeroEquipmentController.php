@@ -18,13 +18,27 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HeroEquipmentController extends AbstractController
 {
+
+    private $heroequipmentRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;   
+
+    public function __construct(HeroEquipmentRepository $heroequipmentRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
+    {
+        $this->heroequipmentRepository = $heroequipmentRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
+    }
+
     #[Route('/heroequipment/view', name: 'heroequipment_view', defaults: ['title' => 'View Hero Equipment'])]
-    public function index(HeroEquipmentRepository $heroequipmentRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    public function index(Request $request, string $title): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $heroequipmentRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $this->heroequipmentRepository->getWithSearchQueryBuilderView($q);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -38,7 +52,7 @@ class HeroEquipmentController extends AbstractController
     }
 
     #[Route('/heroequipment/create', name: 'heroequipment_create', defaults: ['title' => 'Create Hero Equipment'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title): Response
     {
         $heroequipment = new HeroEquipment();
 
@@ -49,7 +63,7 @@ class HeroEquipmentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($heroequipment);
             $em->flush();
 
@@ -60,9 +74,9 @@ class HeroEquipmentController extends AbstractController
     }
 
     #[Route('/heroequipment/edit/{id}', name: 'heroequipment_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Hero Equipment'])]
-    public function edit(int $id, HeroEquipmentRepository $heroequipmentRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request,string $title): Response
     {
-        $heroequipment = $heroequipmentRepository
+        $heroequipment = $this->heroequipmentRepository
             ->find($id);
 
 
@@ -73,7 +87,7 @@ class HeroEquipmentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($heroequipment);
             $em->flush();
 
@@ -84,13 +98,13 @@ class HeroEquipmentController extends AbstractController
     }
 
     #[Route('/get-hero-equipment', name: 'get_hero_equipment', defaults:['return' => 'JsonResponse', 'param' => 'Request $request'])]
-    public function listHeroEquipmentAction(Request $request, ManagerRegistry $doctrine )
+    public function listHeroEquipmentAction(Request $request )
     {
         // Get Entity manager and repository
 
         $adventure = $request->query->get("adventure");
 
-        $em = $doctrine->getManager();
+        $em = $this->doctrine->getManager();
         $heroequipmentsRepository = $em->getRepository("App\Entity\HeroEquipment");
         
         // Search the departments that belongs to the building with the given id as GET parameter "buildingid"

@@ -17,13 +17,27 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class ParagraphDirectionEquipmentRequiredController extends AbstractController
 {
+
+    private $paragraphdirectionequipmentrequiredRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;   
+
+    public function __construct(ParagraphDirectionEquipmentRequiredRepository $paragraphdirectionequipmentrequiredRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
+    {
+        $this->paragraphdirectionequipmentrequiredRepository = $paragraphdirectionequipmentrequiredRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
+    }
+
     #[Route('/paragraphdirectionequipmentrequired/view/{gamebook}/{paragraph}/{paragraphdirection}', name: 'paragraphdirectionequipmentrequired_view', defaults: ['title' => 'View Paragraph Direction Equipment Required'])]
-    public function index(ParagraphDirectionEquipmentRequiredRepository $paragraphdirectionequipmentrequiredRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, int $paragraph, int $paragraphdirection): Response
+    public function index(Request $request, string $title, string $gamebook, int $paragraph, int $paragraphdirection): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphdirectionequipmentrequiredRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph, $paragraphdirection);
+        $queryBuilder = $this->paragraphdirectionequipmentrequiredRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph, $paragraphdirection);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -40,7 +54,7 @@ class ParagraphDirectionEquipmentRequiredController extends AbstractController
     }
 
     #[Route('/paragraphdirectionequipmentrequired/create/{gamebook}/{paragraph}/{paragraphdirection}', name: 'paragraphdirectionequipmentrequired_create', defaults: ['title' => 'Create Paragraph Direction Equipment Required'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, int $paragraph, int $paragraphdirection, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title, string $gamebook, int $paragraph, int $paragraphdirection): Response
     {
         $paragraphdirectionequipmentrequired = new ParagraphDirectionEquipmentRequired();
 
@@ -51,7 +65,7 @@ class ParagraphDirectionEquipmentRequiredController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphdirectionequipmentrequired);
             $em->flush();
 
@@ -62,9 +76,9 @@ class ParagraphDirectionEquipmentRequiredController extends AbstractController
     }
 
     #[Route('/paragraphdirectionequipmentrequired/edit/{gamebook}/{paragraph}/{paragraphdirection}/{id}', name: 'paragraphdirectionequipmentrequired_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Direction Equipment Required'])]
-    public function edit(int $id, ParagraphDirectionEquipmentRequiredRepository $paragraphdirectionequipmentrequiredRepository, Request $request,string $title, string $gamebook, ManagerRegistry $doctrine, int $paragraphdirection, int $paragraph): Response
+    public function edit(int $id, Request $request,string $title, string $gamebook, int $paragraphdirection, int $paragraph): Response
     {
-        $paragraphdirectionequipmentrequired = $paragraphdirectionequipmentrequiredRepository
+        $paragraphdirectionequipmentrequired = $this->paragraphdirectionequipmentrequiredRepository
             ->find($id);
 
         $form = $this->createForm(ParagraphDirectionEquipmentRequiredType::class, $paragraphdirectionequipmentrequired);
@@ -74,7 +88,7 @@ class ParagraphDirectionEquipmentRequiredController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphdirectionequipmentrequired);
             $em->flush();
 

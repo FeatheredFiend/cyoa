@@ -17,13 +17,27 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class ParagraphActionEnemyController extends AbstractController
 {
+
+    private $paragraphactionenemyRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;   
+
+    public function __construct(ParagraphActionEnemyRepository $paragraphactionenemyRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
+    {
+        $this->paragraphactionenemyRepository = $paragraphactionenemyRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
+    }
+
     #[Route('/paragraphactionenemy/view/{gamebook}/{paragraph}/{paragraphaction}', name: 'paragraphactionenemy_view', defaults: ['title' => 'View Paragraph Action Enemy'])]
-    public function index(ParagraphActionEnemyRepository $paragraphactionenemyRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, int $paragraph, int $paragraphaction): Response
+    public function index(Request $request, string $title, string $gamebook, int $paragraph, int $paragraphaction): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphactionenemyRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph);
+        $queryBuilder = $this->paragraphactionenemyRepository->getWithSearchQueryBuilderViewParagraph($q, $paragraph);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -40,7 +54,7 @@ class ParagraphActionEnemyController extends AbstractController
     }
 
     #[Route('/paragraphactionenemy/create/{gamebook}/{paragraph}/{paragraphaction}', name: 'paragraphactionenemy_create', defaults: ['title' => 'Create Paragraph Action Enemy'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, int $paragraph, int $paragraphaction, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title, string $gamebook, int $paragraph, int $paragraphaction): Response
     {
         $paragraphactionenemy = new ParagraphActionEnemy();
 
@@ -51,7 +65,7 @@ class ParagraphActionEnemyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphactionenemy);
             $em->flush();
 
@@ -62,9 +76,9 @@ class ParagraphActionEnemyController extends AbstractController
     }
 
     #[Route('/paragraphactionenemy/edit/{gamebook}/{paragraph}/{paragraphaction}/{id}', name: 'paragraphactionenemy_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Action Enemy'])]
-    public function edit(int $id, ParagraphActionEnemyRepository $paragraphactionenemyRepository, Request $request,string $title, string $gamebook, ManagerRegistry $doctrine, int $paragraphaction, int $paragraph): Response
+    public function edit(int $id, Request $request,string $title, string $gamebook, int $paragraphaction, int $paragraph): Response
     {
-        $paragraphactionenemy = $paragraphactionenemyRepository
+        $paragraphactionenemy = $this->paragraphactionenemyRepository
             ->find($id);
 
         $form = $this->createForm(ParagraphActionEnemyType::class, $paragraphactionenemy);
@@ -74,7 +88,7 @@ class ParagraphActionEnemyController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphactionenemy);
             $em->flush();
 

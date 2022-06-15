@@ -18,13 +18,29 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class MerchantController extends AbstractController
 {
+
+    private $merchantRepository;     
+    private $buyEquipment;
+    private $paginator; 
+    private $doctrine;
+    private $validator;   
+
+    public function __construct(MerchantRepository $merchantRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator, BuyEquipment $buyEquipment)
+    {
+        $this->merchantRepository = $merchantRepository;
+        $this->buyEquipment  = $buyEquipment;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
+    }
+
     #[Route('/merchant/view/{gamebook}/{paragraph}', name: 'merchant_view', defaults: ['title' => 'View Merchant'])]
-    public function index(MerchantRepository $merchantRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, string $paragraph): Response
+    public function index(Request $request, string $title, string $gamebook, string $paragraph): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $merchantRepository->getWithSearchQueryBuilderView($q, $paragraph);
+        $queryBuilder = $this->merchantRepository->getWithSearchQueryBuilderView($q, $paragraph);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -41,7 +57,7 @@ class MerchantController extends AbstractController
     }
 
     #[Route('/merchant/create/{gamebook}/{paragraph}', name: 'merchant_create', defaults: ['title' => 'Create Merchant'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, string $paragraph, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title, string $gamebook, string $paragraph): Response
     {
         $merchant = new Merchant();
 
@@ -52,7 +68,7 @@ class MerchantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($merchant);
             $em->flush();
 
@@ -69,9 +85,9 @@ class MerchantController extends AbstractController
     }
 
     #[Route('/merchant/edit/{gamebook}/{paragraph}/{id}', name: 'merchant_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Merchant'])]
-    public function edit(int $id, MerchantRepository $merchantRepository, Request $request,string $title, string $gamebook, string $paragraph, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request,string $title, string $gamebook, string $paragraph): Response
     {
-        $merchant = $merchantRepository
+        $merchant = $this->merchantRepository
             ->find($id);
 
         $form = $this->createForm(MerchantType::class, $merchant);
@@ -81,7 +97,7 @@ class MerchantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($merchant);
             $em->flush();
 
@@ -98,14 +114,14 @@ class MerchantController extends AbstractController
     }
 
     #[Route('/buyequipment/{adventure}/{paragraph}/{merchantinventory}/{equipment}/{quantity}', name: 'buy_equipment', defaults: ['title' => 'Buy Equipment'])]
-    public function next(Request $request, string $title, int $adventure, int $paragraph, int $merchantinventory, int $equipment, int $quantity, BuyEquipment $buyEquipment): Response
+    public function next(Request $request, string $title, int $adventure, int $paragraph, int $merchantinventory, int $equipment, int $quantity): Response
     {
-        $heroTreasure = $buyEquipment->getHeroTreasure($adventure);
-        $equipmentCost = $buyEquipment->getEquipmentCost($equipment);
+        $heroTreasure = $this->buyEquipment->getHeroTreasure($adventure);
+        $equipmentCost = $this->buyEquipment->getEquipmentCost($equipment);
 
         if ($heroTreasure >= $equipmentCost) {
-            $buyEquipment->buyEquipment($adventure, $equipment, $quantity);
-            $buyEquipment->removeEquipment($merchantinventory);
+            $this->buyEquipment->buyEquipment($adventure, $equipment, $quantity);
+            $this->buyEquipment->removeEquipment($merchantinventory);
             $this->addFlash("success", "You have brought this Equipment!");
 
             return $this->redirectToRoute('adventure_play', ['adventure' => $adventure, 'paragraph' => $paragraph]);

@@ -117,10 +117,10 @@ class ParagraphActionController extends AbstractController
     }
 
     #[Route('/run-paragraph-action', name: 'run_paragraph_action', defaults:['return' => 'JsonResponse', 'param' => 'Request $request'])]
-    public function listParagraphAction(Request $request, ManagerRegistry $doctrine )
+    public function listParagraphAction(Request $request )
     {
         // Get Entity manager and repository
-        $em = $doctrine->getManager();
+        $em = $this->doctrine->getManager();
         
         $category = $request->query->get("category");
         $operator = $request->query->get("operator");

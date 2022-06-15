@@ -19,8 +19,19 @@ use App\Repository\UserRepository;
 class RegistrationController extends AbstractController
 {
 
+    private $passwordHasher;  
+    private $userRepository;     
+    private $doctrine;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository, ManagerRegistry $doctrine)
+    {
+        $this->passwordHasher = $passwordHasher;
+        $this->userRepository = $userRepository;
+        $this->doctrine = $doctrine;       
+    }
+
     #[Route('/registration', name: 'registration')]
-    public function index(Request $request, UserPasswordHasherInterface $passwordHasher,ManagerRegistry $doctrine)
+    public function index(Request $request)
     {
         $user = new User();
 
@@ -31,7 +42,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Encode the new users password
             $user->setAdmin(0);
-            $hashedPassword = $passwordHasher->hashPassword(
+            $hashedPassword = $this->passwordHasher->hashPassword(
                 $user,
                 $user->getPassword()
             );
@@ -42,7 +53,7 @@ class RegistrationController extends AbstractController
             $user->setRoles(['ROLE_USER']);
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($user);
             $em->flush();
 
@@ -55,9 +66,9 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/elevateuser/{id}', name: 'elevate_user', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Elevate User'])]
-    public function elevateUser(int $id, UserRepository $userRepository, Request $request, string $title, ManagerRegistry $doctrine)
+    public function elevateUser(int $id, Request $request, string $title)
     {
-        $user = $userRepository
+        $user = $this->userRepository
             ->find($id);
 
         $form = $this->createForm(ElevateUserType::class, $user);
@@ -69,7 +80,7 @@ class RegistrationController extends AbstractController
 
             } else {
                 // Save
-                $em = $doctrine->getManager();
+                $em = $this->doctrine->getManager();
                 $em->persist($user);
                 $em->flush();
             }

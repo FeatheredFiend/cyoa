@@ -20,20 +20,28 @@ class GamebookController extends AbstractController
 {
 
     private $security;
+    private $gamebookRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;    
 
-    public function __construct(Security $security)
+    public function __construct(Security $security, GamebookRepository $gamebookRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
     {
        $this->security = $security;
+       $this->gamebookRepository = $gamebookRepository;
+       $this->paginator = $paginator;
+       $this->validator = $validator;
+       $this->doctrine = $doctrine;       
     }
 
     #[Route('/gamebook/view', name: 'gamebook_view', defaults: ['title' => 'View Gamebook'])]
-    public function index(GamebookRepository $gamebookRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    public function index(Request $request, string $title): Response
     {
         $q = $request->query->get('q');
         $user = $this->security->getUser();
-        $queryBuilder = $gamebookRepository->getWithSearchQueryBuilderView($q, $user->getId());
+        $queryBuilder = $this->gamebookRepository->getWithSearchQueryBuilderView($q, $user->getId());
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -47,7 +55,7 @@ class GamebookController extends AbstractController
     }
 
     #[Route('/gamebook/create', name: 'gamebook_create', defaults: ['title' => 'Create Gamebook'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title): Response
     {
         $gamebook = new Gamebook();
 
@@ -58,7 +66,7 @@ class GamebookController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($gamebook);
             $em->flush();
 
@@ -69,9 +77,9 @@ class GamebookController extends AbstractController
     }
 
     #[Route('/gamebook/edit/{id}', name: 'gamebook_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Gamebook'])]
-    public function edit(int $id, GamebookRepository $gamebookRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request, string $title): Response
     {
-        $gamebook = $gamebookRepository
+        $gamebook = $this->gamebookRepository
             ->find($id);
 
 
@@ -82,7 +90,7 @@ class GamebookController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($gamebook);
             $em->flush();
 

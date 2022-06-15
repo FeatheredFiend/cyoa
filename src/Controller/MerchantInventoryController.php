@@ -17,13 +17,27 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class MerchantInventoryController extends AbstractController
 {
+
+    private $merchantinventoryRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;   
+
+    public function __construct(MerchantInventoryRepository $merchantinventoryRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
+    {
+        $this->merchantinventoryRepository = $merchantinventoryRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
+    }
+
     #[Route('/merchantinventory/view/{gamebook}/{paragraph}/{merchant}', name: 'merchantinventory_view', defaults: ['title' => 'View Merchant Inventory'])]
-    public function index(MerchantInventoryRepository $merchantinventoryRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook, string $paragraph, string $merchant): Response
+    public function index(Request $request, string $title, string $gamebook, string $paragraph, string $merchant): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $merchantinventoryRepository->getWithSearchQueryBuilderView($q, $merchant);
+        $queryBuilder = $this->merchantinventoryRepository->getWithSearchQueryBuilderView($q, $merchant);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -41,7 +55,7 @@ class MerchantInventoryController extends AbstractController
     }
 
     #[Route('/merchantinventory/create/{gamebook}/{paragraph}/{merchant}', name: 'merchantinventory_create', defaults: ['title' => 'Create Merchant Inventory'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, string $paragraph, string $merchant, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title, string $gamebook, string $paragraph, string $merchant): Response
     {
         $merchantinventory = new MerchantInventory();
 
@@ -52,7 +66,7 @@ class MerchantInventoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($merchantinventory);
             $em->flush();
 
@@ -70,9 +84,9 @@ class MerchantInventoryController extends AbstractController
     }
 
     #[Route('/merchantinventory/edit/{gamebook}/{paragraph}/{merchant}/{id}', name: 'merchantinventory_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Merchant Inventory'])]
-    public function edit(int $id, MerchantInventoryRepository $merchantinventoryRepository, Request $request,string $title, string $gamebook, string $paragraph, string $merchant, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request,string $title, string $gamebook, string $paragraph, string $merchant): Response
     {
-        $merchantinventory = $merchantinventoryRepository
+        $merchantinventory = $this->merchantinventoryRepository
             ->find($id);
 
         $form = $this->createForm(MerchantInventoryType::class, $merchantinventory);
@@ -82,7 +96,7 @@ class MerchantInventoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($merchantinventory);
             $em->flush();
 

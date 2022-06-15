@@ -18,13 +18,29 @@ use App\Service\FileUploader;
 
 class ParagraphController extends AbstractController
 {
+
+    private $paragraphRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;   
+    private $fileUploader;
+
+    public function __construct(ParagraphRepository $paragraphRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator, FileUploader $fileUploader)
+    {
+        $this->paragraphRepository = $paragraphRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
+        $this->fileUploader = $fileUploader;
+    }
+
     #[Route('/paragraph/view/{gamebook}', name: 'paragraph_view', defaults: ['title' => 'View Paragraph'])]
-    public function index(ParagraphRepository $paragraphRepository, Request $request, PaginatorInterface $paginator, string $title, string $gamebook): Response
+    public function index(Request $request, string $title, string $gamebook): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphRepository->getWithSearchQueryBuilderViewGamebook($q, $gamebook);
+        $queryBuilder = $this->paragraphRepository->getWithSearchQueryBuilderViewGamebook($q, $gamebook);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -39,7 +55,7 @@ class ParagraphController extends AbstractController
     }
 
     #[Route('/paragraph/create/{gamebook}', name: 'paragraph_create', defaults: ['title' => 'Create Paragraph'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine, FileUploader $fileUploader): Response
+    public function create(Request $request, string $title, string $gamebook): Response
     {
         $paragraph = new Paragraph();
 
@@ -50,11 +66,11 @@ class ParagraphController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
-                $imageFileName = $fileUploader->uploadParagraph($imageFile);
+                $imageFileName = $this->fileUploader->uploadParagraph($imageFile);
                 $paragraph->setImage($imageFileName);
             }
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraph);
             $em->flush();
 
@@ -65,9 +81,9 @@ class ParagraphController extends AbstractController
     }
 
     #[Route('/paragraph/edit/{gamebook}/{id}', name: 'paragraph_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph'])]
-    public function edit(int $id, ParagraphRepository $paragraphRepository, Request $request, string $title, string $gamebook, ManagerRegistry $doctrine, FileUploader $fileUploader): Response
+    public function edit(int $id, Request $request, string $title, string $gamebook): Response
     {
-        $paragraph = $paragraphRepository
+        $paragraph = $this->paragraphRepository
             ->find($id);
 
         $form = $this->createForm(ParagraphType::class, $paragraph);
@@ -77,11 +93,11 @@ class ParagraphController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
-                $imageFileName = $fileUploader->uploadParagraph($imageFile);
+                $imageFileName = $this->fileUploader->uploadParagraph($imageFile);
                 $paragraph->setImage($imageFileName);
             }
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraph);
             $em->flush();
 

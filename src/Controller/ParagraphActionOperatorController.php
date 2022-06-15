@@ -17,13 +17,27 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class ParagraphActionOperatorController extends AbstractController
 {
+
+    private $paragraphactionoperatorRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;   
+
+    public function __construct(ParagraphActionOperatorRepository $paragraphactionoperatorRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
+    {
+        $this->paragraphactionoperatorRepository = $paragraphactionoperatorRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
+    }
+
     #[Route('/paragraphactionoperator/view', name: 'paragraphactionoperator_view', defaults: ['title' => 'View Paragraph Action Operator'])]
     public function index(ParagraphActionOperatorRepository $paragraphactionoperatorRepository, Request $request, PaginatorInterface $paginator, string $title): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphactionoperatorRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $this->paragraphactionoperatorRepository->getWithSearchQueryBuilderView($q);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -37,7 +51,7 @@ class ParagraphActionOperatorController extends AbstractController
     }
 
     #[Route('/paragraphactionoperator/create', name: 'paragraphactionoperator_create', defaults: ['title' => 'Create Paragraph Action Operator'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title): Response
     {
         $paragraphactionoperator = new ParagraphActionOperator();
 
@@ -48,7 +62,7 @@ class ParagraphActionOperatorController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphactionoperator);
             $em->flush();
 
@@ -59,9 +73,9 @@ class ParagraphActionOperatorController extends AbstractController
     }
 
     #[Route('/paragraphactionoperator/edit/{id}', name: 'paragraphactionoperator_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Action Operator'])]
-    public function edit(int $id, ParagraphActionOperatorRepository $paragraphactionoperatorRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request,string $title): Response
     {
-        $paragraphactionoperator = $paragraphactionoperatorRepository
+        $paragraphactionoperator = $this->paragraphactionoperatorRepository
             ->find($id);
 
         $form = $this->createForm(ParagraphActionOperatorType::class, $paragraphactionoperator);
@@ -71,7 +85,7 @@ class ParagraphActionOperatorController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphactionoperator);
             $em->flush();
 

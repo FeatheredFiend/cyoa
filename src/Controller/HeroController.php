@@ -17,22 +17,39 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Knp\Component\Pager\PaginatorInterface;
 
 class HeroController extends AbstractController
-{
+{   
+    
+    private $heroRepository;  
+    private $heroequipmentRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;   
+
+
+    public function __construct(HeroRepository $heroRepository, HeroEquipmentRepository $heroequipmentRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
+    {
+        $this->heroRepository = $heroRepository;
+        $this->heroequipmentRepository = $heroequipmentRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
+    }
+
     #[Route('/hero/view/{gamebook}/{hero}/{adventure}', name: 'hero_view', defaults: ['title' => 'View Hero'])]
-    public function index(HeroRepository $heroRepository,HeroEquipmentRepository $heroequipmentRepository, Request $request, PaginatorInterface $paginator, string $title, string $hero, string $gamebook, string $adventure): Response
+    public function index(Request $request, string $title, string $hero, string $gamebook, string $adventure): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $heroRepository->getWithSearchQueryBuilderView($q, $hero);
+        $queryBuilder = $this->heroRepository->getWithSearchQueryBuilderView($q, $hero);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
         );
 
-        $queryBuilderEq = $heroequipmentRepository->getWithSearchQueryBuilderView($q, $hero);
+        $queryBuilderEq = $this->heroequipmentRepository->getWithSearchQueryBuilderView($q, $hero);
 
-        $paginationEq = $paginator->paginate(
+        $paginationEq = $this->paginator->paginate(
             $queryBuilderEq, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -48,7 +65,7 @@ class HeroController extends AbstractController
     }
 
     #[Route('/hero/create', name: 'hero_create', defaults: ['title' => 'Create Hero'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title): Response
     {
         $hero = new Hero();
 
@@ -59,7 +76,7 @@ class HeroController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($hero);
             $em->flush();
 
@@ -70,9 +87,9 @@ class HeroController extends AbstractController
     }
 
     #[Route('/hero/edit/{id}', name: 'hero_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Hero'])]
-    public function edit(int $id, HeroRepository $heroRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request,string $title): Response
     {
-        $hero = $heroRepository
+        $hero = $this->heroRepository
             ->find($id);
 
         $form = $this->createForm(HeroType::class, $hero);
@@ -82,7 +99,7 @@ class HeroController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($hero);
             $em->flush();
 

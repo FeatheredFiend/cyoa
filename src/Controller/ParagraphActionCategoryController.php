@@ -17,13 +17,27 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class ParagraphActionCategoryController extends AbstractController
 {
+
+    private $paragraphactioncategoryRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;   
+
+    public function __construct(ParagraphActionCategoryRepository $paragraphactioncategoryRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
+    {
+        $this->paragraphactioncategoryRepository = $paragraphactioncategoryRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
+    }
+
     #[Route('/paragraphactioncategory/view', name: 'paragraphactioncategory_view', defaults: ['title' => 'View Paragraph Action Category'])]
-    public function index(ParagraphActionCategoryRepository $paragraphactioncategoryRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    public function index(Request $request, string $title): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $paragraphactioncategoryRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $this->paragraphactioncategoryRepository->getWithSearchQueryBuilderView($q);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -37,7 +51,7 @@ class ParagraphActionCategoryController extends AbstractController
     }
 
     #[Route('/paragraphactioncategory/create', name: 'paragraphactioncategory_create', defaults: ['title' => 'Create Paragraph Action Category'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title): Response
     {
         $paragraphactioncategory = new ParagraphActionCategory();
 
@@ -48,7 +62,7 @@ class ParagraphActionCategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphactioncategory);
             $em->flush();
 
@@ -59,9 +73,9 @@ class ParagraphActionCategoryController extends AbstractController
     }
 
     #[Route('/paragraphactioncategory/edit/{id}', name: 'paragraphactioncategory_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Paragraph Action Category'])]
-    public function edit(int $id, ParagraphActionCategoryRepository $paragraphactioncategoryRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request,string $title): Response
     {
-        $paragraphactioncategory = $paragraphactioncategoryRepository
+        $paragraphactioncategory = $this->paragraphactioncategoryRepository
             ->find($id);
 
         $form = $this->createForm(ParagraphActionCategoryType::class, $paragraphactioncategory);
@@ -71,7 +85,7 @@ class ParagraphActionCategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($paragraphactioncategory);
             $em->flush();
 

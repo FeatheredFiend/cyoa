@@ -17,13 +17,27 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class HeroAttributeController extends AbstractController
 {
+    private $heroattributeRepository;     
+    private $paginator; 
+    private $doctrine;
+    private $validator;   
+
+
+    public function __construct(HeroAttributeRepository $heroattributeRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
+    {
+        $this->heroattributeRepository = $heroattributeRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
+    }
+
     #[Route('/heroattribute/view', name: 'heroattribute_view', defaults: ['title' => 'View Hero Attribute'])]
-    public function index(HeroAttributeRepository $heroattributeRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    public function index(Request $request, string $title): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $heroattributeRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $this->heroattributeRepository->getWithSearchQueryBuilderView($q);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -37,7 +51,7 @@ class HeroAttributeController extends AbstractController
     }
 
     #[Route('/heroattribute/create', name: 'heroattribute_create', defaults: ['title' => 'Create Hero Attribute'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title): Response
     {
         $heroattribute = new HeroAttribute();
 
@@ -48,7 +62,7 @@ class HeroAttributeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($heroattribute);
             $em->flush();
 
@@ -59,9 +73,9 @@ class HeroAttributeController extends AbstractController
     }
 
     #[Route('/heroattribute/edit/{id}', name: 'heroattribute_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Hero Attribute'])]
-    public function edit(int $id, HeroAttributeRepository $heroattributeRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request,string $title): Response
     {
-        $heroattribute = $heroattributeRepository
+        $heroattribute = $this->heroattributeRepository
             ->find($id);
 
         $form = $this->createForm(HeroAttributeType::class, $heroattribute);
@@ -71,7 +85,7 @@ class HeroAttributeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($heroattribute);
             $em->flush();
 

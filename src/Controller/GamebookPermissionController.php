@@ -18,21 +18,27 @@ use Knp\Component\Pager\PaginatorInterface;
 class GamebookPermissionController extends AbstractController
 {
 
+    private $gamebookpermissionRepository;     
+    private $paginator; 
     private $doctrine;
+    private $validator;   
 
 
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(GamebookPermissionRepository $gamebookpermissionRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
     {
-        $this->doctrine = $doctrine;
+        $this->gamebookpermissionRepository = $gamebookpermissionRepository;
+        $this->paginator = $paginator;
+        $this->validator = $validator;
+        $this->doctrine = $doctrine;       
     }
 
     #[Route('/gamebookpermission/view', name: 'gamebookpermission_view', defaults: ['title' => 'View Gamebook Permission'])]
-    public function index(GamebookPermissionRepository $gamebookpermissionRepository, Request $request, PaginatorInterface $paginator, string $title): Response
+    public function index(Request $request, string $title): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $gamebookpermissionRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $this->gamebookpermissionRepository->getWithSearchQueryBuilderView($q);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -46,7 +52,7 @@ class GamebookPermissionController extends AbstractController
     }
 
     #[Route('/gamebookpermission/create', name: 'gamebookpermission_create', defaults: ['title' => 'Create Gamebook Permission'])]
-    public function create(ValidatorInterface $validator, Request $request, string $title, ManagerRegistry $doctrine): Response
+    public function create(Request $request, string $title): Response
     {
         $gamebookpermission = new GamebookPermission();
 
@@ -63,7 +69,7 @@ class GamebookPermissionController extends AbstractController
 
             if ($license == $gamebookLicense) {
             // Save
-                $em = $doctrine->getManager();
+                $em = $this->doctrine->getManager();
                 $em->persist($gamebookpermission);
                 $em->flush();
             }
@@ -78,9 +84,9 @@ class GamebookPermissionController extends AbstractController
     }
 
     #[Route('/gamebookpermission/edit/{id}', name: 'gamebookpermission_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Gamebook Permission'])]
-    public function edit(int $id, GamebookPermissionRepository $gamebookpermissionRepository, Request $request,string $title, ManagerRegistry $doctrine): Response
+    public function edit(int $id, Request $request,string $title): Response
     {
-        $gamebookpermission = $gamebookpermissionRepository
+        $gamebookpermission = $this->gamebookpermissionRepository
             ->find($id);
 
 
@@ -91,7 +97,7 @@ class GamebookPermissionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($gamebookpermission);
             $em->flush();
 
