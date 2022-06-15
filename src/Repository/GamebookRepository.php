@@ -60,7 +60,9 @@ class GamebookRepository extends ServiceEntityRepository
             ->leftJoin('g.gamebookPermissions', 'gp')
             ->leftJoin('gp.user', 'u')
             ->andWhere('u.id = :user')
+            ->orWhere('g.license = :free')            
             ->setParameter('user', $user)
+            ->setParameter('free', "FREE")
             ->orderBy('g.id', 'ASC');
 
         return $qb;

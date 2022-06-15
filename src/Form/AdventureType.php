@@ -30,7 +30,7 @@ class AdventureType extends AbstractType
     {
         $builder
             ->add('timeelapsed', TextType::class,['label'=>'Time Elapsed'])
-            ->add('gamebook', EntityType::class,['class' => Gamebook::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('g')->leftJoin('g.gamebookPermissions', 'gp')->leftJoin('gp.user', 'u')->andWhere('u.id = :user')->setParameter('user', $user = $this->security->getUser())->orderBy('g.id', 'ASC');}, 'choice_label' => 'name', 'label' => 'Gamebook'])
+            ->add('gamebook', EntityType::class,['class' => Gamebook::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('g')->leftJoin('g.gamebookPermissions', 'gp')->leftJoin('gp.user', 'u')->andWhere('u.id = :user')->orWhere('g.license = :free')->setParameter('user', $user = $this->security->getUser())->setParameter('free', "FREE")->orderBy('g.id', 'ASC');}, 'choice_label' => 'name', 'label' => 'Gamebook'])
             ->add('hero', EntityType::class,['class' => Hero::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('h')->orderBy('h.id', 'ASC');}, 'choice_label' => 'name', 'label' => 'Hero'])
             ->add('user', EntityType::class,['class' => User::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('u')->andWhere('u.id = :user')->setParameter('user', $this->token->getToken()->getUser())->orderBy('u.id', 'ASC');}, 'choice_label' => 'name', 'label' => 'User'])
             ->add('name', TextType::class,['label'=>'Name'])
