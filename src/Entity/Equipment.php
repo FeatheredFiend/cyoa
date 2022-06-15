@@ -36,6 +36,9 @@ class Equipment
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: ParagraphEquipment::class)]
     private $paragraphEquipment;
 
+    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: MagicEquipment::class)]
+    private $magicEquipment;
+
     public function __construct()
     {
         $this->heroEquipment = new ArrayCollection();
@@ -44,6 +47,7 @@ class Equipment
         $this->paragraphActionEquipmentRequireds = new ArrayCollection();
         $this->paragraphDirectionEquipmentRequireds = new ArrayCollection();
         $this->paragraphEquipment = new ArrayCollection();
+        $this->magicEquipment = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -241,6 +245,36 @@ class Equipment
             // set the owning side to null (unless already changed)
             if ($paragraphEquipment->getEquipment() === $this) {
                 $paragraphEquipment->setEquipment(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MagicEquipment>
+     */
+    public function getMagicEquipment(): Collection
+    {
+        return $this->magicEquipment;
+    }
+
+    public function addMagicEquipment(MagicEquipment $magicEquipment): self
+    {
+        if (!$this->magicEquipment->contains($magicEquipment)) {
+            $this->magicEquipment[] = $magicEquipment;
+            $magicEquipment->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMagicEquipment(MagicEquipment $magicEquipment): self
+    {
+        if ($this->magicEquipment->removeElement($magicEquipment)) {
+            // set the owning side to null (unless already changed)
+            if ($magicEquipment->getEquipment() === $this) {
+                $magicEquipment->setEquipment(null);
             }
         }
 

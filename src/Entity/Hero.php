@@ -54,9 +54,13 @@ class Hero
     #[ORM\Column(type: 'integer')]
     private $treasure;
 
+    #[ORM\OneToMany(mappedBy: 'hero', targetEntity: HeroSpell::class)]
+    private $heroSpells;
+
     public function __construct()
     {
         $this->heroEquipment = new ArrayCollection();
+        $this->heroSpells = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -243,6 +247,36 @@ class Hero
     public function setTreasure(int $treasure): self
     {
         $this->treasure = $treasure;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, HeroSpell>
+     */
+    public function getHeroSpells(): Collection
+    {
+        return $this->heroSpells;
+    }
+
+    public function addHeroSpell(HeroSpell $heroSpell): self
+    {
+        if (!$this->heroSpells->contains($heroSpell)) {
+            $this->heroSpells[] = $heroSpell;
+            $heroSpell->setHero($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHeroSpell(HeroSpell $heroSpell): self
+    {
+        if ($this->heroSpells->removeElement($heroSpell)) {
+            // set the owning side to null (unless already changed)
+            if ($heroSpell->getHero() === $this) {
+                $heroSpell->setHero(null);
+            }
+        }
 
         return $this;
     }

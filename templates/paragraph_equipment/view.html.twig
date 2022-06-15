@@ -36,8 +36,8 @@
             {% set id = paragraphequipment.id %}
               <tr>
                 <td><a class="nav-link gamebookTable" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}">{{gamebook}}</a></td>
-                <td>{{ paragraphequipment.paragraphequipmentcategory }}</td>
                 <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{paragraph}}</a></td>
+                <td>{{ paragraphequipment.paragraphequipmentcategory }}</td>
                 <td><a class="nav-link" href="{{ path('paragraphequipment_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': paragraphequipment.id}) }}">{{ paragraphequipment.equipment }}</a></td>
                 <td>{{ paragraphequipment.quantity }}</td>
               </tr>
