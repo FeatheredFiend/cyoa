@@ -67,7 +67,7 @@ class HeroEquipmentRepository extends ServiceEntityRepository
 
     }
 
-        /**
+    /**
      * @param string|null $term
      */
     public function getWithSearchQueryBuilderPlay(?string $term, ?int $adventure): QueryBuilder

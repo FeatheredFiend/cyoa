@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<MagicEquipment>
@@ -46,6 +47,25 @@ class MagicEquipmentRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderView(?string $term): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('me','m','e')
+            ->from('App\Entity\MagicEquipment', 'me')
+            ->leftJoin('me.magic','m')
+            ->leftJoin('me.equipment','e')
+            ->orderBy('me.id', 'ASC');
+
+        return $qb;
+
+    } 
+
 
     // /**
     //  * @return MagicEquipment[] Returns an array of MagicEquipment objects

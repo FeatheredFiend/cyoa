@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<MagicEffect>
@@ -46,6 +47,24 @@ class MagicEffectRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderView(?string $term): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('me','m','meo','mea')
+            ->from('App\Entity\MagicEffect', 'me')
+            ->leftJoin('me.magic','m')
+            ->leftJoin('me.magiceffectoperator','meo')
+            ->leftJoin('me.magiceffectattribute','mea')
+            ->orderBy('me.id', 'ASC');
+
+        return $qb;
+
+    } 
 
     // /**
     //  * @return MagicEffect[] Returns an array of MagicEffect objects

@@ -31,6 +31,7 @@
               <th>Enemy</th>
               <th>Merchant</th>
               <th>Equipment</th>
+              <th>Spell</th>
             </tr>
           </thead>
           <tbody name="paragraphTable" id="paragraphTable">
@@ -46,6 +47,7 @@
                 <td><a class="nav-link" href="{{ path('enemy_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Enemy</a></td>
                 <td><a class="nav-link" href="{{ path('merchant_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Merchant</a></td>
                 <td><a class="nav-link" href="{{ path('paragraphequipment_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Equipment</a></td>
+                <td><a class="nav-link" href="{{ path('spell_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Spell</a></td>
               </tr>
             {% endfor %}
           </tbody>

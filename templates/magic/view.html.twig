@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Magic{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-3 mb-3">
+  <p class="hidden" id="title">{{title}}</p>
+  <p class="hidden" id="gamebook">{{gamebook}}</p>
+  <p class="hidden" id="paragraph">{{paragraph}}</p> 
+  {% if app.user != null %}
+    <div class="row">
+      <div class="col-sm-12 col-md-4" id="searchBox">
+      <a class="text-decoration-none" href="{{ path('magic_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Magic</button></a>   
+      {{ knp_pagination_filter(pagination, {'m.name': 'Magic Name'}) }}
+      {{ knp_pagination_render(pagination, null, {}, {
+      'align': 'center',
+      'size': 'small',
+      'rounded': true,
+      }) }}
+      </div>
+      <div class="col-sm-12 col-md-8 table-responsive" id="tableView">
+      <a id="toggleSearch" class="nav-link text-white text-center paleRed">Search</a>
+        <table class="table table-striped table-light">
+          <thead>
+            <tr>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody name="magicTable" id="magicTable">
+            {% for magic in pagination %}
+            {% set id = magic.id %}
+              <tr>
+                <td><a class="nav-link" href="{{ path('magic_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': magic.id}) }}">{{ magic.name}}</a></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}           
+</div>
+{% endblock %}

@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<Spell>
@@ -46,6 +47,21 @@ class SpellRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderView(?string $term): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('s')
+            ->from('App\Entity\Spell', 's')
+            ->orderBy('s.id', 'ASC');
+
+        return $qb;
+
+    }     
 
     // /**
     //  * @return Spell[] Returns an array of Spell objects

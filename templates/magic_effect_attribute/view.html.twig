@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Magic Effect Attributes{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-3 mb-3">
+  <p class="hidden" id="title">{{title}}</p> 
+  {% if app.user != null %}
+    <div class="row">
+      <div class="col-sm-12 col-md-4" id="searchBox">
+      <a class="text-decoration-none" href="{{ path('magiceffectattribute_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Magic Effect Attribute</button></a>   
+      {{ knp_pagination_filter(pagination, {'mea.name': 'Name'}) }}
+      {{ knp_pagination_render(pagination, null, {}, {
+      'align': 'center',
+      'size': 'small',
+      'rounded': true,
+      }) }}
+      </div>
+      <div class="col-sm-12 col-md-8 table-responsive" id="tableView">
+      <a id="toggleSearch" class="nav-link text-white text-center paleRed">Search</a>
+        <table class="table table-striped table-light">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody name="magiceffectattributeTable" id="magiceffectattributeTable">
+            {% for magiceffectattribute in pagination %}
+            {% set id = magiceffectattribute.id %}
+              <tr>
+                <td><a class="nav-link" href="{{ path('magiceffectattribute_edit', {'id': magiceffectattribute.id}) }}">{{ magiceffectattribute.id}}</a></td>
+                <td>{{ magiceffectattribute.name }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}           
+</div>
+{% endblock %}

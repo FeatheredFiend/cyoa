@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<HeroSpell>
@@ -47,6 +48,45 @@ class HeroSpellRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderView(?string $term, ?string $hero): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('hs','h','s')
+            ->from('App\Entity\HeroSpell', 'hs')
+            ->leftJoin('hs.hero','h')
+            ->leftJoin('hs.spell','s')
+            ->andWhere('h.name = :hero')
+            ->setParameter('hero', $hero)
+            ->orderBy('hs.id', 'ASC');
+
+        return $qb;
+
+    }   
+
+    /**
+     * @param string|null $term
+     */
+    public function getWithSearchQueryBuilderPlay(?string $term, ?int $adventure): QueryBuilder
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb
+            ->select('hs','s','h','a')
+            ->from('App\Entity\HeroSpell', 'hs')
+            ->leftJoin('hs.spell', 's')
+            ->leftJoin('hs.hero', 'h')
+            ->leftJoin('h.adventure', 'a')
+            ->andWhere('a.id = :adventure')
+            ->setParameter('adventure', $adventure)
+            ->orderBy('hs.id', 'ASC');
+
+        return $qb;
+
+    }    
+    
     // /**
     //  * @return HeroSpell[] Returns an array of HeroSpell objects
     //  */

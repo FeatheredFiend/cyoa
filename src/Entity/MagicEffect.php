@@ -80,4 +80,5 @@ class MagicEffect
 
         return $this;
     }
+
 }

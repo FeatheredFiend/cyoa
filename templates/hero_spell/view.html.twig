@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hero Spell{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-3 mb-3">
+  <p class="hidden" id="title">{{title}}</p> 
+  {% if app.user != null %}
+    <div class="row">
+      <div class="col-sm-12 col-md-4" id="searchBox">
+      <a class="text-decoration-none" href="{{ path('herospell_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Hero Spell</button></a>   
+      {{ knp_pagination_filter(pagination, {'h.name': 'Hero', 's.name': 'Spell'}) }}
+      {{ knp_pagination_render(pagination, null, {}, {
+      'align': 'center',
+      'size': 'small',
+      'rounded': true,
+      }) }}
+      </div>
+      <div class="col-sm-12 col-md-8 table-responsive" id="tableView">
+      <a id="toggleSearch" class="nav-link text-white text-center paleRed">Search</a>
+        <table class="table table-striped table-light">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Hero</th>
+              <th>Spell</th>
+            </tr>
+          </thead>
+          <tbody name="herospellTable" id="herospellTable">
+            {% for herospell in pagination %}
+            {% set id = herospell.id %}
+              <tr>
+                <td><a class="nav-link" href="{{ path('herospell_edit', {'id': herospell.id}) }}">{{ herospell.id}}</a></td>
+                <td>{{ herospell.hero }}</td>
+                <td>{{ herospell.spell }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}           
+</div>
+{% endblock %}
