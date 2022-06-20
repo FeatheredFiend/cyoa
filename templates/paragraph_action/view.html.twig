@@ -33,6 +33,7 @@
               <th>Paragraph Action Attribute</th>
               <th>Number of Dice</th>
               <th>Paragraph Action Equipment Required</th>
+              <th>Paragraph Action Spell Required</th>
               <th>Paragraph Action Enemy Required</th>
             </tr>
           </thead>
@@ -50,6 +51,7 @@
                 <td>{{ paragraphaction.paragraphactionattribute }}</td>
                 <td>{{ paragraphaction.numberdice }}</td>                
                 <td><a class="nav-link" href="{{ path('paragraphactionequipmentrequired_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphaction': paragraphaction.id }) }}">Add Equipment Required</a></td>
+                <td><a class="nav-link" href="{{ path('paragraphactionspell_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphaction': paragraphaction.id }) }}">Add Spell Required</a></td>
                 <td><a class="nav-link" href="{{ path('paragraphactionenemy_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphaction': paragraphaction.id }) }}">Add Enemy Required</a></td>
               </tr>
             {% endfor %}

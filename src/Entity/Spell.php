@@ -25,9 +25,21 @@ class Spell
     #[ORM\OneToMany(mappedBy: 'spell', targetEntity: HeroSpell::class)]
     private $heroSpells;
 
+    #[ORM\OneToMany(mappedBy: 'spell', targetEntity: ParagraphSpell::class)]
+    private $paragraphSpells;
+
+    #[ORM\OneToMany(mappedBy: 'spell', targetEntity: ParagraphActionSpell::class)]
+    private $paragraphActionSpells;
+
+    #[ORM\OneToMany(mappedBy: 'spell', targetEntity: ParagraphDirectionSpell::class)]
+    private $paragraphDirectionSpells;
+
     public function __construct()
     {
         $this->heroSpells = new ArrayCollection();
+        $this->paragraphSpells = new ArrayCollection();
+        $this->paragraphActionSpells = new ArrayCollection();
+        $this->paragraphDirectionSpells = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,5 +103,95 @@ class Spell
 
     public function __toString() {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, ParagraphSpell>
+     */
+    public function getParagraphSpells(): Collection
+    {
+        return $this->paragraphSpells;
+    }
+
+    public function addParagraphSpell(ParagraphSpell $paragraphSpell): self
+    {
+        if (!$this->paragraphSpells->contains($paragraphSpell)) {
+            $this->paragraphSpells[] = $paragraphSpell;
+            $paragraphSpell->setSpell($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphSpell(ParagraphSpell $paragraphSpell): self
+    {
+        if ($this->paragraphSpells->removeElement($paragraphSpell)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphSpell->getSpell() === $this) {
+                $paragraphSpell->setSpell(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphActionSpell>
+     */
+    public function getParagraphActionSpells(): Collection
+    {
+        return $this->paragraphActionSpells;
+    }
+
+    public function addParagraphActionSpell(ParagraphActionSpell $paragraphActionSpell): self
+    {
+        if (!$this->paragraphActionSpells->contains($paragraphActionSpell)) {
+            $this->paragraphActionSpells[] = $paragraphActionSpell;
+            $paragraphActionSpell->setSpell($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphActionSpell(ParagraphActionSpell $paragraphActionSpell): self
+    {
+        if ($this->paragraphActionSpells->removeElement($paragraphActionSpell)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphActionSpell->getSpell() === $this) {
+                $paragraphActionSpell->setSpell(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphDirectionSpell>
+     */
+    public function getParagraphDirectionSpells(): Collection
+    {
+        return $this->paragraphDirectionSpells;
+    }
+
+    public function addParagraphDirectionSpell(ParagraphDirectionSpell $paragraphDirectionSpell): self
+    {
+        if (!$this->paragraphDirectionSpells->contains($paragraphDirectionSpell)) {
+            $this->paragraphDirectionSpells[] = $paragraphDirectionSpell;
+            $paragraphDirectionSpell->setSpell($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphDirectionSpell(ParagraphDirectionSpell $paragraphDirectionSpell): self
+    {
+        if ($this->paragraphDirectionSpells->removeElement($paragraphDirectionSpell)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphDirectionSpell->getSpell() === $this) {
+                $paragraphDirectionSpell->setSpell(null);
+            }
+        }
+
+        return $this;
     }
 }

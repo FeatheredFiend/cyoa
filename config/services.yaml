@@ -58,7 +58,11 @@ services:
 
     App\Service\UseEquipment:
         arguments: 
-            $useEquipment: '%kernel.project_dir%'                                         
+            $useEquipment: '%kernel.project_dir%' 
+
+    App\Service\UseSpell:
+        arguments: 
+            $useSpell: '%kernel.project_dir%'                                                     
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

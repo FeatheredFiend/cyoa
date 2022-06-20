@@ -29,6 +29,7 @@
               <th>Max Access</th>
               <th>Redirect Paragraph</th>
               <th>Equipment Required</th>
+              <th>Spell Required</th>
             </tr>
           </thead>
           <tbody name="paragraphdirectionTable" id="paragraphdirectionTable">
@@ -41,6 +42,7 @@
                 <td>{{ paragraphdirection.maxaccess }}</td>
                 <td>{{ paragraphdirection.redirectparagraph }}</td>
                 <td><a class="nav-link" href="{{ path('paragraphdirectionequipmentrequired_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphdirection': paragraphdirection.id}) }}">Add Equipment Required</a></td>
+                <td><a class="nav-link" href="{{ path('paragraphdirectionspell_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphdirection': paragraphdirection.id}) }}">Add Spell Required</a></td>
               </tr>
             {% endfor %}
           </tbody>

@@ -18,7 +18,7 @@ class ParagraphEquipmentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('paragraph', EntityType::class,['class' => Paragraph::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('p')->orderBy('p.id', 'ASC');}, 'choice_label' => 'text', 'label' => 'Paragraph'])
+            ->add('paragraph', EntityType::class,['class' => Paragraph::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('p')->orderBy('p.id', 'ASC');}, 'choice_label' => 'number', 'label' => 'Paragraph'])
             ->add('equipment', EntityType::class,['class' => Equipment::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('e')->orderBy('e.id', 'ASC');}, 'choice_label' => 'name', 'label' => 'Equipment'])
             ->add('quantity', TextType::class,['label'=>'Quantity'])
             ->add('paragraphequipmentcategory', EntityType::class,['class' => ParagraphEquipmentCategory::class, 'query_builder' => function (EntityRepository $er) {return $er->createQueryBuilder('pec')->orderBy('pec.id', 'ASC');}, 'choice_label' => 'name', 'label' => 'Category'])

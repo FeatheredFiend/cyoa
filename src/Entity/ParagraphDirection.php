@@ -31,9 +31,13 @@ class ParagraphDirection
     #[ORM\OneToMany(mappedBy: 'paragraphdirection', targetEntity: ParagraphDirectionEquipmentRequired::class)]
     private $paragraphDirectionEquipmentRequireds;
 
+    #[ORM\OneToMany(mappedBy: 'paragraphdirection', targetEntity: ParagraphDirectionSpell::class)]
+    private $paragraphDirectionSpells;
+
     public function __construct()
     {
         $this->paragraphDirectionEquipmentRequireds = new ArrayCollection();
+        $this->paragraphDirectionSpells = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,6 +125,36 @@ class ParagraphDirection
 
     public function __toString() {
         return $this->text;
+    }
+
+    /**
+     * @return Collection<int, ParagraphDirectionSpell>
+     */
+    public function getParagraphDirectionSpells(): Collection
+    {
+        return $this->paragraphDirectionSpells;
+    }
+
+    public function addParagraphDirectionSpell(ParagraphDirectionSpell $paragraphDirectionSpell): self
+    {
+        if (!$this->paragraphDirectionSpells->contains($paragraphDirectionSpell)) {
+            $this->paragraphDirectionSpells[] = $paragraphDirectionSpell;
+            $paragraphDirectionSpell->setParagraphdirection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphDirectionSpell(ParagraphDirectionSpell $paragraphDirectionSpell): self
+    {
+        if ($this->paragraphDirectionSpells->removeElement($paragraphDirectionSpell)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphDirectionSpell->getParagraphdirection() === $this) {
+                $paragraphDirectionSpell->setParagraphdirection(null);
+            }
+        }
+
+        return $this;
     }
 
 }

@@ -50,10 +50,14 @@ class ParagraphAction
     #[ORM\OneToMany(mappedBy: 'paragraphaction', targetEntity: ParagraphActionEnemy::class)]
     private $paragraphActionEnemies;
 
+    #[ORM\OneToMany(mappedBy: 'paragraphaction', targetEntity: ParagraphActionSpell::class)]
+    private $paragraphActionSpells;
+
     public function __construct()
     {
         $this->paragraphActionEquipmentRequireds = new ArrayCollection();
         $this->paragraphActionEnemies = new ArrayCollection();
+        $this->paragraphActionSpells = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,6 +219,36 @@ class ParagraphAction
             // set the owning side to null (unless already changed)
             if ($paragraphActionEnemy->getParagraphaction() === $this) {
                 $paragraphActionEnemy->setParagraphaction(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphActionSpell>
+     */
+    public function getParagraphActionSpells(): Collection
+    {
+        return $this->paragraphActionSpells;
+    }
+
+    public function addParagraphActionSpell(ParagraphActionSpell $paragraphActionSpell): self
+    {
+        if (!$this->paragraphActionSpells->contains($paragraphActionSpell)) {
+            $this->paragraphActionSpells[] = $paragraphActionSpell;
+            $paragraphActionSpell->setParagraphaction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphActionSpell(ParagraphActionSpell $paragraphActionSpell): self
+    {
+        if ($this->paragraphActionSpells->removeElement($paragraphActionSpell)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphActionSpell->getParagraphaction() === $this) {
+                $paragraphActionSpell->setParagraphaction(null);
             }
         }
 

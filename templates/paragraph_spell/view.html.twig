@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paragraph Spell{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-3 mb-3">
+  <p class="hidden" id="title">{{title}}</p>
+  <p class="hidden" id="gamebook">{{gamebook}}</p>
+  <p class="hidden" id="paragraph">{{paragraph}}</p> 
+  {% if app.user != null %}
+    <div class="row">
+      <div class="col-sm-12 col-md-4" id="searchBox">
+      <a class="text-decoration-none" href="{{ path('spell_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Spell</button></a>
+      <a class="text-decoration-none" href="{{ path('paragraphspell_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph Spell</button></a>   
+      {{ knp_pagination_filter(pagination, {'p.text': 'Paragraph', 'e.name': 'Spell'}) }}
+      {{ knp_pagination_render(pagination, null, {}, {
+      'align': 'center',
+      'size': 'small',
+      'rounded': true,
+      }) }}
+      </div>
+      <div class="col-sm-12 col-md-8 table-responsive" id="tableView">
+      <a id="toggleSearch" class="nav-link text-white text-center paleRed">Search</a>
+        <table class="table table-striped table-light">
+          <thead>
+            <tr>
+              <th>Gamebook</th>
+              <th>Paragraph</th>
+              <th>Paragraph Spell Category</th>
+              <th>Spell</th>
+            </tr>
+          </thead>
+          <tbody name="paragraphspellTable" id="paragraphspellTable">
+            {% for paragraphspell in pagination %}
+            {% set id = paragraphspell.id %}
+              <tr>
+                <td><a class="nav-link gamebookTable" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}">{{gamebook}}</a></td>
+                <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{paragraph}}</a></td>
+                <td>{{ paragraphspell.paragraphspellcategory }}</td>
+                <td><a class="nav-link" href="{{ path('paragraphspell_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': paragraphspell.id}) }}">{{ paragraphspell.spell }}</a></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}           
+</div>
+{% endblock %}

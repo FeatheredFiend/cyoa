@@ -46,6 +46,9 @@ class Paragraph
     #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: ParagraphEquipment::class)]
     private $paragraphEquipment;
 
+    #[ORM\OneToMany(mappedBy: 'paragraph', targetEntity: ParagraphSpell::class)]
+    private $paragraphSpells;
+
     public function __construct()
     {
         $this->paragraphActions = new ArrayCollection();
@@ -55,6 +58,7 @@ class Paragraph
         $this->merchants = new ArrayCollection();
         $this->adventureParagraphs = new ArrayCollection();
         $this->paragraphEquipment = new ArrayCollection();
+        $this->paragraphSpells = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -288,6 +292,36 @@ class Paragraph
             // set the owning side to null (unless already changed)
             if ($paragraphEquipment->getParagraph() === $this) {
                 $paragraphEquipment->setParagraph(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ParagraphSpell>
+     */
+    public function getParagraphSpells(): Collection
+    {
+        return $this->paragraphSpells;
+    }
+
+    public function addParagraphSpell(ParagraphSpell $paragraphSpell): self
+    {
+        if (!$this->paragraphSpells->contains($paragraphSpell)) {
+            $this->paragraphSpells[] = $paragraphSpell;
+            $paragraphSpell->setParagraph($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParagraphSpell(ParagraphSpell $paragraphSpell): self
+    {
+        if ($this->paragraphSpells->removeElement($paragraphSpell)) {
+            // set the owning side to null (unless already changed)
+            if ($paragraphSpell->getParagraph() === $this) {
+                $paragraphSpell->setParagraph(null);
             }
         }
 
