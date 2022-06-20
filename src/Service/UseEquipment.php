@@ -80,7 +80,7 @@ class UseEquipment
         $statement->bindParam('hero', $hero);
         $statement->bindParam('equipment', $equipment);
         $statement->execute();
-        var_dump($RAW_QUERY);
+
     }
 
 
