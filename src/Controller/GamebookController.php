@@ -20,10 +20,10 @@ class GamebookController extends AbstractController
 {
 
     private $security;
-    private $gamebookRepository;     
-    private $paginator; 
+    private $gamebookRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;    
+    private $validator;
 
     public function __construct(Security $security, GamebookRepository $gamebookRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
     {
@@ -31,7 +31,7 @@ class GamebookController extends AbstractController
        $this->gamebookRepository = $gamebookRepository;
        $this->paginator = $paginator;
        $this->validator = $validator;
-       $this->doctrine = $doctrine;       
+       $this->doctrine = $doctrine;
     }
 
     #[Route('/gamebook/view', name: 'gamebook_view', defaults: ['title' => 'View Gamebook'])]

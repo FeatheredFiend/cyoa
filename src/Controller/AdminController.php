@@ -17,7 +17,7 @@ use Knp\Component\Pager\PaginatorInterface;
 class AdminController extends AbstractController
 {
 
-    private $userRepository; 
+    private $userRepository;
     private $paginator;
 
 

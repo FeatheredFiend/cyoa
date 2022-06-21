@@ -25,7 +25,7 @@ class NextParagraph
         $paragraphId = $this->getGamebookParagraph($gamebook, $paragraph);
         $this->adventureProgress($adventure, $paragraphId);
 
-        $RAW_QUERY = "INSERT INTO adventure_paragraph(adventure_id, paragraph_id) VALUES (:adventure, :paragraph)";         
+        $RAW_QUERY = "INSERT INTO adventure_paragraph(adventure_id, paragraph_id) VALUES (:adventure, :paragraph)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('adventure', $adventure);
         $statement->bindParam('paragraph', $paragraphId);
@@ -36,7 +36,7 @@ class NextParagraph
     {
         $em = $this->entityManager;
 
-        $RAW_QUERY = "UPDATE adventure SET progressparagraph = :paragraph WHERE id = :adventure";         
+        $RAW_QUERY = "UPDATE adventure SET progressparagraph = :paragraph WHERE id = :adventure";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('adventure', $adventure);
         $statement->bindParam('paragraph', $paragraph);

@@ -19,15 +19,15 @@ use App\Repository\UserRepository;
 class RegistrationController extends AbstractController
 {
 
-    private $passwordHasher;  
-    private $userRepository;     
+    private $passwordHasher 
+    private $userRepository
     private $doctrine;
 
     public function __construct(UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository, ManagerRegistry $doctrine)
     {
         $this->passwordHasher = $passwordHasher;
         $this->userRepository = $userRepository;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
     }
 
     #[Route('/registration', name: 'registration')]

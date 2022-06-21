@@ -18,17 +18,17 @@ use Knp\Component\Pager\PaginatorInterface;
 class ParagraphDirectionController extends AbstractController
 {
 
-    private $paragraphdirectionRepository;     
-    private $paginator; 
+    private $paragraphdirectionRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;   
+    private $validator;
 
     public function __construct(ParagraphDirectionRepository $paragraphdirectionRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
     {
         $this->paragraphdirectionRepository = $paragraphdirectionRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
     }
 
     #[Route('/paragraphdirection/view/{gamebook}/{paragraph}', name: 'paragraphdirection_view', defaults: ['title' => 'View Paragraph Direction'])]

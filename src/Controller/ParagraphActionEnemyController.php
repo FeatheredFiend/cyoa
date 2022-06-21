@@ -18,17 +18,17 @@ use Knp\Component\Pager\PaginatorInterface;
 class ParagraphActionEnemyController extends AbstractController
 {
 
-    private $paragraphactionenemyRepository;     
-    private $paginator; 
+    private $paragraphactionenemyRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;   
+    private $validator;
 
     public function __construct(ParagraphActionEnemyRepository $paragraphactionenemyRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
     {
         $this->paragraphactionenemyRepository = $paragraphactionenemyRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
     }
 
     #[Route('/paragraphactionenemy/view/{gamebook}/{paragraph}/{paragraphaction}', name: 'paragraphactionenemy_view', defaults: ['title' => 'View Paragraph Action Enemy'])]

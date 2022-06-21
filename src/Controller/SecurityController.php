@@ -12,11 +12,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SecurityController extends AbstractController
 {
-    private $authenticationUtils;  
+    private $authenticationUtils;
 
     public function __construct(AuthenticationUtils $authenticationUtils)
     {
-        $this->authenticationUtils = $authenticationUtils;    
+        $this->authenticationUtils = $authenticationUtils;
     }
 
     #[Route(path: '/', name: 'app_login')]

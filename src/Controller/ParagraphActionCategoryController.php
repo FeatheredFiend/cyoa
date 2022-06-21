@@ -18,17 +18,17 @@ use Knp\Component\Pager\PaginatorInterface;
 class ParagraphActionCategoryController extends AbstractController
 {
 
-    private $paragraphactioncategoryRepository;     
-    private $paginator; 
+    private $paragraphactioncategoryRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;   
+    private $validator;
 
     public function __construct(ParagraphActionCategoryRepository $paragraphactioncategoryRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
     {
         $this->paragraphactioncategoryRepository = $paragraphactioncategoryRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
     }
 
     #[Route('/paragraphactioncategory/view', name: 'paragraphactioncategory_view', defaults: ['title' => 'View Paragraph Action Category'])]

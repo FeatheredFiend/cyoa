@@ -19,17 +19,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class HeroEquipmentController extends AbstractController
 {
 
-    private $heroequipmentRepository;     
-    private $paginator; 
+    private $heroequipmentRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;   
+    private $validator;
 
     public function __construct(HeroEquipmentRepository $heroequipmentRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
     {
         $this->heroequipmentRepository = $heroequipmentRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
     }
 
     #[Route('/heroequipment/view', name: 'heroequipment_view', defaults: ['title' => 'View Hero Equipment'])]

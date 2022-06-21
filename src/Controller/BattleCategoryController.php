@@ -18,7 +18,7 @@ use Knp\Component\Pager\PaginatorInterface;
 class BattleCategoryController extends AbstractController
 {
 
-    private $battlecategoryRepository;   
+    private $battlecategoryRepository;
     private $paginator;
     private $doctrine;
     private $validator;

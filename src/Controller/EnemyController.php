@@ -18,8 +18,8 @@ use App\Service\FileUploader;
 
 class EnemyController extends AbstractController
 {
-    private $enemyRepository;     
-    private $paginator; 
+    private $enemyRepository;
+    private $paginator;
     private $doctrine;
     private $validator;
     private $fileUploader;

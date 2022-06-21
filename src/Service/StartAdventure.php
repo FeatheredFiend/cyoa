@@ -25,7 +25,7 @@ class StartAdventure
         $paragraph = $this->getGamebookParagraph($gamebook);
         $this->setProgressParagraph($adventure, $paragraph);
 
-        $RAW_QUERY = "INSERT INTO adventure_paragraph(adventure_id, paragraph_id) VALUES (:adventure, :paragraph)";         
+        $RAW_QUERY = "INSERT INTO adventure_paragraph(adventure_id, paragraph_id) VALUES (:adventure, :paragraph)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('adventure', $adventure);
         $statement->bindParam('paragraph', $paragraph);
@@ -36,7 +36,7 @@ class StartAdventure
     {
         $em = $this->entityManager;
 
-        $RAW_QUERY = "UPDATE adventure SET progressparagraph = :paragraph WHERE id = :adventure";         
+        $RAW_QUERY = "UPDATE adventure SET progressparagraph = :paragraph WHERE id = :adventure";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('adventure', $adventure);
         $statement->bindParam('paragraph', $paragraph);
@@ -47,7 +47,7 @@ class StartAdventure
     {
         $em = $this->entityManager;
 
-        $RAW_QUERY = "UPDATE adventure SET progressparagraph = :paragraph WHERE id = :adventure";         
+        $RAW_QUERY = "UPDATE adventure SET progressparagraph = :paragraph WHERE id = :adventure";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('adventure', $adventure);
         $statement->bindParam('paragraph', $paragraph);
@@ -67,7 +67,7 @@ class StartAdventure
                 LEFT JOIN merchant ON merchant.paragraph_id = paragraph.id
                 LEFT JOIN merchant_inventory ON merchant_inventory.merchant_id = merchant.id
                 LEFT JOIN equipment ON merchant_inventory.equipment_id = equipment.id
-            WHERE gamebook.id = :gamebook and merchant.name is not null";         
+            WHERE gamebook.id = :gamebook and merchant.name is not null";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('gamebook', $gamebook);
         $statement->bindParam('adventure', $adventure);

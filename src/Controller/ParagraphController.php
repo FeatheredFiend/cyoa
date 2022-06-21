@@ -19,10 +19,10 @@ use App\Service\FileUploader;
 class ParagraphController extends AbstractController
 {
 
-    private $paragraphRepository;     
-    private $paginator; 
+    private $paragraphRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;   
+    private $validator;
     private $fileUploader;
 
     public function __construct(ParagraphRepository $paragraphRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator, FileUploader $fileUploader)
@@ -30,7 +30,7 @@ class ParagraphController extends AbstractController
         $this->paragraphRepository = $paragraphRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
         $this->fileUploader = $fileUploader;
     }
 

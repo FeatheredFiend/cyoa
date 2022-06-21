@@ -18,10 +18,10 @@ use Knp\Component\Pager\PaginatorInterface;
 class GamebookPermissionController extends AbstractController
 {
 
-    private $gamebookpermissionRepository;     
-    private $paginator; 
+    private $gamebookpermissionRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;   
+    private $validator;
 
 
     public function __construct(GamebookPermissionRepository $gamebookpermissionRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
@@ -29,7 +29,7 @@ class GamebookPermissionController extends AbstractController
         $this->gamebookpermissionRepository = $gamebookpermissionRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
     }
 
     #[Route('/gamebookpermission/view', name: 'gamebookpermission_view', defaults: ['title' => 'View Gamebook Permission'])]

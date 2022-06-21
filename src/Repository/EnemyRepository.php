@@ -60,7 +60,7 @@ class EnemyRepository extends ServiceEntityRepository
             ->leftJoin('e.battlecategory', 'bc')
             ->leftJoin('e.paragraph', 'p')
             ->andWhere('e.paragraph = :paragraph')
-            ->setParameter('paragraph', $paragraph)            
+            ->setParameter('paragraph', $paragraph)   
             ->orderBy('e.id', 'ASC');
 
         return $qb;

@@ -17,8 +17,8 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class EquipmentEffectOperatorController extends AbstractController
 {
-    private $equipmenteffectoperatorRepository;     
-    private $paginator; 
+    private $equipmenteffectoperatorRepository;
+    private $paginator;
     private $doctrine;
     private $validator;
 

@@ -22,13 +22,21 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Service\AddDay:
+        arguments: 
+            $addDay: '%kernel.project_dir%'             
+
     App\Service\CreateHero:
         arguments: 
             $createHero: '%kernel.project_dir%'
 
     App\Service\CreateBattle:
         arguments: 
-            $createBattle: '%kernel.project_dir%'            
+            $createBattle: '%kernel.project_dir%'         
+
+    App\Service\GetHero:
+        arguments: 
+            $getHero: '%kernel.project_dir%'                     
 
     App\Service\StartAdventure:
         arguments: 
@@ -41,7 +49,6 @@ services:
     App\Service\ParagraphActionRun:
         arguments: 
             $paragraphActionRun: '%kernel.project_dir%'
-
 
     App\Service\NextBattle:
         arguments: 
@@ -59,6 +66,10 @@ services:
     App\Service\UseEquipment:
         arguments: 
             $useEquipment: '%kernel.project_dir%' 
+
+    App\Service\UseProvision:
+        arguments: 
+            $useProvision: '%kernel.project_dir%'                  
 
     App\Service\UseSpell:
         arguments: 

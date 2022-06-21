@@ -17,10 +17,10 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class HeroAttributeController extends AbstractController
 {
-    private $heroattributeRepository;     
-    private $paginator; 
+    private $heroattributeRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;   
+    private $validator;
 
 
     public function __construct(HeroAttributeRepository $heroattributeRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
@@ -28,7 +28,7 @@ class HeroAttributeController extends AbstractController
         $this->heroattributeRepository = $heroattributeRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
     }
 
     #[Route('/heroattribute/view', name: 'heroattribute_view', defaults: ['title' => 'View Hero Attribute'])]

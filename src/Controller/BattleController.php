@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class BattleController extends AbstractController
 {
 
-    private $battleRepository;      
+    private $battleRepository;
     private $doctrine;
     private $validator;
     private $createBattle;

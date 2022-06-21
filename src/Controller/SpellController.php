@@ -17,8 +17,8 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class SpellController extends AbstractController
 {
-    private $spellRepository;     
-    private $paginator; 
+    private $spellRepository;
+    private $paginator;
     private $doctrine;
     private $validator;
 

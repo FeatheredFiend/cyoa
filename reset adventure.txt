@@ -2,4 +2,4 @@ TRUNCATE `adventure`;
 TRUNCATE `adventure_merchant_inventory`;
 TRUNCATE `adventure_paragraph`;
 TRUNCATE `battle`;
-TRUNCATE `hero`; 
+TRUNCATE `hero`

@@ -21,7 +21,7 @@ use Knp\Component\Pager\PaginatorInterface;
 class ParagraphActionController extends AbstractController
 {
 
-    private $paragraphactionRepository;      
+    private $paragraphactionRepository;
     private $doctrine;
     private $validator;
     private $paginator;
@@ -127,10 +127,10 @@ class ParagraphActionController extends AbstractController
         $attribute = $request->query->get("attribute");
         $actionvalue = $request->query->get("actionvalue");
         $target = $request->query->get("target");
-        $diceroll = $request->query->get("diceroll"); 
-        $hero = $request->query->get("hero");   
-        $paragraph = $request->query->get("paragraph");   
-        $adventure = $request->query->get("adventure"); 
+        $diceroll = $request->query->get("diceroll");
+        $hero = $request->query->get("hero");
+        $paragraph = $request->query->get("paragraph");
+        $adventure = $request->query->get("adventure");
 
 
 
@@ -146,19 +146,19 @@ class ParagraphActionController extends AbstractController
             if ($target === "Player") {
                 if ($operator === "Add") {
                     if ($attribute ===  "Skill") {
-                        $RAW_QUERY = "UPDATE hero SET skill = skill + :skillValue WHERE id = :player";        
+                        $RAW_QUERY = "UPDATE hero SET skill = skill + :skillValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('skillValue', $value);
                         $statement->bindParam('player', $hero);
                         $statement->execute();
                     } elseif ($attribute ===  "Stamina") {
-                        $RAW_QUERY = "UPDATE hero SET stamina = stamina + :staminaValue WHERE id = :player";        
+                        $RAW_QUERY = "UPDATE hero SET stamina = stamina + :staminaValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('staminaValue', $value);
                         $statement->bindParam('player', $hero);
                         $statement->execute();
                     } elseif ($attribute ===  "Luck") {
-                        $RAW_QUERY = "UPDATE hero SET luck = luck + :luckValue WHERE id = :player";        
+                        $RAW_QUERY = "UPDATE hero SET luck = luck + :luckValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('luckValue', $value);
                         $statement->bindParam('player', $hero);
@@ -166,19 +166,19 @@ class ParagraphActionController extends AbstractController
                     }
                 } else if ($operator === "Remove") {
                     if ($attribute ===  "Skill") {
-                        $RAW_QUERY = "UPDATE hero SET skill = skill - :skillValue WHERE id = :player";        
+                        $RAW_QUERY = "UPDATE hero SET skill = skill - :skillValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('skillValue', $value);
                         $statement->bindParam('player', $hero);
                         $statement->execute();
                     } elseif ($attribute ===  "Stamina") {
-                        $RAW_QUERY = "UPDATE hero SET stamina = stamina - :staminaValue WHERE id = :player";        
+                        $RAW_QUERY = "UPDATE hero SET stamina = stamina - :staminaValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('staminaValue', $value);
                         $statement->bindParam('player', $hero);
                         $statement->execute();
                     } elseif ($attribute ===  "Luck") {
-                        $RAW_QUERY = "UPDATE hero SET luck = luck - :luckValue WHERE id = :player";        
+                        $RAW_QUERY = "UPDATE hero SET luck = luck - :luckValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('luckValue', $value);
                         $statement->bindParam('player', $hero);
@@ -198,12 +198,12 @@ class ParagraphActionController extends AbstractController
                 }
                 if ($operator === "Add") {
                     if ($attribute ===  "Skill") {
-                        $RAW_QUERY = "UPDATE battle SET enemyskill = enemyskill + :skillValue ORDER BY id DESC LIMIT 1";        
+                        $RAW_QUERY = "UPDATE battle SET enemyskill = enemyskill + :skillValue ORDER BY id DESC LIMIT 1";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('skillValue', $value);
                         $statement->execute();
                     } elseif ($attribute ===  "Stamina") {
-                        $RAW_QUERY = "UPDATE battle SET enemystamina = enemystamina + :staminaValue ORDER BY id DESC LIMIT 1";        
+                        $RAW_QUERY = "UPDATE battle SET enemystamina = enemystamina + :staminaValue ORDER BY id DESC LIMIT 1";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('staminaValue', $value);
                         $statement->execute();
@@ -212,12 +212,12 @@ class ParagraphActionController extends AbstractController
                     }
                 } else if ($operator === "Remove") {
                     if ($attribute ===  "Skill") {
-                        $RAW_QUERY = "UPDATE battle SET enemyskill = enemyskill - :skillValue ORDER BY id DESC LIMIT 1";        
+                        $RAW_QUERY = "UPDATE battle SET enemyskill = enemyskill - :skillValue ORDER BY id DESC LIMIT 1";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('skillValue', $value);
                         $statement->execute();
                     } elseif ($attribute ===  "Stamina") {
-                        $RAW_QUERY = "UPDATE battle SET enemystamina = enemystamina - :staminaValue ORDER BY id DESC LIMIT 1";        
+                        $RAW_QUERY = "UPDATE battle SET enemystamina = enemystamina - :staminaValue ORDER BY id DESC LIMIT 1";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('staminaValue', $value);
                         $statement->execute();

@@ -19,11 +19,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ParagraphSpellController extends AbstractController
 {
-    private $useSpell; 
-    private $paragraphspellRepository; 
-    private $paginator; 
+    private $useSpell;
+    private $paragraphspellRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;  
+    private $validator;
 
 
     public function __construct(ParagraphSpellRepository $paragraphspellRepository, UseSpell $useSpell, PaginatorInterface $paginator, ValidatorInterface $validator, ManagerRegistry $doctrine)
@@ -32,7 +32,7 @@ class ParagraphSpellController extends AbstractController
         $this->paragraphspellRepository = $paragraphspellRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;  
+        $this->doctrine = $doctrine;
 
     }
 
@@ -115,7 +115,7 @@ class ParagraphSpellController extends AbstractController
         $category = $request->query->get("category");
       
         if ($category == "Add") {
-            $this->useSpell->gainSpell($adventure, $spell, $quantity);            
+            $this->useSpell->gainSpell($adventure, $spell, $quantity);
         } else {
             $this->useSpell->useSpell($adventure, $spell, $quantity);
         }

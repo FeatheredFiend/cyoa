@@ -17,8 +17,8 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class MagicEffectOperatorController extends AbstractController
 {
-    private $magiceffectoperatorRepository;     
-    private $paginator; 
+    private $magiceffectoperatorRepository;
+    private $paginator;
     private $doctrine;
     private $validator;
 

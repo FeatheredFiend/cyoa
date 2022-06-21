@@ -19,11 +19,11 @@ use Knp\Component\Pager\PaginatorInterface;
 class MerchantController extends AbstractController
 {
 
-    private $merchantRepository;     
+    private $merchantRepository;
     private $buyEquipment;
-    private $paginator; 
+    private $paginator;
     private $doctrine;
-    private $validator;   
+    private $validator;
 
     public function __construct(MerchantRepository $merchantRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator, BuyEquipment $buyEquipment)
     {
@@ -31,7 +31,7 @@ class MerchantController extends AbstractController
         $this->buyEquipment  = $buyEquipment;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
     }
 
     #[Route('/merchant/view/{gamebook}/{paragraph}', name: 'merchant_view', defaults: ['title' => 'View Merchant'])]

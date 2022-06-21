@@ -3,15 +3,18 @@
 namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\GetHero;
 
 class BuyEquipment
 {
     private $buyEquipment;
+    private $getHero;
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, $buyEquipment)
+    public function __construct(EntityManagerInterface $entityManager, $buyEquipment, GetHero $getHero)
     {
         $this->buyEquipment = $buyEquipment;
+        $this->getHero = $getHero;   
         $this->entityManager = $entityManager;
 
     }
@@ -23,7 +26,7 @@ class BuyEquipment
 
         $hero = $this->getHero($adventure);
 
-        $RAW_QUERY = "INSERT INTO hero_equipment(hero_id, equipment_id, quantity) VALUES (:hero, :equipment, :quantity)";         
+        $RAW_QUERY = "INSERT INTO hero_equipment(hero_id, equipment_id, quantity) VALUES (:hero, :equipment, :quantity)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('hero', $hero);
         $statement->bindParam('equipment', $equipment);
@@ -35,7 +38,7 @@ class BuyEquipment
     {
         $em = $this->entityManager;
 
-        $RAW_QUERY = "DELETE FROM adventure_merchant_inventory WHERE merchantinventory_id = :merchantinventory";         
+        $RAW_QUERY = "DELETE FROM adventure_merchant_inventory WHERE merchantinventory_id = :merchantinventory";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('merchantinventory', $merchantinventory);
         $statement->execute();
@@ -72,22 +75,6 @@ class BuyEquipment
             ->getSingleScalarResult();
 
         return $cost;
-    }
-
-    public function getHero($adventure)
-    {
-        $em = $this->entityManager;
-        $heroesRepository = $em->getRepository("App\Entity\Adventure");
-        
-        // Search the buildings that belongs to the organisation with the given id as GET parameter "organisationid"
-        $hero = $heroesRepository->createQueryBuilder("a")
-            ->select('IDENTITY(a.hero)')
-            ->andWhere('a.id = :adventure')
-            ->setParameter('adventure', $adventure)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return $hero;
     }
 
     public function getBuyEquipment()

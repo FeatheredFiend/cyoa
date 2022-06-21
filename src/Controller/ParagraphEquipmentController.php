@@ -19,11 +19,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ParagraphEquipmentController extends AbstractController
 {
-    private $useEquipment; 
-    private $paragraphequipmentRepository; 
-    private $paginator; 
+    private $useEquipment;
+    private $paragraphequipmentRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;  
+    private $validator;
 
 
     public function __construct(ParagraphEquipmentRepository $paragraphequipmentRepository, UseEquipment $useEquipment, PaginatorInterface $paginator, ValidatorInterface $validator, ManagerRegistry $doctrine)
@@ -32,7 +32,7 @@ class ParagraphEquipmentController extends AbstractController
         $this->paragraphequipmentRepository = $paragraphequipmentRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;  
+        $this->doctrine = $doctrine;
 
     }
 
@@ -115,7 +115,7 @@ class ParagraphEquipmentController extends AbstractController
         $category = $request->query->get("category");
       
         if ($category == "Add") {
-            $this->useEquipment->gainEquipment($adventure, $equipment, $quantity);            
+            $this->useEquipment->gainEquipment($adventure, $equipment, $quantity);
         } else {
             $this->useEquipment->useEquipment($adventure, $equipment, $quantity);
         }

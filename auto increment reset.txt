@@ -2,8 +2,8 @@ TRUNCATE `adventure`;
 TRUNCATE `adventure_merchant_inventory`;
 TRUNCATE `adventure_paragraph`;
 TRUNCATE `battle`;
-TRUNCATE `hero`; 
-TRUNCATE `hero_equipment`; 
+TRUNCATE `hero`
+TRUNCATE `hero_equipment`
 ALTER TABLE adventure AUTO_INCREMENT = 1;
 ALTER TABLE adventure_merchant_inventory AUTO_INCREMENT = 1;
 ALTER TABLE adventure_paragraph AUTO_INCREMENT = 1;

@@ -19,17 +19,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class HeroSpellController extends AbstractController
 {
 
-    private $herospellRepository;     
-    private $paginator; 
+    private $herospellRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;   
+    private $validator;
 
     public function __construct(HeroSpellRepository $herospellRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
     {
         $this->herospellRepository = $herospellRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
     }
 
     #[Route('/herospell/view', name: 'herospell_view', defaults: ['title' => 'View Hero Spell'])]

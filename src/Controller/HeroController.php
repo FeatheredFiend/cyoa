@@ -19,11 +19,11 @@ use Knp\Component\Pager\PaginatorInterface;
 class HeroController extends AbstractController
 {   
     
-    private $heroRepository;  
-    private $heroequipmentRepository;     
-    private $paginator; 
+    private $heroRepository;
+    private $heroequipmentRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;   
+    private $validator;
 
 
     public function __construct(HeroRepository $heroRepository, HeroEquipmentRepository $heroequipmentRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
@@ -32,7 +32,7 @@ class HeroController extends AbstractController
         $this->heroequipmentRepository = $heroequipmentRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
     }
 
     #[Route('/hero/view/{gamebook}/{hero}/{adventure}', name: 'hero_view', defaults: ['title' => 'View Hero'])]

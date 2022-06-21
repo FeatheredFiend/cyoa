@@ -63,8 +63,8 @@ class ParagraphDirectionEquipmentRequiredRepository extends ServiceEntityReposit
             ->leftJoin('pder.equipment', 'e')
             ->andWhere('p.id = :paragraph')
             ->andWhere('pd.id = :paragraphdirection')
-            ->setParameter('paragraph', $paragraph)               
-            ->setParameter('paragraphdirection', $paragraphdirection)                        
+            ->setParameter('paragraph', $paragraph)      
+            ->setParameter('paragraphdirection', $paragraphdirection)               
             ->orderBy('pder.id', 'ASC');
 
         return $qb;

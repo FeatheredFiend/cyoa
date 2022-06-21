@@ -33,20 +33,20 @@ class ParagraphActionRun
             } else if ($category == "Attribute Change") {
                 if ($operator == "Add"){
                     if ($attribute == "Stamina") {
-                        $RAW_QUERY = "UPDATE hero SET stamina= stamina + :value WHERE hero.id = :hero";         
+                        $RAW_QUERY = "UPDATE hero SET stamina= stamina + :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('hero', $hero);
                         $statement->bindParam('value', $value);
                         $statement->execute();
                         
                     } else if ($attribute == "Skill") {
-                        $RAW_QUERY = "UPDATE hero SET skill= skill + :value WHERE hero.id = :hero";       
+                        $RAW_QUERY = "UPDATE hero SET skill= skill + :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('hero', $hero);
                         $statement->bindParam('value', $value);
                         $statement->execute();
                     } else if ($attribute == "Luck") {
-                        $RAW_QUERY = "UPDATE hero SET luck= luck + :value WHERE hero.id = :hero";         
+                        $RAW_QUERY = "UPDATE hero SET luck= luck + :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('hero', $hero);
                         $statement->bindParam('value', $value);
@@ -54,20 +54,20 @@ class ParagraphActionRun
                     }
                 } else {
                     if ($attribute == "Stamina") {
-                        $RAW_QUERY = "UPDATE hero SET stamina= stamina - :value WHERE hero.id = :hero";         
+                        $RAW_QUERY = "UPDATE hero SET stamina= stamina - :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('hero', $hero);
                         $statement->bindParam('value', $value);
                         $statement->execute();
                         
                     } else if ($attribute == "Skill") {
-                        $RAW_QUERY = "UPDATE hero SET skill= skill - :value WHERE hero.id = :hero";       
+                        $RAW_QUERY = "UPDATE hero SET skill= skill - :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('hero', $hero);
                         $statement->bindParam('value', $value);
                         $statement->execute();
                     } else if ($attribute == "Luck") {
-                        $RAW_QUERY = "UPDATE hero SET luck= luck - :value WHERE hero.id = :hero";         
+                        $RAW_QUERY = "UPDATE hero SET luck= luck - :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
                         $statement->bindParam('hero', $hero);
                         $statement->bindParam('value', $value);
@@ -76,7 +76,7 @@ class ParagraphActionRun
                 }
 
             } else if ($category == "Item Check") {
-                $RAW_QUERY = "INSERT INTO hero_equipment(hero_id, equipment_id, quantity) VALUES (:hero, :equipment, :quantity)";         
+                $RAW_QUERY = "INSERT INTO hero_equipment(hero_id, equipment_id, quantity) VALUES (:hero, :equipment, :quantity)";
                 $statement = $em->getConnection()->prepare($RAW_QUERY);
                 $statement->bindParam('hero', $hero);
                 $statement->bindParam('equipment', $equipment);
@@ -182,7 +182,7 @@ class ParagraphActionRun
         // Search the buildings that belongs to the organisation with the given id as GET parameter "organisationid"
         $actionTarget = $paragraphactionsRepository->createQueryBuilder("pa")
             ->select('pat.name')
-            ->leftJoin('pa.paragraphactiontarget', 'pat')            
+            ->leftJoin('pa.paragraphactiontarget', 'pat')   
             ->andWhere('pa.id = :paragraphaction')
             ->setParameter('paragraphaction', $paragraphaction)
             ->getQuery()

@@ -3,15 +3,18 @@
 namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\GetHero;
 
 class UseEquipment
 {
     private $useEquipment;
+    private $getHero;
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, $useEquipment)
+    public function __construct(EntityManagerInterface $entityManager, $useEquipment, GetHero $getHero)
     {
         $this->useEquipment = $useEquipment;
+        $this->getHero = $getHero;
         $this->entityManager = $entityManager;
 
     }
@@ -23,7 +26,7 @@ class UseEquipment
         $hero = $this->getHero($adventure);
         $equipmentId = $this->getEquipment($equipment);
 
-        $RAW_QUERY = "UPDATE hero_equipment SET quantity = quantity - :quantity WHERE equipment_id = :equipment and hero_id = :hero";         
+        $RAW_QUERY = "UPDATE hero_equipment SET quantity = quantity - :quantity WHERE equipment_id = :equipment and hero_id = :hero";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('hero', $hero);
         $statement->bindParam('equipment', $equipmentId);
@@ -49,7 +52,7 @@ class UseEquipment
         $count = $this->countEquipment($hero, $equipmentId);
         if ($count !== NULL) {
 
-            $RAW_QUERY = "UPDATE hero_equipment SET quantity = quantity + :quantity WHERE equipment_id = :equipment and hero_id = :hero";         
+            $RAW_QUERY = "UPDATE hero_equipment SET quantity = quantity + :quantity WHERE equipment_id = :equipment and hero_id = :hero";
             $statement = $em->getConnection()->prepare($RAW_QUERY);
             $statement->bindParam('hero', $hero);
             $statement->bindParam('equipment', $equipmentId);
@@ -58,7 +61,7 @@ class UseEquipment
 
             } else {
 
-            $RAW_QUERY = "INSERT INTO hero_equipment(hero_id,equipment_id,quantity) VALUES (:hero, :equipment, :quantity)";         
+            $RAW_QUERY = "INSERT INTO hero_equipment(hero_id,equipment_id,quantity) VALUES (:hero, :equipment, :quantity)";
             $statement = $em->getConnection()->prepare($RAW_QUERY);
             $statement->bindParam('hero', $hero);
             $statement->bindParam('equipment', $equipmentId);
@@ -75,29 +78,12 @@ class UseEquipment
 
         $hero = $this->getHero($adventure);
 
-        $RAW_QUERY = "DELETE FROM hero_equipment WHERE hero_id = :hero AND equipment_id = :equipment";         
+        $RAW_QUERY = "DELETE FROM hero_equipment WHERE hero_id = :hero AND equipment_id = :equipment";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('hero', $hero);
         $statement->bindParam('equipment', $equipment);
         $statement->execute();
 
-    }
-
-
-    public function getHero($adventure)
-    {
-        $em = $this->entityManager;
-        $adventuresRepository = $em->getRepository("App\Entity\Adventure");
-        
-        // Search the buildings that belongs to the organisation with the given id as GET parameter "organisationid"
-        $hero = $adventuresRepository->createQueryBuilder("a")
-            ->select('IDENTITY(a.hero)')
-            ->andWhere('a.id = :adventure')
-            ->setParameter('adventure', $adventure)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return $hero;
     }
 
     public function getEquipment($equipment)
@@ -127,7 +113,7 @@ class UseEquipment
             ->andWhere('he.hero = :hero')
             ->andWhere('he.equipment = :equipment')
             ->setParameter('hero', $hero)
-            ->setParameter('equipment', $equipment)            
+            ->setParameter('equipment', $equipment)   
             ->getQuery()
             ->getOneOrNullResult();
 

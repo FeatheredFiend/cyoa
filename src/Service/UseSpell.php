@@ -3,15 +3,18 @@
 namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\GetHero;
 
 class UseSpell
 {
     private $useSpell;
+    private $getHero;
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, $useSpell)
+    public function __construct(EntityManagerInterface $entityManager, $useSpell, GetHero $getHero)
     {
         $this->useSpell = $useSpell;
+        $this->getHero = $getHero;
         $this->entityManager = $entityManager;
 
     }
@@ -24,8 +27,18 @@ class UseSpell
         $spellId = $this->getSpell($spell);
         $spellEffects = $this->getSpellEffects($spell);
 
+        $magiceffectoperator = $spellEffects["magiceffectoperator"];
+        $magiceffectattribute = $spellEffects["magiceffectattribute"];
+        $magiceffectvalue = $spellEffects["magiceffectvalue"];
 
-        $RAW_QUERY = "UPDATE hero_spell SET quantity = quantity - :quantity WHERE spell_id = :spell and hero_id = :hero";         
+        if ($magiceffectoperator === "Add") {
+
+        } else if ($magiceffectoperator === "Remove") {
+
+        }
+
+
+        $RAW_QUERY = "UPDATE hero_spell SET quantity = quantity - :quantity WHERE spell_id = :spell and hero_id = :hero";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('hero', $hero);
         $statement->bindParam('spell', $spellId);
@@ -43,7 +56,7 @@ class UseSpell
         $hero = $this->getHero($adventure);
         $spellId = $this->getSpell($spell);
 
-        $RAW_QUERY = "INSERT INTO hero_spell(hero_id,spell_id) VALUES (:hero, :spell)";         
+        $RAW_QUERY = "INSERT INTO hero_spell(hero_id,spell_id) VALUES (:hero, :spell)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('hero', $hero);
         $statement->bindParam('spell', $spellId);
@@ -57,28 +70,12 @@ class UseSpell
 
         $hero = $this->getHero($adventure);
 
-        $RAW_QUERY = "DELETE FROM hero_spell WHERE hero_id = :hero AND spell_id = :spell";         
+        $RAW_QUERY = "DELETE FROM hero_spell WHERE hero_id = :hero AND spell_id = :spell";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('hero', $hero);
         $statement->bindParam('spell', $spell);
         $statement->execute();
 
-    }
-
-    public function getHero($adventure)
-    {
-        $em = $this->entityManager;
-        $adventuresRepository = $em->getRepository("App\Entity\Adventure");
-        
-        // Search the buildings that belongs to the organisation with the given id as GET parameter "organisationid"
-        $hero = $adventuresRepository->createQueryBuilder("a")
-            ->select('IDENTITY(a.hero)')
-            ->andWhere('a.id = :adventure')
-            ->setParameter('adventure', $adventure)
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return $hero;
     }
 
     public function getSpell($spell)

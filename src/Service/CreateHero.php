@@ -27,7 +27,7 @@ class CreateHero
         $honour = 6;
         $startingprovision = 10;
 
-        $RAW_QUERY = "INSERT INTO hero(name, skill, stamina, luck, honour, startingskill, startingstamina, startingluck, startingprovision, provision) VALUES (:name, :startingskill, :startingstamina, :startingluck, :honour, :startingskill, :startingstamina, :startingluck, :startingprovision, :startingprovision)";         
+        $RAW_QUERY = "INSERT INTO hero(name, skill, stamina, luck, honour, startingskill, startingstamina, startingluck, startingprovision, provision) VALUES (:name, :startingskill, :startingstamina, :startingluck, :honour, :startingskill, :startingstamina, :startingluck, :startingprovision, :startingprovision)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('name', $name);
         $statement->bindParam('startingskill', $startingskill);
@@ -38,7 +38,7 @@ class CreateHero
         $statement->execute();
     }
 
-    public function getHero()
+    public function getMaxHero()
     {
         $em = $this->entityManager;
         $heroesRepository = $em->getRepository("App\Entity\Hero");

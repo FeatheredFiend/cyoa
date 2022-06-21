@@ -24,9 +24,9 @@ class CreateBattle
         $playerskill = $this->getHeroSkill($adventure) + rand(2,12);
         $playerstamina = $this->getHeroStamina($adventure);
         $enemyskill = $this->getEnemySkill($enemy) + rand(2,12);
-        $enemystamina = $this->getEnemyStamina($enemy);        
+        $enemystamina = $this->getEnemyStamina($enemy);
         $round = 1;
-        $paragraph = $this->getAdventureParagraph($adventure, $paragraph); 
+        $paragraph = $this->getAdventureParagraph($adventure, $paragraph);
         $playerluck = $this->getHeroLuck($adventure);
 
         if ($playerskill == $enemyskill) {
@@ -38,7 +38,7 @@ class CreateBattle
                 } else {
                     $enemystamina = $enemystamina - 1;
                 }     
-                $this->reduceLuck($adventure);          
+                $this->reduceLuck($adventure);
             } else {
                 $enemystamina = $enemystamina - 2;
             }
@@ -60,15 +60,15 @@ class CreateBattle
             $this->reduceStamina($staminaLoss, $adventure);
         }
 
-        $RAW_QUERY = "INSERT INTO battle(enemy_id, round, playerstamina, playerskill, enemystamina, enemyskill, adventureparagraph_id) VALUES (:enemy, :round, :playerstamina, :playerskill, :enemystamina, :enemyskill, :adventureparagraph)";         
+        $RAW_QUERY = "INSERT INTO battle(enemy_id, round, playerstamina, playerskill, enemystamina, enemyskill, adventureparagraph_id) VALUES (:enemy, :round, :playerstamina, :playerskill, :enemystamina, :enemyskill, :adventureparagraph)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('enemy', $enemy);
         $statement->bindParam('round', $round);
         $statement->bindParam('playerskill', $playerskill);
         $statement->bindParam('playerstamina', $playerstamina);
         $statement->bindParam('enemyskill', $enemyskill);
-        $statement->bindParam('enemystamina', $enemystamina);        
-        $statement->bindParam('adventureparagraph', $paragraph); 
+        $statement->bindParam('enemystamina', $enemystamina);
+        $statement->bindParam('adventureparagraph', $paragraph);
         $statement->execute();
     }
 
@@ -79,28 +79,28 @@ class CreateBattle
         $playerskill = $this->getHeroSkill($adventure);
         $playerstamina = $this->getHeroStamina($adventure);
         $enemyskill = $this->getEnemySkill($enemy);
-        $enemystamina = $this->getEnemyStamina($enemy);        
+        $enemystamina = $this->getEnemyStamina($enemy);
         $round = 1;
-        $paragraph = $this->getAdventureParagraph($adventure, $paragraph); 
+        $paragraph = $this->getAdventureParagraph($adventure, $paragraph);
         $playerluck = $this->getHeroLuck($adventure);
         $paragraph = $paragraph;
 
-        $RAW_QUERY = "INSERT INTO battle(enemy_id, round, playerstamina, playerskill, enemystamina, enemyskill, adventureparagraph_id) VALUES (:enemy, :round, :playerstamina, :playerskill, :enemystamina, :enemyskill, :adventureparagraph)";         
+        $RAW_QUERY = "INSERT INTO battle(enemy_id, round, playerstamina, playerskill, enemystamina, enemyskill, adventureparagraph_id) VALUES (:enemy, :round, :playerstamina, :playerskill, :enemystamina, :enemyskill, :adventureparagraph)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('enemy', $enemy);
         $statement->bindParam('round', $round);
         $statement->bindParam('playerskill', $playerskill);
         $statement->bindParam('playerstamina', $playerstamina);
         $statement->bindParam('enemyskill', $enemyskill);
-        $statement->bindParam('enemystamina', $enemystamina);        
-        $statement->bindParam('adventureparagraph', $paragraph); 
+        $statement->bindParam('enemystamina', $enemystamina);
+        $statement->bindParam('adventureparagraph', $paragraph);
         $statement->execute();
     }
 
     public function updateBattleAdventureParagraph($adventureparagraph)
     {
         $em = $this->entityManager;
-        $RAW_QUERY = "UPDATE battle SET adventureparagraph_id = :adventureparagraph ORDER BY battle.id DESC LIMIT 1";         
+        $RAW_QUERY = "UPDATE battle SET adventureparagraph_id = :adventureparagraph ORDER BY battle.id DESC LIMIT 1";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('adventureparagraph', $adventureparagraph);
         $statement->execute();
@@ -143,7 +143,7 @@ class CreateBattle
     public function reduceLuck($adventure)
     {
         $em = $this->entityManager;
-        $RAW_QUERY = "UPDATE hero LEFT JOIN adventure ON hero.id = adventure.hero_id SET luck = luck - 1 WHERE adventure.id = :adventure";         
+        $RAW_QUERY = "UPDATE hero LEFT JOIN adventure ON hero.id = adventure.hero_id SET luck = luck - 1 WHERE adventure.id = :adventure";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('adventure', $adventure);
         $statement->execute();
@@ -152,7 +152,7 @@ class CreateBattle
     public function reduceStamina($removeStamina, $adventure)
     {
         $em = $this->entityManager;
-        $RAW_QUERY = "UPDATE hero LEFT JOIN adventure ON hero.id = adventure.hero_id SET stamina = stamina - :removeStamina WHERE adventure.id = :adventure";         
+        $RAW_QUERY = "UPDATE hero LEFT JOIN adventure ON hero.id = adventure.hero_id SET stamina = stamina - :removeStamina WHERE adventure.id = :adventure";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->bindParam('removeStamina', $removeStamina);
         $statement->bindParam('adventure', $adventure);

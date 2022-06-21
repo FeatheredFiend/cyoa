@@ -19,17 +19,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class MagicEquipmentController extends AbstractController
 {
 
-    private $magicequipmentRepository;     
-    private $paginator; 
+    private $magicequipmentRepository;
+    private $paginator;
     private $doctrine;
-    private $validator;   
+    private $validator;
 
     public function __construct(MagicEquipmentRepository $magicequipmentRepository, ManagerRegistry $doctrine, PaginatorInterface $paginator, ValidatorInterface $validator)
     {
         $this->magicequipmentRepository = $magicequipmentRepository;
         $this->paginator = $paginator;
         $this->validator = $validator;
-        $this->doctrine = $doctrine;       
+        $this->doctrine = $doctrine;
     }
 
     #[Route('/magicequipment/view', name: 'magicequipment_view', defaults: ['title' => 'View Magic Equipment'])]

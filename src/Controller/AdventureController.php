@@ -36,12 +36,12 @@ class AdventureController extends AbstractController
     private $heroRepository;
     private $herospellRepository;
     private $paragraphRepository;
-    private $paragraphequipmentRepository;    
+    private $paragraphequipmentRepository;
     private $paragraphactionRepository;
-    private $paragraphdirectionRepository; 
-    private $battleRepository;   
-    private $enemyRepository;   
-    private $merchantRepository; 
+    private $paragraphdirectionRepository;
+    private $battleRepository;
+    private $enemyRepository;
+    private $merchantRepository;
     private $paginator;
     private $doctrine;
     private $validator;
@@ -105,8 +105,8 @@ class AdventureController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $adventure->setTimeelapsed(0);
             $this->createHero->createHero($adventure->getName());
-            $heroId = $this->createHero->getHero();
-            $hero = $this->heroRepository->find($heroId);            
+            $heroId = $this->createHero->getMaxHero();
+            $hero = $this->heroRepository->find($heroId);
             $adventure->setHero($hero);
             $adventure->setName($hero->getName() . " " . date("d-m-Y"));
             $adventure->setProgressparagraph(1);
@@ -132,7 +132,7 @@ class AdventureController extends AbstractController
 
         $form = $this->createForm(AdventureType::class, $adventure);
         $form->remove('timeelapsed');
-        $form->remove('hero');        
+        $form->remove('hero');
         $form->remove('progressparagraph');
         $form->handleRequest($request);
 
@@ -183,7 +183,7 @@ class AdventureController extends AbstractController
             $queryBuilderParagraphEquipment, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
-        );        
+        );
 
         $queryBuilderParagraph = $this->paragraphRepository->getWithSearchQueryBuilderPlay($q, $adventure, $paragraph);
 
