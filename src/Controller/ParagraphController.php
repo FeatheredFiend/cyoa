@@ -43,7 +43,7 @@ class ParagraphController extends AbstractController
         $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
-            5/*limit per page*/
+            400/*limit per page*/
         );
 
 

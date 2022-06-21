@@ -19,35 +19,37 @@
       </div>
       <div class="col-sm-12 col-md-8 table-responsive" id="tableView">
         <a id="toggleSearch" class="nav-link text-white text-center paleRed">Search</a>
-        <table class="table table-striped table-light">
+        <table class="table table-striped table-light scroll">
           <thead>
             <tr>
-              <th>Gamebook</th>
-              <th>Paragraph Number</th>
-              <th>Text</th>
-              <th>Image</th>
-              <th>Paragraph Actions</th>
-              <th>Paragraph Directions</th>
-              <th>Enemy</th>
-              <th>Merchant</th>
-              <th>Equipment</th>
-              <th>Spell</th>
+              <th class="smallHead">Gamebook</th>
+              <th class="smallHead">Paragraph Number</th>
+              <th class="smallOptions">Paragraph Number</th>
+              <th class="smallBody">Text</th>
+              <th class="smallBody">Image</th>
+              <th class="smallBody">Paragraph Actions</th>
+              <th class="smallBody">Paragraph Directions</th>
+              <th class="smallBody">Enemy</th>
+              <th class="smallBody">Merchant</th>
+              <th class="smallBody">Equipment</th>
+              <th class="smallBody">Spell</th>
             </tr>
           </thead>
           <tbody name="paragraphTable" id="paragraphTable">
             {% for paragraph in pagination %}
             {% set id = paragraph.id %}
-              <tr>
-                <td><a class="nav-link" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}">{{ paragraph.gamebook }}</a></td>
-                <td><a class="nav-link" href="{{ path('paragraph_edit', {'id': paragraph.id, 'gamebook': gamebook}) }}">{{ paragraph.number }}</a></td>
-                <td>{{ paragraph.text }}</td>
-                <td>{{ paragraph.image }}</td>
-                <td><a class="nav-link" href="{{ path('paragraphaction_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Action</a></td>
-                <td><a class="nav-link" href="{{ path('paragraphdirection_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Direction</a></td>
-                <td><a class="nav-link" href="{{ path('enemy_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Enemy</a></td>
-                <td><a class="nav-link" href="{{ path('merchant_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Merchant</a></td>
-                <td><a class="nav-link" href="{{ path('paragraphequipment_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Equipment</a></td>
-                <td><a class="nav-link" href="{{ path('spell_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Spell</a></td>
+              <tr id="paragraph{{id}}">
+                <td class="smallHead"><a class="nav-link" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}">{{ paragraph.gamebook }}</a></td>
+                <td class="smallHead"><a class="nav-link" href="{{ path('paragraph_edit', {'id': paragraph.id, 'gamebook': gamebook}) }}">{{ paragraph.number }}</a></td>
+                <td class="smallOptions"><a class="nav-link smallOptionsLink" id="options{{id}}">Options</a></td>
+                <td class="smallBody smallOptionsList">{{ paragraph.text }}</td>
+                <td class="smallBody smallOptionsList">{{ paragraph.image }}</td>
+                <td class="smallBody smallOptionsList"><a class="nav-link" href="{{ path('paragraphaction_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Action</a></td>
+                <td class="smallBody smallOptionsList"><a class="nav-link" href="{{ path('paragraphdirection_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Direction</a></td>
+                <td class="smallBody smallOptionsList"><a class="nav-link" href="{{ path('enemy_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Enemy</a></td>
+                <td class="smallBody smallOptionsList"><a class="nav-link" href="{{ path('merchant_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Merchant</a></td>
+                <td class="smallBody smallOptionsList"><a class="nav-link" href="{{ path('paragraphequipment_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Equipment</a></td>
+                <td class="smallBody smallOptionsList"><a class="nav-link" href="{{ path('spell_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Spell</a></td>
               </tr>
             {% endfor %}
           </tbody>
