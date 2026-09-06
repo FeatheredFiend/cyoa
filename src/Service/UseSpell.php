@@ -27,14 +27,16 @@ class UseSpell
         $spellId = $this->getSpell($spell);
         $spellEffects = $this->getSpellEffects($spell);
 
-        $magiceffectoperator = $spellEffects["magiceffectoperator"];
-        $magiceffectattribute = $spellEffects["magiceffectattribute"];
-        $magiceffectvalue = $spellEffects["magiceffectvalue"];
+        foreach ($spellEffects as $spellEffect) {
+            $magiceffectoperator = $spellEffect["magiceffectoperator"];
+            $magiceffectattribute = $spellEffect["magiceffectattribute"];
+            $magiceffectvalue = $spellEffect["magiceffectvalue"];
 
-        if ($magiceffectoperator === "Add") {
-
-        } else if ($magiceffectoperator === "Remove") {
-
+            if ($magiceffectoperator === "Add") {
+                $this->applyEffect($hero, $magiceffectattribute, $magiceffectvalue);
+            } else if ($magiceffectoperator === "Remove") {
+                $this->applyEffect($hero, $magiceffectattribute, -$magiceffectvalue);
+            }
         }
 
 
@@ -47,6 +49,28 @@ class UseSpell
 
         $this->removeSpell($adventure, $spell);
 
+    }
+
+    public function applyEffect($hero, $attribute, $value)
+    {
+        $em = $this->entityManager;
+
+        $column = match ($attribute) {
+            'Stamina' => 'stamina',
+            'Skill' => 'skill',
+            'Luck' => 'luck',
+            default => null,
+        };
+
+        if ($column === null) {
+            return;
+        }
+
+        $RAW_QUERY = "UPDATE hero SET {$column} = {$column} + :value WHERE hero.id = :hero";
+        $statement = $em->getConnection()->prepare($RAW_QUERY);
+        $statement->bindValue('hero', $hero);
+        $statement->bindValue('value', $value);
+        $statement->executeStatement();
     }
 
     public function gainSpell($adventure, $spell)
@@ -100,19 +124,19 @@ class UseSpell
         $spellsRepository = $em->getRepository("App\Entity\Spell");
         
         // Search the buildings that belongs to the organisation with the given id as GET parameter "organisationid"
-        $spell = $spellsRepository->createQueryBuilder("s")
-            ->select('s.id as spell', 'meo.id as magiceffectoperator', 'mea.id as magiceffectattribute','me.magiceffectvalue as magiceffectvalue')
+        $spellEffects = $spellsRepository->createQueryBuilder("s")
+            ->select('meo.name as magiceffectoperator', 'mea.name as magiceffectattribute', 'me.magiceffectvalue as magiceffectvalue')
             ->leftJoin('s.magic','m')
-            ->leftJoin('m.magicEffect','me')
+            ->leftJoin('m.magicEffects','me')
             ->leftJoin('me.magiceffectoperator','meo')
             ->leftJoin('me.magiceffectattribute','mea')
             ->andWhere('s.name = :spell')
             ->setParameter('spell', $spell)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getArrayResult();
 
-        return $spell;
-    }       
+        return $spellEffects;
+    }
 
     public function getUseSpell()
     {
