@@ -407,6 +407,19 @@ input[type="radio"].form-control {
     display: -webkit-box;
 }
 
+.status-icon {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.status-icon--yes {
+    color: var(--accent-emerald-strong);
+}
+
+.status-icon--no {
+    color: var(--accent-crimson-strong);
+}
+
 .table th {
     color: var(--accent-gold-text);
     font-weight: 600;

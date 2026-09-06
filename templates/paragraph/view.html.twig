@@ -39,7 +39,13 @@
                 <td class="smallHead"><a class="nav-link" href="{{ path('paragraph_edit', {'id': paragraph.id, 'gamebook': gamebook}) }}">{{ paragraph.number }}</a></td>
                 <td class="smallOptions"><button type="button" class="btn btn-primary btn-sm smallOptionsLink">Options</button></td>
                 <td class="smallBody smallOptionsList"><span class="paragraphTextCell">{{ paragraph.text }}</span></td>
-                <td class="smallBody smallOptionsList">{{ paragraph.image }}</td>
+                <td class="smallBody smallOptionsList">
+                  {% if paragraph.image %}
+                    <span class="status-icon status-icon--yes" title="{{ paragraph.image }}">&#10003;</span>
+                  {% else %}
+                    <span class="status-icon status-icon--no">&#10007;</span>
+                  {% endif %}
+                </td>
                 <td class="smallBody smallOptionsList smallOptionsAction"><a class="nav-link" href="{{ path('paragraphaction_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Action</a></td>
                 <td class="smallBody smallOptionsList smallOptionsAction"><a class="nav-link" href="{{ path('paragraphdirection_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Direction</a></td>
                 <td class="smallBody smallOptionsList smallOptionsAction"><a class="nav-link" href="{{ path('enemy_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Enemy</a></td>
