@@ -18,6 +18,7 @@
             <tr>
               <th>ID</th>
               <th>Name</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody name="magiceffectattributeTable" id="magiceffectattributeTable">
@@ -26,6 +27,13 @@
               <tr>
                 <td><a class="nav-link" href="{{ path('magiceffectattribute_edit', {'id': magiceffectattribute.id}) }}">{{ magiceffectattribute.id}}</a></td>
                 <td>{{ magiceffectattribute.name }}</td>
+                <td>
+                  <form action="{{ path('generic_delete', {'entity': 'magiceffectattribute', 'id': magiceffectattribute.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
+                    <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_magiceffectattribute_' ~ magiceffectattribute.id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
               </tr>
             {% endfor %}
           </tbody>

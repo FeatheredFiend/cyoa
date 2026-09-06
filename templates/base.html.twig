@@ -20,6 +20,20 @@
         {% endblock %}
     </head>
     <body>
+        <div class="flash-stack">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success flash-toast">
+                    <p>{{ message }}</p>
+                    <button type="button" class="flash-toast__close" aria-label="Dismiss">&times;</button>
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('failure') %}
+                <div class="alert alert-danger flash-toast">
+                    <p>{{ message }}</p>
+                    <button type="button" class="flash-toast__close" aria-label="Dismiss">&times;</button>
+                </div>
+            {% endfor %}
+        </div>
         <header class="site-header">
             <div class="site-header__inner">
                 <a class="brand" href="{{ app.user ? path('homepage') : path('app_login') }}">

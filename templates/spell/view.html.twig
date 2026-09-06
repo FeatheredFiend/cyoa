@@ -19,6 +19,7 @@
           <thead>
             <tr>
               <th>Name</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody name="spellTable" id="spellTable">
@@ -26,6 +27,13 @@
             {% set id = spell.id %}
               <tr>
                 <td><a class="nav-link" href="{{ path('spell_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': spell.id}) }}">{{ spell.name}}</a></td>
+                <td>
+                  <form action="{{ path('generic_delete', {'entity': 'spell', 'id': spell.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
+                    <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_spell_' ~ spell.id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
               </tr>
             {% endfor %}
           </tbody>

@@ -18,6 +18,7 @@
             <tr>
               <th>ID</th>
               <th>Name</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody name="paragraphactioncategoryTable" id="paragraphactioncategoryTable">
@@ -26,6 +27,13 @@
               <tr>
                 <td><a class="nav-link" href="{{ path('paragraphactioncategory_edit', {'id': paragraphactioncategory.id}) }}">{{ paragraphactioncategory.id}}</a></td>
                 <td>{{ paragraphactioncategory.name }}</td>
+                <td>
+                  <form action="{{ path('generic_delete', {'entity': 'paragraphactioncategory', 'id': paragraphactioncategory.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
+                    <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_paragraphactioncategory_' ~ paragraphactioncategory.id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
               </tr>
             {% endfor %}
           </tbody>

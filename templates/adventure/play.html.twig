@@ -14,21 +14,6 @@
             </div>
         </div>
 
-        <div class="flash-stack">
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success flash-toast" id="successMessage">
-                    <p>{{ message }}</p>
-                    <button type="button" class="flash-toast__close" aria-label="Dismiss">&times;</button>
-                </div>
-            {% endfor %}
-            {% for message in app.flashes('failure') %}
-                <div class="alert alert-danger flash-toast" id="warningMessage">
-                    <p>{{ message }}</p>
-                    <button type="button" class="flash-toast__close" aria-label="Dismiss">&times;</button>
-                </div>
-            {% endfor %}
-        </div>
-
         <div class="game-shell" id="game">
             <div class="mobileHidden" id="heroStats">
                 {% for adventure in pagination %}

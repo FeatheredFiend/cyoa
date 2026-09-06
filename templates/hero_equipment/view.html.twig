@@ -20,6 +20,7 @@
               <th>Hero</th>
               <th>Equipment</th>
               <th>Quantity</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody name="heroequipmentTable" id="heroequipmentTable">
@@ -30,6 +31,13 @@
                 <td>{{ heroequipment.hero }}</td>
                 <td>{{ heroequipment.equipment }}</td>
                 <td>{{ heroequipment.quantity }}</td>
+                <td>
+                  <form action="{{ path('generic_delete', {'entity': 'heroequipment', 'id': heroequipment.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
+                    <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_heroequipment_' ~ heroequipment.id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
               </tr>
             {% endfor %}
           </tbody>

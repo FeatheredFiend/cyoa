@@ -24,6 +24,7 @@
               <th>Stamina</th>
               <th>Battle Category</th>
               <th>Image</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody name="enemyTable" id="enemyTable">
@@ -36,6 +37,13 @@
                 <td>{{ enemy.stamina }}</td>
                 <td>{{ enemy.battlecategory }}</td>
                 <td>{{ enemy.image }}</td>
+                <td>
+                  <form action="{{ path('generic_delete', {'entity': 'enemy', 'id': enemy.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
+                    <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_enemy_' ~ enemy.id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
               </tr>
             {% endfor %}
           </tbody>

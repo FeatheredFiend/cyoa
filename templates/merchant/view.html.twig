@@ -21,6 +21,7 @@
               <th>Name</th>
               <th>Paragraph</th>
               <th>Inventory</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody name="merchantTable" id="merchantTable">
@@ -30,6 +31,13 @@
                 <td><a class="nav-link" href="{{ path('merchant_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': merchant.id}) }}">{{ merchant.name}}</a></td>
                 <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{ merchant.paragraph }}</a></td>
                 <td><a class="nav-link" href="{{ path('merchantinventory_view', {'gamebook': gamebook, 'paragraph': paragraph, 'merchant': merchant.name}) }}">View Inventory</a></td>
+                <td>
+                  <form action="{{ path('generic_delete', {'entity': 'merchant', 'id': merchant.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
+                    <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_merchant_' ~ merchant.id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
               </tr>
             {% endfor %}
           </tbody>

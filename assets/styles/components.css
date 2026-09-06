@@ -107,6 +107,15 @@
     box-shadow: var(--shadow-sm);
 }
 
+.btn-danger.btn-sm,
+.btn-primary.btn-sm,
+.btn-secondary.btn-sm,
+.btn-success.btn-sm,
+.btn-warning.btn-sm {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.8rem;
+}
+
 /* Generic reset for .nav-link used as a plain inline link (table cells etc.) */
 a.nav-link {
     display: inline;

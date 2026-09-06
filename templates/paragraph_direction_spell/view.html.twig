@@ -24,6 +24,7 @@
               <th>Paragraph</th>
               <th>Paragraph Direction</th>
               <th>Spell</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody name="paragraphdirectionspellTable" id="paragraphdirectionspellTable">
@@ -34,6 +35,13 @@
                 <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{paragraph}}</a></td>
                 <td><a class="nav-link" href="{{ path('paragraphdirection_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{ paragraphdirectionspell.paragraphdirection.id }}</a></td>
                 <td><a class="nav-link" href="{{ path('paragraphdirectionspell_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'paragraphdirection': paragraphdirection, 'id': paragraphdirectionspell.id}) }}">{{ paragraphdirectionspell.spell }}</a></td>
+                <td>
+                  <form action="{{ path('generic_delete', {'entity': 'paragraphdirectionspell', 'id': paragraphdirectionspell.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
+                    <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_paragraphdirectionspell_' ~ paragraphdirectionspell.id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
               </tr>
             {% endfor %}
           </tbody>

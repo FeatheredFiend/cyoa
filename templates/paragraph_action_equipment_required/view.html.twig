@@ -24,6 +24,7 @@
               <th>Paragraph</th>
               <th>Paragraph Action</th>
               <th>Equipment</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody name="paragraphactionequipmentrequiredTable" id="paragraphactionequipmentrequiredTable">
@@ -34,6 +35,13 @@
                 <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{paragraph}}</a></td>
                 <td><a class="nav-link" href="{{ path('paragraphaction_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{ paragraphactionequipmentrequired.paragraphaction.id }}</a></td>
                 <td><a class="nav-link" href="{{ path('paragraphactionequipmentrequired_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'paragraphaction': paragraphaction, 'id': paragraphactionequipmentrequired.id}) }}">{{ paragraphactionequipmentrequired.equipment }}</a></td>
+                <td>
+                  <form action="{{ path('generic_delete', {'entity': 'paragraphactionequipmentrequired', 'id': paragraphactionequipmentrequired.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
+                    <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_paragraphactionequipmentrequired_' ~ paragraphactionequipmentrequired.id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
               </tr>
             {% endfor %}
           </tbody>

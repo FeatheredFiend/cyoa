@@ -25,6 +25,7 @@
               <th>Redirect Paragraph</th>
               <th>Equipment Required</th>
               <th>Spell Required</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody name="paragraphdirectionTable" id="paragraphdirectionTable">
@@ -38,6 +39,13 @@
                 <td>{{ paragraphdirection.redirectparagraph }}</td>
                 <td><a class="nav-link" href="{{ path('paragraphdirectionequipmentrequired_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphdirection': paragraphdirection.id}) }}">Add Equipment Required</a></td>
                 <td><a class="nav-link" href="{{ path('paragraphdirectionspell_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphdirection': paragraphdirection.id}) }}">Add Spell Required</a></td>
+                <td>
+                  <form action="{{ path('generic_delete', {'entity': 'paragraphdirection', 'id': paragraphdirection.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
+                    <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_paragraphdirection_' ~ paragraphdirection.id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
               </tr>
             {% endfor %}
           </tbody>

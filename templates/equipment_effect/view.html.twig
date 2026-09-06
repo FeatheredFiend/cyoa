@@ -21,6 +21,7 @@
               <th>Equipment Effect Operator</th>
               <th>Equipment Effect Value</th>
               <th>Equipment Effect Attribute</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody name="equipmenteffectTable" id="equipmenteffectTable">
@@ -32,6 +33,13 @@
                 <td>{{ equipmenteffect.equipmenteffectoperator }}</td>
                 <td>{{ equipmenteffect.equipmenteffectvalue }}</td>
                 <td>{{ equipmenteffect.equipmenteffectattribute }}</td>
+                <td>
+                  <form action="{{ path('generic_delete', {'entity': 'equipmenteffect', 'id': equipmenteffect.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
+                    <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_equipmenteffect_' ~ equipmenteffect.id) }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </td>
               </tr>
             {% endfor %}
           </tbody>
