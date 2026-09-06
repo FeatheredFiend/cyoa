@@ -21,6 +21,7 @@
             <tr>
               <th class="smallHead">Name</th>
               <th class="smallOptions">Options</th>
+              <th class="smallBody">Magic</th>
               <th class="smallBody">Delete</th>
             </tr>
           </thead>
@@ -30,6 +31,7 @@
               <tr>
                 <td class="smallHead"><a class="btn btn-secondary btn-sm" href="{{ path('spell_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': spell.id}) }}">{{ spell.name}}</a></td>
                 <td class="smallOptions"><button type="button" class="btn btn-primary btn-sm smallOptionsLink">Options</button></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('magic_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">Magic: {{ spell.magic }}</a></td>
                 <td class="smallBody smallOptionsList smallOptionsAction">
                   <form action="{{ path('generic_delete', {'entity': 'spell', 'id': spell.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
                     <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
