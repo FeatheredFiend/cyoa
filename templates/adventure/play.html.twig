@@ -7,6 +7,8 @@
     <p class="hidden" id="paragraph">{{paragraph}}</p>
     <div class="container-fluid">
 
+        <div class="battle-popup-stack" id="battlePopupStack" aria-live="polite"></div>
+
         <div class="gameover-screen hidden" id="gameover">
             <div class="gameover-screen__inner">
                 <h1>Game Over</h1>
@@ -328,11 +330,11 @@
                                 <table class="table table-striped table-light">
                                     <tr>
                                         <th>Enemy Name</th>
-                                        <td>{{ paragraphbattle.enemy }}</td>
+                                        <td id="battleenemyname">{{ paragraphbattle.enemy }}</td>
                                     </tr>
                                     <tr>
                                         <th>Battle Round</th>
-                                        <td>{{ paragraphbattle.round }}</td>
+                                        <td id="battleround">{{ paragraphbattle.round }}</td>
                                     </tr>
                                     <tr>
                                         <th>Player Stamina</th>

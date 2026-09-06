@@ -54,7 +54,91 @@ function pulseStat(selector, isIncrease) {
     }
 }
 
+// Shows a 2-second auto-closing, flashing popup for a battle-round change.
+// type is "damage" (red) or "heal" (green).
+function showBattlePopup(text, type) {
+    var $stack = $('#battlePopupStack');
+    if ($stack.length === 0) {
+        return;
+    }
+    var $popup = $('<div class="battle-popup battle-popup--' + type + '"><span class="battle-popup__text"></span><button type="button" class="battle-popup__close" aria-label="Dismiss">&times;</button></div>');
+    $popup.find('.battle-popup__text').text(text);
+    $stack.append($popup);
+    var timer = setTimeout(function() { closeBattlePopup($popup); }, 2000);
+    $popup.data('timer', timer);
+}
+
+function closeBattlePopup($popup) {
+    clearTimeout($popup.data('timer'));
+    if ($popup.hasClass('battle-popup--leaving')) {
+        return;
+    }
+    $popup.addClass('battle-popup--leaving');
+    setTimeout(function() { $popup.remove(); }, 200);
+}
+
+// Battles are resolved server-side and the page is fully reloaded after each
+// round, so the only way to tell the player what just happened is to compare
+// the stats shown now against the stats shown on the previous load.
+function showBattleRoundChanges() {
+    var adventure = $("#adventure").text();
+    var paragraph = $("#paragraph").text();
+    var storageKey = 'battleRoundStats_' + adventure + '_' + paragraph;
+
+    if ($("#battleEnemy").length === 0) {
+        try { localStorage.removeItem(storageKey); } catch (e) {}
+        return;
+    }
+
+    var current = {
+        round: parseInt($("#battleround").text(), 10),
+        playerstamina: parseInt($("#battleplayerstamina").text(), 10),
+        enemystamina: parseInt($("#enemystamina").text(), 10),
+        luck: parseInt($("#luck").text(), 10)
+    };
+    var enemyName = $.trim($("#battleenemyname").text()) || 'The enemy';
+
+    var previous = null;
+    try {
+        previous = JSON.parse(localStorage.getItem(storageKey));
+    } catch (e) {
+        previous = null;
+    }
+
+    if (previous && current.round > previous.round) {
+        var playerDelta = current.playerstamina - previous.playerstamina;
+        var enemyDelta = current.enemystamina - previous.enemystamina;
+        var luckDelta = current.luck - previous.luck;
+
+        if (playerDelta < 0) {
+            showBattlePopup('You take ' + Math.abs(playerDelta) + ' damage!', 'damage');
+        } else if (playerDelta > 0) {
+            showBattlePopup('You recover ' + playerDelta + ' Stamina!', 'heal');
+        }
+
+        if (enemyDelta < 0) {
+            showBattlePopup(enemyName + ' takes ' + Math.abs(enemyDelta) + ' damage!', 'damage');
+        } else if (enemyDelta > 0) {
+            showBattlePopup(enemyName + ' recovers ' + enemyDelta + ' Stamina!', 'heal');
+        }
+
+        if (luckDelta < 0) {
+            showBattlePopup('You lose ' + Math.abs(luckDelta) + ' Luck!', 'damage');
+        } else if (luckDelta > 0) {
+            showBattlePopup('You gain ' + luckDelta + ' Luck!', 'heal');
+        }
+    }
+
+    try {
+        localStorage.setItem(storageKey, JSON.stringify(current));
+    } catch (e) {}
+}
+
 $(document).ready(function() {
+
+    $(document).on('click', '.battle-popup__close', function() {
+        closeBattlePopup($(this).closest('.battle-popup'));
+    });
 
     $("#navToggle").on('click', function() {
         var expanded = $(this).attr('aria-expanded') === 'true';
@@ -264,6 +348,8 @@ $(document).ready(function() {
         $("#battleCreate").addClass('hidden');
         $("#battleCreateLuck").addClass('hidden');
     }
+
+    showBattleRoundChanges();
 
     if ($("#luck").text() == 0) {
         $("#battleNextLuck").addClass('hidden');
