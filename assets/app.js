@@ -77,13 +77,11 @@ $(document).ready(function() {
     });
 
     $("#toggleStats").click(function() {
-        if ($("#heroStats").hasClass("mobileHidden")) {
-            $("#heroStats").removeClass('mobileHidden');
-            $("#toggleStats").text('Close Stats');
-        } else {
-            $("#heroStats").addClass('mobileHidden');
-            $("#toggleStats").text('Open Stats');
-        }
+        $("#heroStats").removeClass('mobileHidden');
+    });
+
+    $("#heroStatsClose").click(function() {
+        $("#heroStats").addClass('mobileHidden');
     });
 
     $("#toggleSearch").click(function() {

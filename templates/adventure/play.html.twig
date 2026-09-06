@@ -34,10 +34,12 @@
                 {% for adventure in pagination %}
                     {% set hero = adventure.hero %}
                     <div class="hero-panel">
-                        <p class="hero-panel__eyebrow">{{ adventure.gamebook }}</p>
-                        <h2 class="hero-panel__name">{{ hero }}</h2>
-                        <div class="hero-panel__meta">
-                            <span>Adventure: <strong>{{ adventure.name }}</strong></span>
+                        <div class="hero-panel__header" id="heroStatsClose">
+                            <p class="hero-panel__eyebrow">{{ adventure.gamebook }}</p>
+                            <h2 class="hero-panel__name">{{ hero }}</h2>
+                            <div class="hero-panel__meta">
+                                <span>Adventure: <strong>{{ adventure.name }}</strong></span>
+                            </div>
                         </div>
                         <span class="hidden" id="heroId">{{ hero.id }}</span>
 

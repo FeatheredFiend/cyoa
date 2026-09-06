@@ -67,22 +67,43 @@
     }
 }
 
-/* Animated mobile collapse for the hero stats panel, scoped so the
-   generic .mobileHidden utility elsewhere keeps its plain display:none. */
+/* Full-screen mobile stats overlay, scoped so the generic .mobileHidden
+   utility elsewhere keeps its plain display:none. Opened via #toggleStats,
+   closed by tapping the panel's own header (.hero-panel__header) instead
+   of a separate close button. */
 @media screen and (max-width: 767px) {
-    #heroStats {
-        overflow: hidden;
-        max-height: 3000px;
-        opacity: 1;
-        transition: max-height var(--dur-slow) var(--ease-in-out), opacity var(--dur-base) var(--ease-out), margin var(--dur-base) var(--ease-out);
+    #heroStats.mobileHidden {
+        display: none;
     }
 
-    #heroStats.mobileHidden {
+    #heroStats:not(.mobileHidden) {
         display: block;
-        max-height: 0;
-        opacity: 0;
-        margin: 0;
-        pointer-events: none;
+        position: fixed;
+        inset: 0;
+        z-index: 70;
+        overflow-y: auto;
+        background: var(--bg-canvas);
+        padding: 1.25rem 1rem 2rem;
+        animation: fade-in var(--dur-base) var(--ease-out) both;
+    }
+
+    #heroStats .hero-panel {
+        position: static;
+    }
+
+    .hero-panel__header {
+        position: relative;
+        cursor: pointer;
+        padding-right: 1.75rem;
+    }
+
+    .hero-panel__header::after {
+        content: '\2715';
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 1.1rem;
+        color: var(--text-muted);
     }
 
     #searchBox.hidden {
