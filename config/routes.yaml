@@ -1,22 +1,22 @@
 controllers:
     resource: ../src/Controller/
-    type: annotation
+    type: attribute
 
 kernel:
     resource: ../src/Kernel.php
-    type: annotation
+    type: attribute
 
 paragraph_action:
     path:     /run-paragraph-action
-    defaults: { _controller: "App:ParagraphAction:listParagraphAction" }
-    methods:  GET 
+    defaults: { _controller: "App\\Controller\\ParagraphActionController::listParagraphAction" }
+    methods:  GET
 
 paragraph_equipment:
     path:     /run-paragraph-equipment
-    defaults: { _controller: "App:ParagraphEquipment:listParagraphEquipmentAction" }
-    methods:  GET  
+    defaults: { _controller: "App\\Controller\\ParagraphEquipmentController::listParagraphEquipmentAction" }
+    methods:  GET
 
 hero_equipment:
     path:     /get-hero-equipment
-    defaults: { _controller: "App:HeroEquipment:listHeroEquipmentAction" }
-    methods:  GET         
+    defaults: { _controller: "App\\Controller\\HeroEquipmentController::listHeroEquipmentAction" }
+    methods:  GET
