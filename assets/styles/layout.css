@@ -156,14 +156,6 @@ body {
     flex: 1 0 auto;
 }
 
-.site-footer {
-    flex-shrink: 0;
-    text-align: center;
-    padding: 1.5rem 1rem 2rem;
-    color: var(--text-muted);
-    font-size: 0.82rem;
-}
-
 @media (max-width: 860px) {
     .nav-toggle {
         display: flex;
