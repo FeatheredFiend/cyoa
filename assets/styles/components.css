@@ -7,7 +7,12 @@
 
 /* ---------- Buttons ---------- */
 
-.btn {
+.btn,
+.btn-primary,
+.btn-danger,
+.btn-warning,
+.btn-success,
+.btn-secondary {
     font-family: var(--font-body);
     font-weight: 600;
     font-size: 0.92rem;
@@ -25,11 +30,21 @@
                 border-color var(--dur-fast) var(--ease-out);
 }
 
-.btn:hover {
+.btn:hover,
+.btn-primary:hover,
+.btn-danger:hover,
+.btn-warning:hover,
+.btn-success:hover,
+.btn-secondary:hover {
     transform: translateY(-2px);
 }
 
-.btn:active {
+.btn:active,
+.btn-primary:active,
+.btn-danger:active,
+.btn-warning:active,
+.btn-success:active,
+.btn-secondary:active {
     transform: translateY(0) scale(0.97);
 }
 
@@ -196,29 +211,50 @@ a.nav-link:hover {
 
 .form-control,
 .form-select,
+select,
 select.form-control,
 textarea.form-control,
 input.form-control {
-    background: var(--bg-inset);
+    background-color: var(--bg-inset) !important;
+    background-image: none;
     border: 1px solid var(--border-default);
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
     border-radius: var(--radius-sm);
     padding: 0.6rem 0.85rem;
     font-family: var(--font-body);
     transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
 }
 
+select,
+select.form-control,
+.form-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23d4af6a' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    padding-right: 2.25rem;
+}
+
 .form-control:focus,
-.form-select:focus {
-    background: var(--bg-base);
+.form-select:focus,
+select:focus {
+    background-color: var(--bg-base) !important;
     border-color: var(--accent-gold);
     box-shadow: 0 0 0 3px var(--accent-gold-soft);
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
     outline: none;
 }
 
 .form-control::placeholder {
     color: var(--text-muted);
+}
+
+select option {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
 }
 
 input[type="checkbox"].form-control,
@@ -283,6 +319,43 @@ input[type="radio"].form-control {
     padding: 0.7rem 0.9rem;
 }
 
+/* CRUD list/detail tables use Bootstrap's .table-light modifier, which
+   otherwise renders a bright white row. Retint it pale blue instead
+   so it still reads as a "light" table without breaking the dark theme. */
+.table-light {
+    --bs-table-bg: #e4edfa !important;
+    --bs-table-striped-bg: #d5e3f5 !important;
+    --bs-table-striped-color: #16233d !important;
+    --bs-table-active-bg: #c7daf1 !important;
+    --bs-table-active-color: #16233d !important;
+    --bs-table-hover-bg: #cee0f4 !important;
+    --bs-table-hover-color: #16233d !important;
+    border-color: #b9d0ec !important;
+    color: #16233d !important;
+}
+
+.table-light > :not(caption) > * > * {
+    background-color: var(--bs-table-bg) !important;
+    color: inherit !important;
+    padding: 0.7rem 0.9rem;
+}
+
+.table-light.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: var(--bs-table-striped-bg) !important;
+}
+
+.table-light > :not(caption) > tr:hover > * {
+    background-color: var(--bs-table-hover-bg) !important;
+}
+
+.table-light a.nav-link {
+    color: #1d5fd6;
+}
+
+.table-light a.nav-link:hover {
+    color: #8a5a12;
+}
+
 .table thead th {
     font-family: var(--font-body);
     font-size: 0.74rem;
@@ -309,6 +382,14 @@ input[type="radio"].form-control {
 
 .table > tbody > tr:hover > * {
     background: var(--bg-elevated);
+}
+
+.paragraphTextCell {
+    max-width: 320px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    display: -webkit-box;
 }
 
 .table th {
