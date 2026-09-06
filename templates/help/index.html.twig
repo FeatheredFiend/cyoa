@@ -1,0 +1,232 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Help & FAQ{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <p class="hidden" id="title">{{ title }}</p>
+    {% if app.user != null %}
+        <div class="help-hero">
+            <p class="help-hero__eyebrow">Help</p>
+            <h1 class="help-hero__title">User Guide &amp; FAQ</h1>
+            <p class="help-hero__desc">Everything you need to play a gamebook, or build one of your own.</p>
+        </div>
+
+        <ul class="help-subnav">
+            <li><a href="#getting-started">Getting Started</a></li>
+            <li><a href="#home-page">Home Page</a></li>
+            <li><a href="#playing">Playing a Gamebook</a></li>
+            <li><a href="#building">Building Your Own Gamebook</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+
+        <div class="help-shell">
+
+            <section class="help-group" id="getting-started">
+                <h2 class="help-group__title">Getting Started</h2>
+                <p class="help-group__intro">Everything is a normal account &mdash; register once, then log in whenever you come back.</p>
+
+                <div class="help-section">
+                    <div class="help-section__text">
+                        <h3>Create an account</h3>
+                        <p>Open <strong>Register</strong> from the top-right of any page, fill in your name, email and a password, and submit the form. You'll be sent to the login page straight away &mdash; there's no email confirmation step.</p>
+                    </div>
+                    <figure class="help-figure">
+                        <img src="{{ asset('images/help/register.png') }}" alt="The registration form with fields for name, email and password" loading="lazy">
+                        <figcaption>The registration page.</figcaption>
+                    </figure>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section__text">
+                        <h3>Log in</h3>
+                        <p>Enter the email and password you registered with. Once you're signed in you'll stay logged in until you choose <strong>Logout</strong> from the menu.</p>
+                    </div>
+                    <figure class="help-figure">
+                        <img src="{{ asset('images/help/login.png') }}" alt="The login form with email and password fields" loading="lazy">
+                        <figcaption>The login page.</figcaption>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="help-group" id="home-page">
+                <h2 class="help-group__title">Home Page</h2>
+                <p class="help-group__intro">Once you're signed in, the home page is your starting point for everything.</p>
+
+                <div class="help-section">
+                    <div class="help-section__text">
+                        <h3>Three places to go</h3>
+                        <ul>
+                            <li><strong>Gamebooks</strong> &mdash; browse every world that's available to explore, and create a new one of your own.</li>
+                            <li><strong>Adventures</strong> &mdash; the quests you've started or are part-way through, and where you continue playing.</li>
+                            <li><strong>Help</strong> &mdash; this page, with the user guide and FAQ.</li>
+                        </ul>
+                    </div>
+                    <figure class="help-figure">
+                        <img src="{{ asset('images/help/homepage.png') }}" alt="The home page showing the Gamebooks, Adventures and Help cards" loading="lazy">
+                        <figcaption>The home page.</figcaption>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="help-group" id="playing">
+                <h2 class="help-group__title">Playing a Gamebook</h2>
+                <p class="help-group__intro">Playing means picking a world, rolling up a hero, and reading your way through it one paragraph at a time.</p>
+
+                <div class="help-section">
+                    <div class="help-section__text">
+                        <h3>Browse gamebooks</h3>
+                        <p>The <strong>Gamebooks</strong> list shows every world you have access to. Use the search box to filter by name, or the <strong>Paragraphs</strong> button to jump into a book you're authoring &mdash; see <a href="#building">Building Your Own Gamebook</a> below.</p>
+                    </div>
+                    <figure class="help-figure">
+                        <img src="{{ asset('images/help/gamebooks.png') }}" alt="The gamebook list with a Create Gamebook button and a searchable table" loading="lazy">
+                        <figcaption>The Gamebooks list.</figcaption>
+                    </figure>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section__text">
+                        <h3>Start a new adventure</h3>
+                        <p>From <strong>Adventures &rarr; Create Adventure</strong>, pick yourself and a gamebook. A hero is rolled up for you automatically &mdash; <code>Skill</code>, <code>Stamina</code>, <code>Luck</code> and starting <code>Provisions</code> are all randomly generated, Fighting-Fantasy style &mdash; and your adventure begins at paragraph 1.</p>
+                    </div>
+                    <figure class="help-figure">
+                        <img src="{{ asset('images/help/create-adventure.png') }}" alt="The create adventure form with User, Gamebook and Name fields" loading="lazy">
+                        <figcaption>Starting a new adventure.</figcaption>
+                    </figure>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section__text">
+                        <h3>Continue an adventure</h3>
+                        <p>The <strong>Adventures</strong> list shows every quest you've started, who it belongs to, which hero is playing it, and how much time has elapsed. Tap <strong>Play</strong> to pick up exactly where you left off, or open your hero to check their stats and inventory.</p>
+                    </div>
+                    <figure class="help-figure">
+                        <img src="{{ asset('images/help/adventures.png') }}" alt="The adventures list with Play, Hero and Delete actions for each row" loading="lazy">
+                        <figcaption>The Adventures list.</figcaption>
+                    </figure>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section__text">
+                        <h3>Reading &amp; making choices</h3>
+                        <p>Each paragraph shows the story text, your hero's stats and inventory in the side panel, and a list of choices at the bottom. Tap a choice to move to the next paragraph &mdash; there's no going back, so read carefully.</p>
+                        <p>On a small screen, tap <strong>Stats</strong> to open your hero panel without losing your place in the story.</p>
+                    </div>
+                    <figure class="help-figure">
+                        <img src="{{ asset('images/help/play-story.png') }}" alt="The play screen showing hero stats, the story text and a list of choice buttons" loading="lazy">
+                        <figcaption>Reading a paragraph and choosing where to go next.</figcaption>
+                    </figure>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section__text">
+                        <h3>Combat</h3>
+                        <p>When a paragraph has an enemy, you can <strong>Fight!</strong> or <strong>Fight with Luck!</strong>. Each round, both sides roll two dice and add their Skill &mdash; the higher total wins the round and the loser loses Stamina.</p>
+                        <p>Fighting with Luck is a gamble: test your Luck for a bigger hit if you win the round, or a smaller loss if you don't &mdash; either way, using Luck costs you one point of it. The battle continues round by round until one side runs out of Stamina.</p>
+                    </div>
+                    <figure class="help-figure">
+                        <img src="{{ asset('images/help/play-combat.png') }}" alt="The battle panel mid-fight, showing both combatants' skill and stamina with Next Round buttons" loading="lazy">
+                        <figcaption>A battle in progress.</figcaption>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="help-group" id="building">
+                <h2 class="help-group__title">Building Your Own Gamebook</h2>
+                <p class="help-group__intro">Anyone can author a gamebook. Creating one gives you edit access automatically &mdash; you can invite others to co-author it from <strong>Gamebook Permissions</strong> in Admin.</p>
+
+                <div class="help-section">
+                    <div class="help-section__text">
+                        <h3>Create the gamebook, then add paragraphs</h3>
+                        <p>Hit <strong>Create Gamebook</strong>, give it a name and a license, then open its <strong>Paragraphs</strong> list. Each paragraph has a number and some story text &mdash; paragraph 1 is where every adventure begins.</p>
+                        <p>From each row's <strong>Options</strong>, you can attach a <strong>Direction</strong> (a choice linking to another paragraph), an <strong>Enemy</strong>, a <strong>Merchant</strong>, <strong>Equipment</strong> or a <strong>Spell</strong> &mdash; that's how a paragraph gets its choices, its fights and its rewards.</p>
+                    </div>
+                    <figure class="help-figure">
+                        <img src="{{ asset('images/help/paragraphs.png') }}" alt="The paragraph list for a gamebook, with columns for actions, directions, enemies, merchants, equipment and spells" loading="lazy">
+                        <figcaption>The paragraph editor for a gamebook.</figcaption>
+                    </figure>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section__text">
+                        <h3>Link paragraphs together</h3>
+                        <p>A <strong>Direction</strong> is the choice text a player sees, plus the paragraph number it leads to. Add one for every path a reader can take from that paragraph &mdash; a paragraph with no directions is an ending.</p>
+                    </div>
+                    <figure class="help-figure">
+                        <img src="{{ asset('images/help/add-direction.png') }}" alt="The add direction form with choice text and a target paragraph" loading="lazy">
+                        <figcaption>Adding a choice that links to another paragraph.</figcaption>
+                    </figure>
+                </div>
+
+                <div class="help-section">
+                    <div class="help-section__text">
+                        <h3>Editing on the go</h3>
+                        <p>Every list in the editor &mdash; gamebooks, paragraphs, adventures and the rest &mdash; is mobile-friendly. On a narrow screen each row collapses to its name plus an <strong>Options</strong> button, which opens a modal with the same actions you'd see on desktop.</p>
+                    </div>
+                    <figure class="help-figure help-figure--narrow">
+                        <img src="{{ asset('images/help/mobile-options.png') }}" alt="The paragraph list on a mobile screen with the Options modal open" loading="lazy">
+                        <figcaption>The Options modal on mobile.</figcaption>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="help-group" id="faq">
+                <h2 class="help-group__title">FAQ</h2>
+                <div class="faq-list">
+                    <details class="faq-item">
+                        <summary>Is registration free, and do I need to verify my email?</summary>
+                        <div class="faq-item__answer">
+                            <p>Yes, registration is free and there's no email verification step &mdash; as soon as you submit the form you can log in.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Where do my hero's stats come from?</summary>
+                        <div class="faq-item__answer">
+                            <p>They're rolled automatically the moment you create an adventure &mdash; you don't fill in a character sheet yourself. Skill, Stamina, Luck and Provisions all start at their rolled value, shown as <code>current / starting</code> in your hero panel while you play.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Can I go back to a previous paragraph?</summary>
+                        <div class="faq-item__answer">
+                            <p>No &mdash; like a physical gamebook, choosing a direction commits you to it. If your hero dies or the adventure reaches a dead end, start a new adventure from the same gamebook to try again.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>What's the difference between "Fight!" and "Fight with Luck!"?</summary>
+                        <div class="faq-item__answer">
+                            <p>Both resolve the round the same way: highest Skill roll wins, and the loser takes 2 Stamina damage. Fighting with Luck lets you test your Luck stat afterwards &mdash; succeed and the damage becomes 4 instead of 2 (in your favour if you won the round, against you if you lost it); fail and it drops to 1. Either way, using Luck costs one point of it, so it's best saved for when a round really matters.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Can more than one person work on the same gamebook?</summary>
+                        <div class="faq-item__answer">
+                            <p>Yes. Whoever creates a gamebook gets edit access automatically, and an admin can grant other accounts access to it from <strong>Admin &rarr; Gamebook Permissions</strong>.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>Can I delete a gamebook, paragraph or adventure?</summary>
+                        <div class="faq-item__answer">
+                            <p>Yes &mdash; every list has a <strong>Delete</strong> action (or in the mobile Options modal) which asks you to confirm first, since it can't be undone.</p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item">
+                        <summary>What does an admin account do?</summary>
+                        <div class="faq-item__answer">
+                            <p>Admins get an extra <strong>Admin</strong> link in the menu for managing which accounts have access to which gamebooks. It doesn't change how you play or build a gamebook otherwise.</p>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+        </div>
+    {% else %}
+        <p>Please Log in to view this page</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -36,9 +36,9 @@ class BattleCategoryController extends AbstractController
     public function index(Request $request, string $title): Response
     {
         $q = $request->query->get('q');
-        $queryBuilder = $battlecategoryRepository->getWithSearchQueryBuilderView($q);
+        $queryBuilder = $this->battlecategoryRepository->getWithSearchQueryBuilderView($q);
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $queryBuilder, /* query NOT result */
             $request->query->getInt('page', 1)/*page number*/,
             5/*limit per page*/
@@ -63,7 +63,7 @@ class BattleCategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($battlecategory);
             $em->flush();
 
@@ -76,7 +76,7 @@ class BattleCategoryController extends AbstractController
     #[Route('/battlecategory/edit/{id}', name: 'battlecategory_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Battle Category'])]
     public function edit(int $id, Request $request,string $title): Response
     {
-        $battlecategory = $battlecategoryRepository
+        $battlecategory = $this->battlecategoryRepository
             ->find($id);
 
 
@@ -87,7 +87,7 @@ class BattleCategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Save
-            $em = $doctrine->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($battlecategory);
             $em->flush();
 
