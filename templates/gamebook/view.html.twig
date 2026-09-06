@@ -8,7 +8,8 @@
   {% if app.user != null %}
     <div class="row">
       <div class="col-sm-12 col-md-4" id="searchBox">
-      <a class="text-decoration-none" href="{{ path('gamebook_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Gamebook</button></a>   
+      <a class="text-decoration-none" href="{{ path('gamebook_create') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Gamebook</button></a>
+      <a class="text-decoration-none" href="{{ path('gamebook_license') }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Add License</button></a>
       {{ knp_pagination_filter(pagination, {'g.name': 'Name'}) }}
       </div>
       <div class="col-sm-12 col-md-8 table-responsive" id="tableView">

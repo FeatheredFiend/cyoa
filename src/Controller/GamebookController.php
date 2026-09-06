@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Gamebook;
 use App\Entity\GamebookPermission;
 use App\Form\GamebookType;
+use App\Form\GamebookLicenseType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,6 +84,52 @@ class GamebookController extends AbstractController
         }
         return $this->render('gamebook/create.html.twig', ['form' => $form->createView(),'gamebook' => $gamebook,'title' => $title]);
 
+    }
+
+    #[Route('/gamebook/license', name: 'gamebook_license', defaults: ['title' => 'Add License'])]
+    public function license(Request $request, string $title): Response
+    {
+        $form = $this->createForm(GamebookLicenseType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $data = $form->getData();
+            $user = $this->security->getUser();
+
+            $gamebook = $this->gamebookRepository->findOneBy([
+                'name' => $data['name'],
+                'license' => $data['license'],
+            ]);
+
+            if ($gamebook !== null) {
+                $em = $this->doctrine->getManager();
+                $existing = $em->getRepository(GamebookPermission::class)->findOneBy([
+                    'gamebook' => $gamebook,
+                    'user' => $user,
+                ]);
+
+                if ($existing === null) {
+                    $gamebookPermission = new GamebookPermission();
+                    $gamebookPermission->setGamebook($gamebook);
+                    $gamebookPermission->setUser($user);
+                    $em->persist($gamebookPermission);
+                    $em->flush();
+                }
+
+                $this->addFlash('success', 'You now have access to "' . $gamebook->getName() . '".');
+            } else {
+                $this->addFlash('failure', 'No gamebook matches that name and license.');
+            }
+
+            return $this->redirectToRoute('gamebook_view');
+        }
+
+        return $this->render('gamebook/license.html.twig', [
+            'form' => $form->createView(),
+            'title' => $title,
+        ]);
     }
 
     #[Route('/gamebook/edit/{id}', name: 'gamebook_edit', requirements : ['id' => '\d+'], defaults: ['id' => 1, 'title' => 'Edit Gamebook'])]
