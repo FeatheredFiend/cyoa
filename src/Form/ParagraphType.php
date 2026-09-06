@@ -35,13 +35,13 @@ class ParagraphType extends AbstractType
                 // unmapped fields can't define their validation using annotations
                 // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
-                    new File([
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
+                    new File(
+                        maxSize: '1024k',
+                        mimeTypes: [
                             'image/*'
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid Image document',
-                    ])
+                        mimeTypesMessage: 'Please upload a valid Image document',
+                    )
                 ],
             ])
         ;

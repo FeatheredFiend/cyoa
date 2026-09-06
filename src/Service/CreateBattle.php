@@ -62,14 +62,14 @@ class CreateBattle
 
         $RAW_QUERY = "INSERT INTO battle(enemy_id, round, playerstamina, playerskill, enemystamina, enemyskill, adventureparagraph_id) VALUES (:enemy, :round, :playerstamina, :playerskill, :enemystamina, :enemyskill, :adventureparagraph)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('enemy', $enemy);
-        $statement->bindParam('round', $round);
-        $statement->bindParam('playerskill', $playerskill);
-        $statement->bindParam('playerstamina', $playerstamina);
-        $statement->bindParam('enemyskill', $enemyskill);
-        $statement->bindParam('enemystamina', $enemystamina);
-        $statement->bindParam('adventureparagraph', $paragraph);
-        $statement->execute();
+        $statement->bindValue('enemy', $enemy);
+        $statement->bindValue('round', $round);
+        $statement->bindValue('playerskill', $playerskill);
+        $statement->bindValue('playerstamina', $playerstamina);
+        $statement->bindValue('enemyskill', $enemyskill);
+        $statement->bindValue('enemystamina', $enemystamina);
+        $statement->bindValue('adventureparagraph', $paragraph);
+        $statement->executeStatement();
     }
 
     public function createBattleFromAction($adventure, $paragraph, $enemy, $luck)
@@ -87,14 +87,14 @@ class CreateBattle
 
         $RAW_QUERY = "INSERT INTO battle(enemy_id, round, playerstamina, playerskill, enemystamina, enemyskill, adventureparagraph_id) VALUES (:enemy, :round, :playerstamina, :playerskill, :enemystamina, :enemyskill, :adventureparagraph)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('enemy', $enemy);
-        $statement->bindParam('round', $round);
-        $statement->bindParam('playerskill', $playerskill);
-        $statement->bindParam('playerstamina', $playerstamina);
-        $statement->bindParam('enemyskill', $enemyskill);
-        $statement->bindParam('enemystamina', $enemystamina);
-        $statement->bindParam('adventureparagraph', $paragraph);
-        $statement->execute();
+        $statement->bindValue('enemy', $enemy);
+        $statement->bindValue('round', $round);
+        $statement->bindValue('playerskill', $playerskill);
+        $statement->bindValue('playerstamina', $playerstamina);
+        $statement->bindValue('enemyskill', $enemyskill);
+        $statement->bindValue('enemystamina', $enemystamina);
+        $statement->bindValue('adventureparagraph', $paragraph);
+        $statement->executeStatement();
     }
 
     public function updateBattleAdventureParagraph($adventureparagraph)
@@ -102,8 +102,8 @@ class CreateBattle
         $em = $this->entityManager;
         $RAW_QUERY = "UPDATE battle SET adventureparagraph_id = :adventureparagraph ORDER BY battle.id DESC LIMIT 1";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('adventureparagraph', $adventureparagraph);
-        $statement->execute();
+        $statement->bindValue('adventureparagraph', $adventureparagraph);
+        $statement->executeStatement();
     }
 
     public function findAdventureParagraph($adventure)
@@ -145,8 +145,8 @@ class CreateBattle
         $em = $this->entityManager;
         $RAW_QUERY = "UPDATE hero LEFT JOIN adventure ON hero.id = adventure.hero_id SET luck = luck - 1 WHERE adventure.id = :adventure";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('adventure', $adventure);
-        $statement->execute();
+        $statement->bindValue('adventure', $adventure);
+        $statement->executeStatement();
     }
 
     public function reduceStamina($removeStamina, $adventure)
@@ -154,9 +154,9 @@ class CreateBattle
         $em = $this->entityManager;
         $RAW_QUERY = "UPDATE hero LEFT JOIN adventure ON hero.id = adventure.hero_id SET stamina = stamina - :removeStamina WHERE adventure.id = :adventure";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('removeStamina', $removeStamina);
-        $statement->bindParam('adventure', $adventure);
-        $statement->execute();
+        $statement->bindValue('removeStamina', $removeStamina);
+        $statement->bindValue('adventure', $adventure);
+        $statement->executeStatement();
     }
 
     public function getHeroStamina($adventure)

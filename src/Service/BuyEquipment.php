@@ -28,10 +28,10 @@ class BuyEquipment
 
         $RAW_QUERY = "INSERT INTO hero_equipment(hero_id, equipment_id, quantity) VALUES (:hero, :equipment, :quantity)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('hero', $hero);
-        $statement->bindParam('equipment', $equipment);
-        $statement->bindParam('quantity', $quantity);
-        $statement->execute();
+        $statement->bindValue('hero', $hero);
+        $statement->bindValue('equipment', $equipment);
+        $statement->bindValue('quantity', $quantity);
+        $statement->executeStatement();
     }
 
     public function removeEquipment($merchantinventory)
@@ -40,8 +40,8 @@ class BuyEquipment
 
         $RAW_QUERY = "DELETE FROM adventure_merchant_inventory WHERE merchantinventory_id = :merchantinventory";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('merchantinventory', $merchantinventory);
-        $statement->execute();
+        $statement->bindValue('merchantinventory', $merchantinventory);
+        $statement->executeStatement();
     }
 
     public function getHeroTreasure($adventure)

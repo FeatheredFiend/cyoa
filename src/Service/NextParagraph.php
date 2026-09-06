@@ -27,9 +27,9 @@ class NextParagraph
 
         $RAW_QUERY = "INSERT INTO adventure_paragraph(adventure_id, paragraph_id) VALUES (:adventure, :paragraph)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('adventure', $adventure);
-        $statement->bindParam('paragraph', $paragraphId);
-        $statement->execute();
+        $statement->bindValue('adventure', $adventure);
+        $statement->bindValue('paragraph', $paragraphId);
+        $statement->executeStatement();
     }
 
     public function adventureProgress($adventure,$paragraph)
@@ -38,9 +38,9 @@ class NextParagraph
 
         $RAW_QUERY = "UPDATE adventure SET progressparagraph = :paragraph WHERE id = :adventure";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('adventure', $adventure);
-        $statement->bindParam('paragraph', $paragraph);
-        $statement->execute();
+        $statement->bindValue('adventure', $adventure);
+        $statement->bindValue('paragraph', $paragraph);
+        $statement->executeStatement();
     }
 
     public function getAdventureGamebook($adventure)

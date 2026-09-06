@@ -27,9 +27,9 @@ class AddDay
 
         $RAW_QUERY = "UPDATE hero SET day = day + :day WHERE hero_id = :hero";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('hero', $hero);
-        $statement->bindParam('day', $day);
-        $statement->execute();
+        $statement->bindValue('hero', $hero);
+        $statement->bindValue('day', $day);
+        $statement->executeStatement();
 
     }   
 

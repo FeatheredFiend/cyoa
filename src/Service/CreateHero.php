@@ -26,16 +26,18 @@ class CreateHero
         $startingluck = 6 + rand(1,6);
         $honour = 6;
         $startingprovision = 10;
+        $treasure = 0;
 
-        $RAW_QUERY = "INSERT INTO hero(name, skill, stamina, luck, honour, startingskill, startingstamina, startingluck, startingprovision, provision) VALUES (:name, :startingskill, :startingstamina, :startingluck, :honour, :startingskill, :startingstamina, :startingluck, :startingprovision, :startingprovision)";
+        $RAW_QUERY = "INSERT INTO hero(name, skill, stamina, luck, honour, startingskill, startingstamina, startingluck, startingprovision, provision, treasure) VALUES (:name, :startingskill, :startingstamina, :startingluck, :honour, :startingskill, :startingstamina, :startingluck, :startingprovision, :startingprovision, :treasure)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('name', $name);
-        $statement->bindParam('startingskill', $startingskill);
-        $statement->bindParam('startingstamina', $startingstamina);
-        $statement->bindParam('startingluck', $startingluck);
-        $statement->bindParam('honour', $honour);
-        $statement->bindParam('startingprovision', $startingprovision);
-        $statement->execute();
+        $statement->bindValue('name', $name);
+        $statement->bindValue('startingskill', $startingskill);
+        $statement->bindValue('startingstamina', $startingstamina);
+        $statement->bindValue('startingluck', $startingluck);
+        $statement->bindValue('honour', $honour);
+        $statement->bindValue('startingprovision', $startingprovision);
+        $statement->bindValue('treasure', $treasure);
+        $statement->executeStatement();
     }
 
     public function getMaxHero()

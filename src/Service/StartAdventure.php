@@ -27,9 +27,9 @@ class StartAdventure
 
         $RAW_QUERY = "INSERT INTO adventure_paragraph(adventure_id, paragraph_id) VALUES (:adventure, :paragraph)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('adventure', $adventure);
-        $statement->bindParam('paragraph', $paragraph);
-        $statement->execute();
+        $statement->bindValue('adventure', $adventure);
+        $statement->bindValue('paragraph', $paragraph);
+        $statement->executeStatement();
     }
 
     public function setProgressParagraph($adventure, $paragraph)
@@ -38,9 +38,9 @@ class StartAdventure
 
         $RAW_QUERY = "UPDATE adventure SET progressparagraph = :paragraph WHERE id = :adventure";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('adventure', $adventure);
-        $statement->bindParam('paragraph', $paragraph);
-        $statement->execute();
+        $statement->bindValue('adventure', $adventure);
+        $statement->bindValue('paragraph', $paragraph);
+        $statement->executeStatement();
     }    
 
     public function adventureProgress($adventure,$paragraph)
@@ -49,9 +49,9 @@ class StartAdventure
 
         $RAW_QUERY = "UPDATE adventure SET progressparagraph = :paragraph WHERE id = :adventure";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('adventure', $adventure);
-        $statement->bindParam('paragraph', $paragraph);
-        $statement->execute();
+        $statement->bindValue('adventure', $adventure);
+        $statement->bindValue('paragraph', $paragraph);
+        $statement->executeStatement();
     }
 
 
@@ -69,9 +69,9 @@ class StartAdventure
                 LEFT JOIN equipment ON merchant_inventory.equipment_id = equipment.id
             WHERE gamebook.id = :gamebook and merchant.name is not null";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('gamebook', $gamebook);
-        $statement->bindParam('adventure', $adventure);
-        $statement->execute();
+        $statement->bindValue('gamebook', $gamebook);
+        $statement->bindValue('adventure', $adventure);
+        $statement->executeStatement();
     }    
 
     

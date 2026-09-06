@@ -148,41 +148,41 @@ class ParagraphActionController extends AbstractController
                     if ($attribute ===  "Skill") {
                         $RAW_QUERY = "UPDATE hero SET skill = skill + :skillValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('skillValue', $value);
-                        $statement->bindParam('player', $hero);
-                        $statement->execute();
+                        $statement->bindValue('skillValue', $value);
+                        $statement->bindValue('player', $hero);
+                        $statement->executeStatement();
                     } elseif ($attribute ===  "Stamina") {
                         $RAW_QUERY = "UPDATE hero SET stamina = stamina + :staminaValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('staminaValue', $value);
-                        $statement->bindParam('player', $hero);
-                        $statement->execute();
+                        $statement->bindValue('staminaValue', $value);
+                        $statement->bindValue('player', $hero);
+                        $statement->executeStatement();
                     } elseif ($attribute ===  "Luck") {
                         $RAW_QUERY = "UPDATE hero SET luck = luck + :luckValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('luckValue', $value);
-                        $statement->bindParam('player', $hero);
-                        $statement->execute();
+                        $statement->bindValue('luckValue', $value);
+                        $statement->bindValue('player', $hero);
+                        $statement->executeStatement();
                     }
                 } else if ($operator === "Remove") {
                     if ($attribute ===  "Skill") {
                         $RAW_QUERY = "UPDATE hero SET skill = skill - :skillValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('skillValue', $value);
-                        $statement->bindParam('player', $hero);
-                        $statement->execute();
+                        $statement->bindValue('skillValue', $value);
+                        $statement->bindValue('player', $hero);
+                        $statement->executeStatement();
                     } elseif ($attribute ===  "Stamina") {
                         $RAW_QUERY = "UPDATE hero SET stamina = stamina - :staminaValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('staminaValue', $value);
-                        $statement->bindParam('player', $hero);
-                        $statement->execute();
+                        $statement->bindValue('staminaValue', $value);
+                        $statement->bindValue('player', $hero);
+                        $statement->executeStatement();
                     } elseif ($attribute ===  "Luck") {
                         $RAW_QUERY = "UPDATE hero SET luck = luck - :luckValue WHERE id = :player";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('luckValue', $value);
-                        $statement->bindParam('player', $hero);
-                        $statement->execute();
+                        $statement->bindValue('luckValue', $value);
+                        $statement->bindValue('player', $hero);
+                        $statement->executeStatement();
                     }
 
 
@@ -200,13 +200,13 @@ class ParagraphActionController extends AbstractController
                     if ($attribute ===  "Skill") {
                         $RAW_QUERY = "UPDATE battle SET enemyskill = enemyskill + :skillValue ORDER BY id DESC LIMIT 1";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('skillValue', $value);
-                        $statement->execute();
+                        $statement->bindValue('skillValue', $value);
+                        $statement->executeStatement();
                     } elseif ($attribute ===  "Stamina") {
                         $RAW_QUERY = "UPDATE battle SET enemystamina = enemystamina + :staminaValue ORDER BY id DESC LIMIT 1";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('staminaValue', $value);
-                        $statement->execute();
+                        $statement->bindValue('staminaValue', $value);
+                        $statement->executeStatement();
                     } elseif ($attribute ===  "Luck") {
 
                     }
@@ -214,13 +214,13 @@ class ParagraphActionController extends AbstractController
                     if ($attribute ===  "Skill") {
                         $RAW_QUERY = "UPDATE battle SET enemyskill = enemyskill - :skillValue ORDER BY id DESC LIMIT 1";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('skillValue', $value);
-                        $statement->execute();
+                        $statement->bindValue('skillValue', $value);
+                        $statement->executeStatement();
                     } elseif ($attribute ===  "Stamina") {
                         $RAW_QUERY = "UPDATE battle SET enemystamina = enemystamina - :staminaValue ORDER BY id DESC LIMIT 1";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('staminaValue', $value);
-                        $statement->execute();
+                        $statement->bindValue('staminaValue', $value);
+                        $statement->executeStatement();
                     } elseif ($attribute ===  "Luck") {
 
                     }

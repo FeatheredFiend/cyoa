@@ -28,10 +28,10 @@ class UseEquipment
 
         $RAW_QUERY = "UPDATE hero_equipment SET quantity = quantity - :quantity WHERE equipment_id = :equipment and hero_id = :hero";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('hero', $hero);
-        $statement->bindParam('equipment', $equipmentId);
-        $statement->bindParam('quantity', $quantity);
-        $statement->execute();
+        $statement->bindValue('hero', $hero);
+        $statement->bindValue('equipment', $equipmentId);
+        $statement->bindValue('quantity', $quantity);
+        $statement->executeStatement();
 
         $count = $this->countEquipment($hero, $equipmentId);
         if ($count !== NULL) {
@@ -54,19 +54,19 @@ class UseEquipment
 
             $RAW_QUERY = "UPDATE hero_equipment SET quantity = quantity + :quantity WHERE equipment_id = :equipment and hero_id = :hero";
             $statement = $em->getConnection()->prepare($RAW_QUERY);
-            $statement->bindParam('hero', $hero);
-            $statement->bindParam('equipment', $equipmentId);
-            $statement->bindParam('quantity', $quantity);
-            $statement->execute();
+            $statement->bindValue('hero', $hero);
+            $statement->bindValue('equipment', $equipmentId);
+            $statement->bindValue('quantity', $quantity);
+            $statement->executeStatement();
 
             } else {
 
             $RAW_QUERY = "INSERT INTO hero_equipment(hero_id,equipment_id,quantity) VALUES (:hero, :equipment, :quantity)";
             $statement = $em->getConnection()->prepare($RAW_QUERY);
-            $statement->bindParam('hero', $hero);
-            $statement->bindParam('equipment', $equipmentId);
-            $statement->bindParam('quantity', $quantity);
-            $statement->execute();
+            $statement->bindValue('hero', $hero);
+            $statement->bindValue('equipment', $equipmentId);
+            $statement->bindValue('quantity', $quantity);
+            $statement->executeStatement();
 
         }
 
@@ -80,9 +80,9 @@ class UseEquipment
 
         $RAW_QUERY = "DELETE FROM hero_equipment WHERE hero_id = :hero AND equipment_id = :equipment";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('hero', $hero);
-        $statement->bindParam('equipment', $equipment);
-        $statement->execute();
+        $statement->bindValue('hero', $hero);
+        $statement->bindValue('equipment', $equipment);
+        $statement->executeStatement();
 
     }
 

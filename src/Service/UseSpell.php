@@ -40,9 +40,9 @@ class UseSpell
 
         $RAW_QUERY = "UPDATE hero_spell SET quantity = quantity - :quantity WHERE spell_id = :spell and hero_id = :hero";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('hero', $hero);
-        $statement->bindParam('spell', $spellId);
-        $statement->execute();
+        $statement->bindValue('hero', $hero);
+        $statement->bindValue('spell', $spellId);
+        $statement->executeStatement();
 
 
         $this->removeSpell($adventure, $spell);
@@ -58,9 +58,9 @@ class UseSpell
 
         $RAW_QUERY = "INSERT INTO hero_spell(hero_id,spell_id) VALUES (:hero, :spell)";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('hero', $hero);
-        $statement->bindParam('spell', $spellId);
-        $statement->execute();
+        $statement->bindValue('hero', $hero);
+        $statement->bindValue('spell', $spellId);
+        $statement->executeStatement();
 
     }   
     
@@ -72,9 +72,9 @@ class UseSpell
 
         $RAW_QUERY = "DELETE FROM hero_spell WHERE hero_id = :hero AND spell_id = :spell";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('hero', $hero);
-        $statement->bindParam('spell', $spell);
-        $statement->execute();
+        $statement->bindValue('hero', $hero);
+        $statement->bindValue('spell', $spell);
+        $statement->executeStatement();
 
     }
 

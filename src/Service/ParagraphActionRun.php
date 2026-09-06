@@ -35,53 +35,53 @@ class ParagraphActionRun
                     if ($attribute == "Stamina") {
                         $RAW_QUERY = "UPDATE hero SET stamina= stamina + :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('hero', $hero);
-                        $statement->bindParam('value', $value);
-                        $statement->execute();
+                        $statement->bindValue('hero', $hero);
+                        $statement->bindValue('value', $value);
+                        $statement->executeStatement();
                         
                     } else if ($attribute == "Skill") {
                         $RAW_QUERY = "UPDATE hero SET skill= skill + :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('hero', $hero);
-                        $statement->bindParam('value', $value);
-                        $statement->execute();
+                        $statement->bindValue('hero', $hero);
+                        $statement->bindValue('value', $value);
+                        $statement->executeStatement();
                     } else if ($attribute == "Luck") {
                         $RAW_QUERY = "UPDATE hero SET luck= luck + :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('hero', $hero);
-                        $statement->bindParam('value', $value);
-                        $statement->execute();
+                        $statement->bindValue('hero', $hero);
+                        $statement->bindValue('value', $value);
+                        $statement->executeStatement();
                     }
                 } else {
                     if ($attribute == "Stamina") {
                         $RAW_QUERY = "UPDATE hero SET stamina= stamina - :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('hero', $hero);
-                        $statement->bindParam('value', $value);
-                        $statement->execute();
+                        $statement->bindValue('hero', $hero);
+                        $statement->bindValue('value', $value);
+                        $statement->executeStatement();
                         
                     } else if ($attribute == "Skill") {
                         $RAW_QUERY = "UPDATE hero SET skill= skill - :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('hero', $hero);
-                        $statement->bindParam('value', $value);
-                        $statement->execute();
+                        $statement->bindValue('hero', $hero);
+                        $statement->bindValue('value', $value);
+                        $statement->executeStatement();
                     } else if ($attribute == "Luck") {
                         $RAW_QUERY = "UPDATE hero SET luck= luck - :value WHERE hero.id = :hero";
                         $statement = $em->getConnection()->prepare($RAW_QUERY);
-                        $statement->bindParam('hero', $hero);
-                        $statement->bindParam('value', $value);
-                        $statement->execute();
+                        $statement->bindValue('hero', $hero);
+                        $statement->bindValue('value', $value);
+                        $statement->executeStatement();
                     }
                 }
 
             } else if ($category == "Item Check") {
                 $RAW_QUERY = "INSERT INTO hero_equipment(hero_id, equipment_id, quantity) VALUES (:hero, :equipment, :quantity)";
                 $statement = $em->getConnection()->prepare($RAW_QUERY);
-                $statement->bindParam('hero', $hero);
-                $statement->bindParam('equipment', $equipment);
-                $statement->bindParam('quantity', $value);
-                $statement->execute();
+                $statement->bindValue('hero', $hero);
+                $statement->bindValue('equipment', $equipment);
+                $statement->bindValue('quantity', $value);
+                $statement->executeStatement();
             } else {
 
             }                

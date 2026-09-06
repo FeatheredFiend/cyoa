@@ -27,9 +27,9 @@ class UseProvision
 
         $RAW_QUERY = "UPDATE hero SET provision = provision + :provision WHERE hero_id = :hero";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('hero', $hero);
-        $statement->bindParam('provision', $provision);
-        $statement->execute();
+        $statement->bindValue('hero', $hero);
+        $statement->bindValue('provision', $provision);
+        $statement->executeStatement();
 
     }   
     
@@ -41,9 +41,9 @@ class UseProvision
 
         $RAW_QUERY = "UPDATE hero SET provision = provision - :provision WHERE hero_id = :hero";
         $statement = $em->getConnection()->prepare($RAW_QUERY);
-        $statement->bindParam('hero', $hero);
-        $statement->bindParam('provision', $provision);
-        $statement->execute();
+        $statement->bindValue('hero', $hero);
+        $statement->bindValue('provision', $provision);
+        $statement->executeStatement();
 
     }
 
