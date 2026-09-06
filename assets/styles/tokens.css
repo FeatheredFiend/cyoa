@@ -1,0 +1,76 @@
+/*
+ * Design tokens — single dark "adventurer's tome" theme.
+ * Every other stylesheet in this app should consume these custom
+ * properties rather than hard-coding colors/sizes.
+ */
+:root {
+    /* Surfaces */
+    --bg-canvas: #090b11;
+    --bg-base: #0d111a;
+    --bg-surface: #131926;
+    --bg-elevated: #1a2233;
+    --bg-elevated-2: #212a40;
+    --bg-inset: #0a0d15;
+
+    /* Borders */
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-default: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.18);
+
+    /* Text */
+    --text-primary: #eef1f8;
+    --text-secondary: #a7b0c5;
+    --text-muted: #6c7590;
+    --text-inverse: #12141c;
+
+    /* Accents */
+    --accent-gold: #d4af6a;
+    --accent-gold-strong: #f0c987;
+    --accent-gold-soft: rgba(212, 175, 106, 0.16);
+    --accent-gold-text: #f6dca4;
+
+    --accent-crimson: #e0483f;
+    --accent-crimson-strong: #ff6b61;
+    --accent-crimson-soft: rgba(224, 72, 63, 0.16);
+
+    --accent-emerald: #33b579;
+    --accent-emerald-strong: #6fe6ac;
+    --accent-emerald-soft: rgba(51, 181, 121, 0.16);
+
+    --accent-azure: #5b8def;
+    --accent-azure-strong: #86aefc;
+    --accent-azure-soft: rgba(91, 141, 239, 0.16);
+
+    --accent-violet: #9b7bd4;
+    --accent-violet-strong: #bda3ea;
+    --accent-violet-soft: rgba(155, 123, 212, 0.16);
+
+    /* Typography */
+    --font-display: 'Cinzel', Georgia, 'Times New Roman', serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-story: 'Lora', Georgia, 'Times New Roman', serif;
+
+    /* Radius */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-full: 999px;
+
+    /* Elevation */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 10px 26px -8px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 26px 64px -16px rgba(0, 0, 0, 0.6);
+    --shadow-gold: 0 0 0 1px rgba(212, 175, 106, 0.35), 0 10px 30px -8px rgba(212, 175, 106, 0.35);
+    --shadow-crimson: 0 0 0 1px rgba(224, 72, 63, 0.35), 0 10px 30px -8px rgba(224, 72, 63, 0.35);
+
+    /* Motion */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --dur-instant: 100ms;
+    --dur-fast: 180ms;
+    --dur-base: 280ms;
+    --dur-slow: 480ms;
+
+    color-scheme: dark;
+}

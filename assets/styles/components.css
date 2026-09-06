@@ -1,0 +1,533 @@
+/*
+ * Global component reskin.
+ * These selectors target Bootstrap's existing class names on purpose —
+ * every screen in the app (game + admin CRUD) already uses them, so
+ * restyling here upgrades the whole site without touching markup.
+ */
+
+/* ---------- Buttons ---------- */
+
+.btn {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.92rem;
+    letter-spacing: 0.01em;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    padding: 0.55rem 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: transform var(--dur-fast) var(--ease-spring),
+                box-shadow var(--dur-base) var(--ease-out),
+                background var(--dur-fast) var(--ease-out),
+                border-color var(--dur-fast) var(--ease-out);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.btn > .nav-link {
+    padding: 0;
+    margin: 0;
+    color: inherit;
+    display: block;
+    width: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(155deg, var(--accent-azure-strong), var(--accent-azure));
+    border-color: transparent;
+    color: #0b1220;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 10px 24px -8px rgba(91, 141, 239, 0.55);
+}
+
+.btn-danger {
+    background: linear-gradient(155deg, var(--accent-crimson-strong), var(--accent-crimson));
+    color: #200604;
+}
+
+.btn-danger:hover {
+    box-shadow: var(--shadow-crimson);
+}
+
+.btn-warning {
+    background: linear-gradient(155deg, var(--accent-gold-strong), var(--accent-gold));
+    color: #241a05;
+}
+
+.btn-warning:hover {
+    box-shadow: var(--shadow-gold);
+}
+
+.btn-success {
+    background: linear-gradient(155deg, var(--accent-emerald-strong), var(--accent-emerald));
+    color: #04180f;
+}
+
+.btn-success:hover {
+    box-shadow: 0 10px 24px -8px rgba(51, 181, 121, 0.5);
+}
+
+.btn-secondary {
+    background: var(--bg-elevated-2);
+    color: var(--text-primary);
+    border-color: var(--border-strong);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-elevated);
+}
+
+.btn-danger, .btn-primary, .btn-warning, .btn-success {
+    box-shadow: var(--shadow-sm);
+}
+
+/* Generic reset for .nav-link used as a plain inline link (table cells etc.) */
+a.nav-link {
+    display: inline;
+    padding: 0;
+    color: var(--accent-azure-strong);
+}
+
+a.nav-link:hover {
+    color: var(--accent-gold-strong);
+}
+
+.btn a.nav-link,
+.btn a.nav-link:hover {
+    color: inherit;
+}
+
+/* ---------- Cards / panels ---------- */
+
+.card {
+    background: linear-gradient(165deg, var(--bg-elevated), var(--bg-surface));
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--border-subtle);
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+    padding: 1.1rem 1.4rem;
+    color: var(--accent-gold-text);
+    text-align: center;
+}
+
+/* Every create/edit form in the app wraps its fields in .card-body /
+   .card-header without an outer .card — so .card-body carries the
+   full boxed-card look itself rather than depending on a parent. */
+.card-body {
+    background: linear-gradient(165deg, var(--bg-elevated), var(--bg-surface));
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 1.4rem;
+    max-width: 560px;
+    margin: 2.5rem auto;
+}
+
+.card .card-body {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 1.4rem;
+    max-width: none;
+    margin: 0;
+}
+
+.card-title {
+    font-family: var(--font-display);
+}
+
+.card.bg-red,
+.card.bg-red .card-body {
+    background: linear-gradient(160deg, var(--bg-elevated-2), var(--bg-surface));
+}
+
+.card.bg-red {
+    border-color: var(--border-strong);
+    transition: transform var(--dur-base) var(--ease-spring), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+}
+
+.card.bg-red:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-gold);
+    border-color: var(--accent-gold);
+}
+
+.card.bg-red .card-title {
+    color: var(--text-primary) !important;
+}
+
+/* ---------- Forms ---------- */
+
+.form-group {
+    margin-bottom: 1.1rem;
+}
+
+.form-group > div > label,
+.form-group label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-gold-text);
+    margin-bottom: 0.4rem;
+}
+
+.form-control,
+.form-select,
+select.form-control,
+textarea.form-control,
+input.form-control {
+    background: var(--bg-inset);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 0.85rem;
+    font-family: var(--font-body);
+    transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: var(--bg-base);
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px var(--accent-gold-soft);
+    color: var(--text-primary);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+input[type="checkbox"].form-control,
+input[type="radio"].form-control {
+    width: 1.15rem;
+    height: 1.15rem;
+    padding: 0;
+    accent-color: var(--accent-gold);
+    background: var(--bg-inset);
+}
+
+/* Default Symfony form theme error list (bare <ul>, no class) */
+.form-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.35rem 0 0;
+    color: var(--accent-crimson-strong);
+    font-size: 0.82rem;
+}
+
+.form-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: stretch;
+}
+
+.form-inline .form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 0;
+    flex: 1 1 auto;
+}
+
+.form-inline .form-control,
+.form-inline select {
+    flex: 1 1 160px;
+}
+
+/* ---------- Tables ---------- */
+
+.table-responsive {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 0.35rem;
+}
+
+.table {
+    color: var(--text-primary);
+    margin-bottom: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table > :not(caption) > * > * {
+    background: transparent;
+    border-bottom-color: var(--border-subtle);
+    color: inherit;
+    padding: 0.7rem 0.9rem;
+}
+
+.table thead th {
+    font-family: var(--font-body);
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-default);
+    background: var(--bg-elevated);
+    position: sticky;
+    top: 0;
+}
+
+.table thead th:first-child { border-top-left-radius: var(--radius-md); }
+.table thead th:last-child { border-top-right-radius: var(--radius-md); }
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.table > tbody > tr {
+    transition: background var(--dur-fast) var(--ease-out);
+}
+
+.table > tbody > tr:hover > * {
+    background: var(--bg-elevated);
+}
+
+.table th {
+    color: var(--accent-gold-text);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ---------- Alerts / flash toasts ---------- */
+
+.alert {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-default);
+    font-weight: 500;
+    box-shadow: var(--shadow-md);
+}
+
+.alert-success {
+    background: linear-gradient(155deg, rgba(51, 181, 121, 0.18), var(--bg-elevated));
+    border-color: rgba(51, 181, 121, 0.4);
+    color: var(--accent-emerald-strong);
+}
+
+.alert-danger {
+    background: linear-gradient(155deg, rgba(224, 72, 63, 0.18), var(--bg-elevated));
+    border-color: rgba(224, 72, 63, 0.4);
+    color: var(--accent-crimson-strong);
+}
+
+/* ---------- Pagination ---------- */
+
+.pagination {
+    gap: 0.3rem;
+    flex-wrap: wrap;
+}
+
+.page-link {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm) !important;
+    margin: 0 !important;
+    transition: all var(--dur-fast) var(--ease-out);
+}
+
+.page-link:hover {
+    background: var(--bg-elevated-2);
+    color: var(--accent-gold-strong);
+    border-color: var(--accent-gold);
+}
+
+.page-item.active .page-link {
+    background: linear-gradient(155deg, var(--accent-gold-strong), var(--accent-gold));
+    border-color: transparent;
+    color: #241a05;
+    font-weight: 700;
+}
+
+.page-item.disabled .page-link {
+    background: transparent;
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+/* ---------- Misc utility classes already present in markup ---------- */
+
+.paleRed {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: var(--radius-full);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary) !important;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+}
+
+.paleRed:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold-strong) !important;
+}
+
+.navRed,
+.bg-red {
+    background: var(--bg-elevated-2);
+}
+
+/* ---------- Auth pages (login / register / elevate) ---------- */
+
+.auth-shell {
+    display: flex;
+    justify-content: center;
+    padding: 4rem 1rem;
+}
+
+.auth-shell .card-body {
+    width: 100%;
+}
+
+/* ---------- Homepage ---------- */
+
+.home-hero {
+    max-width: 720px;
+    margin: 3rem auto 2.5rem;
+    padding: 0 1rem;
+    text-align: center;
+    animation: rise-in var(--dur-slow) var(--ease-out) both;
+}
+
+.home-hero__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent-gold-text);
+    margin-bottom: 0.6rem;
+}
+
+.home-hero__title {
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+    margin: 0;
+}
+
+.home-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
+}
+
+.home-card {
+    flex: 1 1 260px;
+    max-width: 20vw;
+    background: linear-gradient(165deg, var(--bg-elevated), var(--bg-surface));
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 2.25rem 1.5rem;
+    text-align: center;
+    color: var(--text-primary) !important;
+    text-decoration: none;
+    transition: transform var(--dur-base) var(--ease-spring), box-shadow var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out);
+    animation: rise-in var(--dur-slow) var(--ease-out) both;
+}
+
+.home-card:nth-child(2) {
+    animation-delay: 90ms;
+}
+
+.home-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-gold);
+    border-color: var(--accent-gold);
+}
+
+.home-card__icon svg {
+    width: 42px;
+    height: 42px;
+    color: var(--accent-gold-strong);
+    margin-bottom: 1rem;
+}
+
+.home-card__title {
+    margin: 0 0 0.5rem;
+}
+
+.home-card__desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+@media (max-width: 767px) {
+    .home-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .home-card {
+        max-width: 100%;
+    }
+}
+
+/* ---------- Admin dashboard ---------- */
+
+.admin-shell {
+    display: flex;
+    align-items: stretch;
+    gap: 1.5rem;
+}
+
+.admin-shell__action {
+    flex: 0 0 280px;
+    max-width: 280px;
+    padding: 1.75rem 1.5rem;
+}
+
+.admin-shell__table {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+@media (max-width: 767px) {
+    .admin-shell {
+        flex-direction: column;
+    }
+
+    .admin-shell__action {
+        flex-basis: auto;
+        max-width: 100%;
+    }
+}

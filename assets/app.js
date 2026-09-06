@@ -33,7 +33,48 @@ $(window).resize(function() {
 }).resize(); // Trigger resize handler
 
 
+// Flashes the changed stat number and syncs its progress bar (if any).
+// Purely presentational — does not touch any game-state calculation.
+function pulseStat(selector, isIncrease) {
+    var $el = $(selector);
+    if ($el.length === 0) {
+        return;
+    }
+    $el.removeClass('stat-flash-up stat-flash-down');
+    void $el[0].offsetWidth; // restart the CSS animation
+    $el.addClass(isIncrease ? 'stat-flash-up' : 'stat-flash-down');
+    var $stat = $el.closest('.stat');
+    if ($stat.length && $stat.attr('data-start')) {
+        var start = parseFloat($stat.attr('data-start'));
+        var val = parseFloat($el.text());
+        if (start > 0 && !isNaN(val)) {
+            var pct = Math.max(0, Math.min(100, (val / start) * 100));
+            $stat.find('.stat__fill').css('width', pct + '%');
+        }
+    }
+}
+
 $(document).ready(function() {
+
+    $("#navToggle").on('click', function() {
+        var expanded = $(this).attr('aria-expanded') === 'true';
+        $(this).attr('aria-expanded', String(!expanded));
+        $("#siteNav").toggleClass('is-open');
+    });
+
+    $(document).on('click', '.flash-toast__close', function() {
+        var $toast = $(this).closest('.flash-toast');
+        $toast.addClass('flash-toast--leaving');
+        setTimeout(function() { $toast.remove(); }, 220);
+    });
+
+    $('.flash-toast').each(function() {
+        var $toast = $(this);
+        setTimeout(function() {
+            $toast.addClass('flash-toast--leaving');
+            setTimeout(function() { $toast.remove(); }, 220);
+        }, 5000);
+    });
 
     $("#toggleStats").click(function() {
         if ($("#heroStats").hasClass("mobileHidden")) {
@@ -267,29 +308,35 @@ $(document).ready(function() {
                                     var stamina = $("#gamestamina").text();
                                     var adj = parseInt(stamina) + parseInt(score.actionvalue);
                                     $("#gamestamina").text(adj);
+                                    pulseStat("#gamestamina", true);
                                 } else if (score.attribute == "Skill") {
                                     var skill = $("#gamestamina").text();
                                     var adj = parseInt(skill) + parseInt(score.actionvalue);
                                     $("#gameskill").text(adj);
+                                    pulseStat("#gameskill", true);
                                 } else if (score.attribute == "Luck") {
                                     var luck = $("#gameluck").text();
                                     var adj = parseInt(luck) + parseInt(score.actionvalue);
                                     $("#gameluck").text(adj);
+                                    pulseStat("#gameluck", true);
                                 }
                             } else {
                                 if (score.attribute == "Stamina") {
                                     var stamina = $("#gamestamina").text();
                                     var adj = parseInt(stamina) - parseInt(score.actionvalue);
                                     $("#gamestamina").text(adj);
+                                    pulseStat("#gamestamina", false);
                                 } else if (score.attribute == "Skill") {
                                     var skill = $("#gamestamina").text();
                                     var adj = parseInt(skill) - parseInt(score.actionvalue);
                                     $("#gameskill").text(adj);
+                                    pulseStat("#gameskill", false);
                                 } else if (score.attribute == "Luck") {
                                     var luck = $("#gameluck").text();
                                     var adj = parseInt(luck) - parseInt(score.actionvalue);
                                     $("#gameluck").text(adj);
-                                }                      
+                                    pulseStat("#gameluck", false);
+                                }
                             }
                         } else if (score.category == "Battle") {
                             if (score.operator == "Add") {
@@ -297,29 +344,35 @@ $(document).ready(function() {
                                     var stamina = $("#battleplayerstamina").text();
                                     var adj = parseInt(stamina) + parseInt(score.actionvalue);
                                     $("#battleplayerstamina").text(adj);
+                                    pulseStat("#battleplayerstamina", true);
                                 } else if (score.attribute == "Skill") {
                                     var skill = $("#battleplayerstamina").text();
                                     var adj = parseInt(skill) + parseInt(score.actionvalue);
                                     $("#battleplayerskill").text(adj);
+                                    pulseStat("#battleplayerskill", true);
                                 } else if (score.attribute == "Luck") {
                                     var luck = $("#gameluck").text();
                                     var adj = parseInt(luck) + parseInt(score.actionvalue);
                                     $("#gameluck").text(adj);
+                                    pulseStat("#gameluck", true);
                                 }
                             } else {
                                 if (score.attribute == "Stamina") {
                                     var stamina = $("#battleplayerstamina").text();
                                     var adj = parseInt(stamina) - parseInt(score.actionvalue);
                                     $("#battleplayerstamina").text(adj);
+                                    pulseStat("#battleplayerstamina", false);
                                 } else if (score.attribute == "Skill") {
                                     var skill = $("#battleplayerskill").text();
                                     var adj = parseInt(skill) - parseInt(score.actionvalue);
                                     $("#battleplayerskill").text(adj);
+                                    pulseStat("#battleplayerskill", false);
                                 } else if (score.attribute == "Luck") {
                                     var luck = $("#gameluck").text();
                                     var adj = parseInt(luck) - parseInt(score.actionvalue);
                                     $("#gameluck").text(adj);
-                                }                      
+                                    pulseStat("#gameluck", false);
+                                }
                             }
                         }
                     } else {

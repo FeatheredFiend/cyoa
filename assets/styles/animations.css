@@ -1,0 +1,86 @@
+/* Shared keyframes + small animation utilities used across the app. */
+
+@keyframes page-enter {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes rise-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-18px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pop-in {
+    0% { opacity: 0; transform: scale(0.92); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 106, 0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(212, 175, 106, 0); }
+}
+
+@keyframes flash-positive {
+    0% { color: var(--accent-emerald-strong); transform: scale(1.18); }
+    100% { color: inherit; transform: scale(1); }
+}
+
+@keyframes flash-negative {
+    0% { color: var(--accent-crimson-strong); transform: scale(1.18); }
+    100% { color: inherit; transform: scale(1); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes progress-shrink {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
+
+.anim-rise {
+    animation: rise-in var(--dur-slow) var(--ease-out) both;
+}
+
+.anim-pop {
+    animation: pop-in var(--dur-base) var(--ease-spring) both;
+}
+
+.stat-flash-up {
+    animation: flash-positive 700ms var(--ease-out);
+}
+
+.stat-flash-down {
+    animation: flash-negative 700ms var(--ease-out);
+}
+
+.shake {
+    animation: shake 420ms var(--ease-in-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}

@@ -4,20 +4,36 @@
 
 {% block body %}
 <div class="container-fluid">
-    <p class="hidden" id="title">{{title}}</p> 
-    {% if app.user != null %}     
-        <div class="card col-sm-12 col-md-2 bg-red">
-            <div class="card-body">
-                <a class="text-decoration-none" href="{{ path('gamebook_view') }}"><h3 class="card-title text-center pt-5 text-white">Gamebooks</h3></a>
-            </div>
-        </div>    
-        <div class="card col-sm-12 col-md-2 bg-red">
-            <div class="card-body">
-                <a class="text-decoration-none" href="{{ path('adventure_view') }}"><h3 class="card-title text-center pt-5 text-white">Adventures</h3></a>
-            </div>
-        </div>                                                                                    
+    <p class="hidden" id="title">{{title}}</p>
+    {% if app.user != null %}
+        <div class="home-hero">
+            <p class="home-hero__eyebrow">Welcome back, {{ app.user.name }}</p>
+            <h1 class="home-hero__title">Where will your story take you?</h1>
+        </div>
+        <div class="home-actions">
+            <a class="home-card" href="{{ path('gamebook_view') }}">
+                <span class="home-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 4.5C2 3.4 2.9 2.5 4 2.5h6a2 2 0 0 1 2 2v15a1.5 1.5 0 0 0-1.5-1.5H2z"/>
+                        <path d="M22 4.5c0-1.1-.9-2-2-2h-6a2 2 0 0 0-2 2v15a1.5 1.5 0 0 1 1.5-1.5H22z"/>
+                    </svg>
+                </span>
+                <h3 class="home-card__title">Gamebooks</h3>
+                <p class="home-card__desc">Browse the worlds available to explore.</p>
+            </a>
+            <a class="home-card" href="{{ path('adventure_view') }}">
+                <span class="home-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z"/>
+                    </svg>
+                </span>
+                <h3 class="home-card__title">Adventures</h3>
+                <p class="home-card__desc">Continue a quest or begin a new one.</p>
+            </a>
+        </div>
     {% else %}
         <p>Please Log in to view this page</p>
-    {% endif %}           
-</div>        
+    {% endif %}
+</div>
 {% endblock %}

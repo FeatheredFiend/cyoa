@@ -1,0 +1,96 @@
+/* Base element styling, layered on top of Bootstrap's reset. */
+
+@view-transition {
+    navigation: auto;
+}
+
+* {
+    scrollbar-color: var(--border-strong) transparent;
+}
+
+html {
+    background: var(--bg-canvas);
+}
+
+body {
+    background:
+        radial-gradient(1200px 700px at 12% -10%, rgba(212, 175, 106, 0.07), transparent 60%),
+        radial-gradient(1000px 600px at 100% 0%, rgba(91, 141, 239, 0.06), transparent 55%),
+        var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+    animation: page-enter var(--dur-slow) var(--ease-out) both;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+a {
+    color: var(--accent-azure-strong);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-out);
+}
+
+a:hover {
+    color: var(--accent-gold-strong);
+}
+
+p {
+    color: var(--text-secondary);
+}
+
+hr {
+    border-color: var(--border-default);
+    opacity: 1;
+}
+
+::selection {
+    background: var(--accent-gold-soft);
+    color: var(--accent-gold-text);
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--border-strong);
+    border-radius: var(--radius-full);
+    border: 3px solid var(--bg-canvas);
+}
+
+/* Consistent, visible focus ring everywhere, without Bootstrap's blue glow */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.btn:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+.container,
+.container-fluid {
+    max-width: 1320px;
+}
+
+/* This must win over any component's own `display` rule (e.g. a flex
+   card that's also conditionally .hidden by JS), regardless of the
+   cascade order the two classes happen to be declared in. */
+.hidden {
+    display: none !important;
+}

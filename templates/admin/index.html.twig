@@ -3,16 +3,18 @@
 {% block title %}Welcome to CYOA Admin!{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <p class="hidden" id="title">{{title}}</p> 
-    {% if app.user != null %}     
-        <div class="row">
-            <div class="card col-sm-12 col-md-2 bg-red">
-                <div class="card-body">
-                    <a class="text-decoration-none" href="{{ path('gamebookpermission_view') }}"><h3 class="card-title text-center pt-5 text-white">Gamebook Permissions</h3></a>
-                </div>
-            </div>   
-            <div class="col-sm-12 col-md-10 table-responsive" id="tableView">
+<div class="container-fluid mt-3 mb-3">
+    <p class="hidden" id="title">{{title}}</p>
+    {% if app.user != null %}
+        <div class="admin-shell">
+            <a class="home-card admin-shell__action" href="{{ path('gamebookpermission_view') }}">
+                <span class="home-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5z"/><path d="m9 12 2 2 4-4"/></svg>
+                </span>
+                <h3 class="home-card__title">Gamebook Permissions</h3>
+                <p class="home-card__desc">Manage who can edit each gamebook.</p>
+            </a>
+            <div class="table-responsive admin-shell__table" id="tableView">
                 <table class="table table-striped table-light">
                 <thead>
                     <tr>
@@ -30,10 +32,10 @@
                     {% endfor %}
                 </tbody>
                 </table>
-            </div>     
-        </div>                                                                                  
+            </div>
+        </div>
     {% else %}
         <p>Please Log in to view this page</p>
-    {% endif %}           
-</div>        
+    {% endif %}
+</div>
 {% endblock %}
