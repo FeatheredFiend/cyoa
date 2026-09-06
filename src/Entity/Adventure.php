@@ -33,13 +33,13 @@ class Adventure
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
-    #[ORM\OneToMany(mappedBy: 'adventure', targetEntity: AdventureParagraph::class)]
+    #[ORM\OneToMany(mappedBy: 'adventure', targetEntity: AdventureParagraph::class, cascade: ['remove'])]
     private $adventureParagraphs;
 
     #[ORM\Column(type: 'integer')]
     private $progressparagraph;
 
-    #[ORM\OneToMany(mappedBy: 'adventure', targetEntity: AdventureMerchantInventory::class)]
+    #[ORM\OneToMany(mappedBy: 'adventure', targetEntity: AdventureMerchantInventory::class, cascade: ['remove'])]
     private $adventureMerchantInventories;
 
     public function __construct()

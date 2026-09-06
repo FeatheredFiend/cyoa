@@ -48,13 +48,13 @@ class Hero
     #[ORM\OneToOne(mappedBy: 'hero', targetEntity: Adventure::class, cascade: ['persist', 'remove'])]
     private $adventure;
 
-    #[ORM\OneToMany(mappedBy: 'hero', targetEntity: HeroEquipment::class)]
+    #[ORM\OneToMany(mappedBy: 'hero', targetEntity: HeroEquipment::class, cascade: ['remove'])]
     private $heroEquipment;
 
     #[ORM\Column(type: 'integer')]
     private $treasure;
 
-    #[ORM\OneToMany(mappedBy: 'hero', targetEntity: HeroSpell::class)]
+    #[ORM\OneToMany(mappedBy: 'hero', targetEntity: HeroSpell::class, cascade: ['remove'])]
     private $heroSpells;
 
     public function __construct()

@@ -20,7 +20,7 @@ class AdventureParagraph
     private $adventure;
 
 
-    #[ORM\OneToMany(mappedBy: 'adventureparagraph', targetEntity: Battle::class)]
+    #[ORM\OneToMany(mappedBy: 'adventureparagraph', targetEntity: Battle::class, cascade: ['remove'])]
     private $battles;
 
     #[ORM\ManyToOne(targetEntity: Paragraph::class, inversedBy: 'adventureParagraphs')]
