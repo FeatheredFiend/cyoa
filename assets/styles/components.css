@@ -470,6 +470,91 @@ input[type="radio"].form-control {
     opacity: 0.5;
 }
 
+/* ---------- Row options modal (small-screen action menu) ---------- */
+
+.options-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+}
+
+.options-modal.is-open {
+    display: block;
+}
+
+.options-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 7, 12, 0.6);
+}
+
+.options-modal__dialog {
+    position: relative;
+    max-width: 320px;
+    margin: 15vh auto 0;
+    background: linear-gradient(165deg, var(--bg-elevated), var(--bg-surface));
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 1.1rem;
+    animation: pop-in var(--dur-base) var(--ease-spring) both;
+}
+
+.options-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-display);
+    color: var(--accent-gold-text);
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.options-modal__close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.options-modal__close:hover {
+    color: var(--text-primary);
+}
+
+.options-modal__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.options-modal__item form {
+    margin: 0;
+}
+
+.options-modal__item .btn {
+    width: 100%;
+}
+
+.options-modal__item .nav-link {
+    display: flex;
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--radius-sm);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.options-modal__item .nav-link:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold-strong);
+}
+
 /* ---------- Misc utility classes already present in markup ---------- */
 
 .paleRed {

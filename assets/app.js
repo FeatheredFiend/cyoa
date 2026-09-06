@@ -96,6 +96,26 @@ $(document).ready(function() {
         }
     });
 
+    $(document).on('click', '.smallOptionsLink', function() {
+        var $body = $('#optionsModalBody').empty();
+        $(this).closest('tr').find('.smallOptionsAction').each(function() {
+            var $item = $('<div class="options-modal__item"></div>');
+            $item.append($(this).contents().clone(true, true));
+            $body.append($item);
+        });
+        $('#optionsModal').addClass('is-open').attr('aria-hidden', 'false');
+    });
+
+    $(document).on('click', '[data-modal-close]', function() {
+        $('#optionsModal').removeClass('is-open').attr('aria-hidden', 'true');
+    });
+
+    $(document).on('keydown', function(e) {
+        if (e.key === 'Escape') {
+            $('#optionsModal').removeClass('is-open').attr('aria-hidden', 'true');
+        }
+    });
+
     if ($("#elevate_user_name").length > 0) {
         $("#elevate_user_name").attr("readonly", true);
     }
