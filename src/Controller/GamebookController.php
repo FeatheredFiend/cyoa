@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Gamebook;
+use App\Entity\GamebookPermission;
 use App\Form\GamebookType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -68,6 +69,14 @@ class GamebookController extends AbstractController
             // Save
             $em = $this->doctrine->getManager();
             $em->persist($gamebook);
+
+            // Grant the creator access to their own gamebook, since only an
+            // admin can otherwise assign a GamebookPermission after the fact.
+            $gamebookPermission = new GamebookPermission();
+            $gamebookPermission->setGamebook($gamebook);
+            $gamebookPermission->setUser($this->security->getUser());
+            $em->persist($gamebookPermission);
+
             $em->flush();
 
             return $this->redirectToRoute('gamebook_view');
