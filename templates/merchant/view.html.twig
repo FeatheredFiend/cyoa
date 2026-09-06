@@ -18,20 +18,22 @@
         <table class="table table-striped table-light">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Paragraph</th>
-              <th>Inventory</th>
-              <th>Delete</th>
+              <th class="smallHead">Name</th>
+              <th class="smallOptions">Options</th>
+              <th class="smallBody">Paragraph</th>
+              <th class="smallBody">Inventory</th>
+              <th class="smallBody">Delete</th>
             </tr>
           </thead>
           <tbody name="merchantTable" id="merchantTable">
             {% for merchant in pagination %}
             {% set id = merchant.id %}
               <tr>
-                <td><a class="nav-link" href="{{ path('merchant_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': merchant.id}) }}">{{ merchant.name}}</a></td>
-                <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">{{ merchant.paragraph }}</a></td>
-                <td><a class="nav-link" href="{{ path('merchantinventory_view', {'gamebook': gamebook, 'paragraph': paragraph, 'merchant': merchant.name}) }}">View Inventory</a></td>
-                <td>
+                <td class="smallHead"><a class="btn btn-secondary btn-sm" href="{{ path('merchant_edit', {'gamebook': gamebook, 'paragraph': paragraph, 'id': merchant.id}) }}">{{ merchant.name}}</a></td>
+                <td class="smallOptions"><button type="button" class="btn btn-primary btn-sm smallOptionsLink">Options</button></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('paragraph_view', {'gamebook': gamebook, 'paragraph': paragraph}) }}">Paragraph: {{ merchant.paragraph }}</a></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('merchantinventory_view', {'gamebook': gamebook, 'paragraph': paragraph, 'merchant': merchant.name}) }}">View Inventory</a></td>
+                <td class="smallBody smallOptionsList smallOptionsAction">
                   <form action="{{ path('generic_delete', {'entity': 'merchant', 'id': merchant.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
                     <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete_merchant_' ~ merchant.id) }}">
@@ -47,6 +49,16 @@
         'size': 'small',
         'rounded': true,
         }) }}
+      </div>
+    </div>
+    <div class="options-modal" id="optionsModal" aria-hidden="true">
+      <div class="options-modal__backdrop" data-modal-close></div>
+      <div class="options-modal__dialog" role="dialog" aria-modal="true" aria-label="Row options">
+        <div class="options-modal__header">
+          <span>Options</span>
+          <button type="button" class="options-modal__close" data-modal-close aria-label="Close">&times;</button>
+        </div>
+        <div class="options-modal__body" id="optionsModalBody"></div>
       </div>
     </div>
   {% endif %}           

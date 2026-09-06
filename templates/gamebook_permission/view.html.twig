@@ -16,18 +16,20 @@
         <table class="table table-striped table-light">
           <thead>
             <tr>
-              <th>Gamebook</th>
-              <th>User</th>
-              <th>Delete</th>
+              <th class="smallHead">Gamebook</th>
+              <th class="smallHead">User</th>
+              <th class="smallOptions">Options</th>
+              <th class="smallBody">Delete</th>
             </tr>
           </thead>
           <tbody name="gamebookpermissionTable" id="gamebookpermissionTable">
             {% for gamebookpermission in pagination %}
             {% set id = gamebookpermission.id %}
               <tr>
-                <td><a class="nav-link" href="{{ path('gamebookpermission_edit', {'id': gamebookpermission.id}) }}">{{ gamebookpermission.gamebook }}</a></td>
-                <td>{{ gamebookpermission.user }}</td>
-                <td>
+                <td class="smallHead"><a class="btn btn-secondary btn-sm" href="{{ path('gamebookpermission_edit', {'id': gamebookpermission.id}) }}">{{ gamebookpermission.gamebook }}</a></td>
+                <td class="smallHead">{{ gamebookpermission.user }}</td>
+                <td class="smallOptions"><button type="button" class="btn btn-primary btn-sm smallOptionsLink">Options</button></td>
+                <td class="smallBody smallOptionsList smallOptionsAction">
                   <form action="{{ path('generic_delete', {'entity': 'gamebookpermission', 'id': gamebookpermission.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
                     <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete_gamebookpermission_' ~ gamebookpermission.id) }}">
@@ -43,6 +45,16 @@
         'size': 'small',
         'rounded': true,
         }) }}
+      </div>
+    </div>
+    <div class="options-modal" id="optionsModal" aria-hidden="true">
+      <div class="options-modal__backdrop" data-modal-close></div>
+      <div class="options-modal__dialog" role="dialog" aria-modal="true" aria-label="Row options">
+        <div class="options-modal__header">
+          <span>Options</span>
+          <button type="button" class="options-modal__close" data-modal-close aria-label="Close">&times;</button>
+        </div>
+        <div class="options-modal__body" id="optionsModalBody"></div>
       </div>
     </div>
   {% endif %}           

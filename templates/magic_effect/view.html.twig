@@ -16,24 +16,26 @@
         <table class="table table-striped table-light">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Magic</th>
-              <th>Magic Effect Operator</th>
-              <th>Magic Effect Value</th>
-              <th>Magic Effect Attribute</th>
-              <th>Delete</th>
+              <th class="smallHead">ID</th>
+              <th class="smallOptions">Options</th>
+              <th class="smallBody">Magic</th>
+              <th class="smallBody">Magic Effect Operator</th>
+              <th class="smallBody">Magic Effect Value</th>
+              <th class="smallBody">Magic Effect Attribute</th>
+              <th class="smallBody">Delete</th>
             </tr>
           </thead>
           <tbody name="magiceffectTable" id="magiceffectTable">
             {% for magiceffect in pagination %}
             {% set id = magiceffect.id %}
               <tr>
-                <td><a class="nav-link" href="{{ path('magiceffect_edit', {'id': magiceffect.id}) }}">{{ magiceffect.id}}</a></td>
-                <td>{{ magiceffect.magic }}</td>
-                <td>{{ magiceffect.magiceffectoperator }}</td>
-                <td>{{ magiceffect.magiceffectvalue }}</td>
-                <td>{{ magiceffect.magiceffectattribute }}</td>
-                <td>
+                <td class="smallHead"><a class="btn btn-secondary btn-sm" href="{{ path('magiceffect_edit', {'id': magiceffect.id}) }}">{{ magiceffect.id}}</a></td>
+                <td class="smallOptions"><button type="button" class="btn btn-primary btn-sm smallOptionsLink">Options</button></td>
+                <td class="smallBody smallOptionsList">{{ magiceffect.magic }}</td>
+                <td class="smallBody smallOptionsList">{{ magiceffect.magiceffectoperator }}</td>
+                <td class="smallBody smallOptionsList">{{ magiceffect.magiceffectvalue }}</td>
+                <td class="smallBody smallOptionsList">{{ magiceffect.magiceffectattribute }}</td>
+                <td class="smallBody smallOptionsList smallOptionsAction">
                   <form action="{{ path('generic_delete', {'entity': 'magiceffect', 'id': magiceffect.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
                     <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete_magiceffect_' ~ magiceffect.id) }}">
@@ -49,6 +51,16 @@
         'size': 'small',
         'rounded': true,
         }) }}
+      </div>
+    </div>
+    <div class="options-modal" id="optionsModal" aria-hidden="true">
+      <div class="options-modal__backdrop" data-modal-close></div>
+      <div class="options-modal__dialog" role="dialog" aria-modal="true" aria-label="Row options">
+        <div class="options-modal__header">
+          <span>Options</span>
+          <button type="button" class="options-modal__close" data-modal-close aria-label="Close">&times;</button>
+        </div>
+        <div class="options-modal__body" id="optionsModalBody"></div>
       </div>
     </div>
   {% endif %}           

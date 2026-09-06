@@ -18,28 +18,30 @@
         <table class="table table-striped table-light">
           <thead>
             <tr>
-              <th>Gamebook</th>
-              <th>Paragraph</th>
-              <th>Text</th>
-              <th>Max Access</th>
-              <th>Redirect Paragraph</th>
-              <th>Equipment Required</th>
-              <th>Spell Required</th>
-              <th>Delete</th>
+              <th class="smallHead">Text</th>
+              <th class="smallOptions">Options</th>
+              <th class="smallBody">Gamebook</th>
+              <th class="smallBody">Paragraph</th>
+              <th class="smallBody">Max Access</th>
+              <th class="smallBody">Redirect Paragraph</th>
+              <th class="smallBody">Equipment Required</th>
+              <th class="smallBody">Spell Required</th>
+              <th class="smallBody">Delete</th>
             </tr>
           </thead>
           <tbody name="paragraphdirectionTable" id="paragraphdirectionTable">
             {% for paragraphdirection in pagination %}
             {% set id = paragraphdirection.id %}
               <tr>
-                <td><a class="nav-link gamebookTable" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}"></a></td>
-                <td><a class="nav-link" href="{{ path('paragraph_view', {'gamebook': gamebook}) }}">{{ paragraphdirection.paragraph }}</a></td>
-                <td><a class="nav-link" href="{{ path('paragraphdirection_edit', {'id': paragraphdirection.id, 'gamebook': gamebook}) }}">{{ paragraphdirection.text }}</a></td>
-                <td>{{ paragraphdirection.maxaccess }}</td>
-                <td>{{ paragraphdirection.redirectparagraph }}</td>
-                <td><a class="nav-link" href="{{ path('paragraphdirectionequipmentrequired_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphdirection': paragraphdirection.id}) }}">Add Equipment Required</a></td>
-                <td><a class="nav-link" href="{{ path('paragraphdirectionspell_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphdirection': paragraphdirection.id}) }}">Add Spell Required</a></td>
-                <td>
+                <td class="smallHead"><a class="btn btn-secondary btn-sm" href="{{ path('paragraphdirection_edit', {'id': paragraphdirection.id, 'gamebook': gamebook}) }}">{{ paragraphdirection.text }}</a></td>
+                <td class="smallOptions"><button type="button" class="btn btn-primary btn-sm smallOptionsLink">Options</button></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}">Gamebook: <span class="gamebookTable"></span></a></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('paragraph_view', {'gamebook': gamebook}) }}">Paragraph: {{ paragraphdirection.paragraph }}</a></td>
+                <td class="smallBody smallOptionsList">{{ paragraphdirection.maxaccess }}</td>
+                <td class="smallBody smallOptionsList">{{ paragraphdirection.redirectparagraph }}</td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('paragraphdirectionequipmentrequired_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphdirection': paragraphdirection.id}) }}">Add Equipment Required</a></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('paragraphdirectionspell_view', {'paragraph': paragraph, 'gamebook': gamebook, 'paragraphdirection': paragraphdirection.id}) }}">Add Spell Required</a></td>
+                <td class="smallBody smallOptionsList smallOptionsAction">
                   <form action="{{ path('generic_delete', {'entity': 'paragraphdirection', 'id': paragraphdirection.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
                     <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete_paragraphdirection_' ~ paragraphdirection.id) }}">
@@ -55,6 +57,16 @@
         'size': 'small',
         'rounded': true,
         }) }}
+      </div>
+    </div>
+    <div class="options-modal" id="optionsModal" aria-hidden="true">
+      <div class="options-modal__backdrop" data-modal-close></div>
+      <div class="options-modal__dialog" role="dialog" aria-modal="true" aria-label="Row options">
+        <div class="options-modal__header">
+          <span>Options</span>
+          <button type="button" class="options-modal__close" data-modal-close aria-label="Close">&times;</button>
+        </div>
+        <div class="options-modal__body" id="optionsModalBody"></div>
       </div>
     </div>
   {% endif %}           

@@ -35,8 +35,8 @@
             {% for paragraph in pagination %}
             {% set id = paragraph.id %}
               <tr id="paragraph{{id}}">
-                <td class="smallHead"><a class="nav-link" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}">{{ paragraph.gamebook }}</a></td>
-                <td class="smallHead"><a class="nav-link" href="{{ path('paragraph_edit', {'id': paragraph.id, 'gamebook': gamebook}) }}">{{ paragraph.number }}</a></td>
+                <td class="smallHead"><a class="btn btn-secondary btn-sm" href="{{ path('gamebook_view', {'gamebook': gamebook}) }}">{{ paragraph.gamebook }}</a></td>
+                <td class="smallHead"><a class="btn btn-secondary btn-sm" href="{{ path('paragraph_edit', {'id': paragraph.id, 'gamebook': gamebook}) }}">{{ paragraph.number }}</a></td>
                 <td class="smallOptions"><button type="button" class="btn btn-primary btn-sm smallOptionsLink">Options</button></td>
                 <td class="smallBody smallOptionsList"><span class="paragraphTextCell">{{ paragraph.text }}</span></td>
                 <td class="smallBody smallOptionsList">
@@ -46,12 +46,12 @@
                     <span class="status-icon status-icon--no">&#10007;</span>
                   {% endif %}
                 </td>
-                <td class="smallBody smallOptionsList smallOptionsAction"><a class="nav-link" href="{{ path('paragraphaction_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Action</a></td>
-                <td class="smallBody smallOptionsList smallOptionsAction"><a class="nav-link" href="{{ path('paragraphdirection_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Direction</a></td>
-                <td class="smallBody smallOptionsList smallOptionsAction"><a class="nav-link" href="{{ path('enemy_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Enemy</a></td>
-                <td class="smallBody smallOptionsList smallOptionsAction"><a class="nav-link" href="{{ path('merchant_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Merchant</a></td>
-                <td class="smallBody smallOptionsList smallOptionsAction"><a class="nav-link" href="{{ path('paragraphequipment_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Equipment</a></td>
-                <td class="smallBody smallOptionsList smallOptionsAction"><a class="nav-link" href="{{ path('spell_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Spell</a></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('paragraphaction_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Action</a></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('paragraphdirection_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Direction</a></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('enemy_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Enemy</a></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('merchant_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Merchant</a></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('paragraphequipment_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Equipment</a></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('spell_view', {'paragraph': paragraph.id, 'gamebook': gamebook}) }}">Add Spell</a></td>
                 <td class="smallBody smallOptionsList smallOptionsAction">
                   <form action="{{ path('generic_delete', {'entity': 'paragraph', 'id': paragraph.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
                     <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">

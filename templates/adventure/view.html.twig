@@ -16,25 +16,27 @@
         <table class="table table-striped table-light">
           <thead>
             <tr>
-              <th>Play</th>
-              <th>User</th>
-              <th>Gamebook</th>
-              <th>Hero</th>
-              <th>Time Elapsed</th>
-              <th>Name</th>
-              <th>Delete</th>
+              <th class="smallHead">Name</th>
+              <th class="smallOptions">Options</th>
+              <th class="smallBody">Play</th>
+              <th class="smallBody">User</th>
+              <th class="smallBody">Gamebook</th>
+              <th class="smallBody">Hero</th>
+              <th class="smallBody">Time Elapsed</th>
+              <th class="smallBody">Delete</th>
             </tr>
           </thead>
           <tbody name="adventureTable" id="adventureTable">
             {% for adventure in pagination %}
               <tr>
-                <td><a class="nav-link" href="{{ path('adventure_play', {'adventure': adventure.id, 'paragraph': adventure.progressparagraph}) }}">Play</a></td>
-                <td>{{ adventure.user }}</td>
-                <td>{{ adventure.gamebook }}</td>
-                <td><a class="nav-link" href="{{ path('hero_view', {'gamebook': adventure.gamebook, 'hero': adventure.hero, 'adventure': adventure.name}) }}">{{ adventure.hero }}</a></td>
-                <td>{{ adventure.timeelapsed }}</td>
-                <td>{{ adventure.name }}</td>
-                <td>
+                <td class="smallHead">{{ adventure.name }}</td>
+                <td class="smallOptions"><button type="button" class="btn btn-primary btn-sm smallOptionsLink">Options</button></td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('adventure_play', {'adventure': adventure.id, 'paragraph': adventure.progressparagraph}) }}">Play</a></td>
+                <td class="smallBody smallOptionsList">{{ adventure.user }}</td>
+                <td class="smallBody smallOptionsList">{{ adventure.gamebook }}</td>
+                <td class="smallBody smallOptionsList smallOptionsAction"><a class="btn btn-secondary btn-sm" href="{{ path('hero_view', {'gamebook': adventure.gamebook, 'hero': adventure.hero, 'adventure': adventure.name}) }}">Hero: {{ adventure.hero }}</a></td>
+                <td class="smallBody smallOptionsList">{{ adventure.timeelapsed }}</td>
+                <td class="smallBody smallOptionsList smallOptionsAction">
                   <form action="{{ path('generic_delete', {'entity': 'adventure', 'id': adventure.id}) }}" method="post" onsubmit="return confirm('Delete this? This cannot be undone.');">
                     <input type="hidden" name="redirect" value="{{ app.request.requestUri }}">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete_adventure_' ~ adventure.id) }}">
@@ -50,6 +52,16 @@
         'size': 'small',
         'rounded': true,
         }) }}
+      </div>
+    </div>
+    <div class="options-modal" id="optionsModal" aria-hidden="true">
+      <div class="options-modal__backdrop" data-modal-close></div>
+      <div class="options-modal__dialog" role="dialog" aria-modal="true" aria-label="Row options">
+        <div class="options-modal__header">
+          <span>Options</span>
+          <button type="button" class="options-modal__close" data-modal-close aria-label="Close">&times;</button>
+        </div>
+        <div class="options-modal__body" id="optionsModalBody"></div>
       </div>
     </div>
   {% endif %}           
