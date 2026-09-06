@@ -15,6 +15,12 @@
     display:none;
 }
 
+.btn-primary.nav-link,
+.btn-primary.nav-link:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
 .hiddenDirection {
     display:none;
 }
