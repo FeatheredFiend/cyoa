@@ -1,0 +1,41 @@
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "8081:80"
+    volumes:
+      - .:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+
+  php:
+    image: thecodingmachine/php:8.4-v4-fpm
+    volumes:
+      - .:/var/www/html
+    environment:
+      PHP_EXTENSION_INTL: 1
+      PHP_EXTENSION_PDO_MYSQL: 1
+      PHP_EXTENSION_GD: 1
+      PHP_EXTENSION_APCU: 1
+      APP_SECRET: a550a03321598861212d3175e829f7f6
+      DATABASE_URL: "mysql://symfony:symfony@database:3306/cyoa?serverVersion=10.11.18-MariaDB&charset=utf8mb4"
+      PHP_INI_UPLOAD_MAX_FILESIZE: 10M
+      PHP_INI_POST_MAX_SIZE: 12M
+    depends_on:
+      - database
+
+  database:
+    image: mariadb:10.11
+    environment:
+      MYSQL_DATABASE: cyoa
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+      MYSQL_ROOT_PASSWORD: symfony
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3308:3306"
+
+volumes:
+  db_data:
