@@ -26,7 +26,7 @@
     border: 1px solid var(--border-default);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-    padding: clamp(0.85rem, 2vh, 1.25rem);
+    padding: clamp(0.65rem, 1.6vh, 1rem);
     position: sticky;
     top: 5.5rem;
     animation: rise-in var(--dur-slow) var(--ease-out) both;
@@ -42,51 +42,48 @@
 
 .hero-panel__header {
     cursor: default;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: clamp(0.5rem, 1.2vh, 0.85rem);
+    padding-bottom: clamp(0.5rem, 1.2vh, 0.85rem);
 }
 
-.hero-panel__eyebrow {
+.hero-panel__topline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.3rem 0.75rem;
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.09em;
     color: var(--text-muted);
-    margin: 0 0 0.15rem;
+}
+
+.hero-panel__topline strong {
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: normal;
 }
 
 .hero-panel__name {
     font-family: var(--font-display);
-    font-size: clamp(1.1rem, 2.6vh, 1.4rem);
+    font-size: clamp(1.05rem, 2.4vh, 1.4rem);
     color: var(--accent-gold-text);
-    margin: 0 0 clamp(0.4rem, 1.2vh, 0.9rem);
-}
-
-.hero-panel__meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 1rem;
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-    margin-bottom: clamp(0.6rem, 1.6vh, 1.1rem);
-    padding-bottom: clamp(0.6rem, 1.6vh, 1.1rem);
-    border-bottom: 1px solid var(--border-subtle);
-}
-
-.hero-panel__meta strong {
-    color: var(--text-primary);
-    font-weight: 600;
+    margin: 0.2rem 0 0;
 }
 
 .stat-grid {
     display: flex;
     flex-direction: column;
-    gap: clamp(0.5rem, 1.4vh, 0.85rem);
-    margin-bottom: clamp(0.6rem, 1.6vh, 1.1rem);
+    gap: clamp(0.35rem, 1vh, 0.65rem);
+    margin-bottom: clamp(0.4rem, 1.1vh, 0.85rem);
 }
 
 .stat__row {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: clamp(0.15rem, 0.6vh, 0.3rem);
+    margin-bottom: clamp(0.1rem, 0.4vh, 0.2rem);
 }
 
 .stat__label {
@@ -151,7 +148,7 @@
     background: var(--bg-inset);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-sm);
-    padding: clamp(0.4rem, 1.2vh, 0.55rem) 0.6rem;
+    padding: clamp(0.3rem, 0.9vh, 0.45rem) 0.6rem;
     text-align: center;
 }
 
@@ -170,7 +167,7 @@
 }
 
 .inventory-card {
-    margin-top: clamp(0.6rem, 1.6vh, 1.1rem);
+    margin-top: clamp(0.45rem, 1.1vh, 0.85rem);
 }
 
 .inventory-card__title {
@@ -182,7 +179,7 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--text-secondary);
-    margin-bottom: 0.5rem;
+    margin-bottom: clamp(0.3rem, 0.7vh, 0.5rem);
 }
 
 .inventory-card .table-responsive {

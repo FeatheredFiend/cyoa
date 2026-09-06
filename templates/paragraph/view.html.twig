@@ -11,11 +11,6 @@
       <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2" id="searchBox">
       <a class="text-decoration-none" href="{{ path('paragraph_create', {'gamebook':gamebook}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph</button></a>   
       {{ knp_pagination_filter(pagination, {'g.name': 'Gamebook', 'p.number': 'Number', 'p.text': 'Text'}) }}
-      {{ knp_pagination_render(pagination, null, {}, {
-      'align': 'center',
-      'size': 'small',
-      'rounded': true,
-      }) }}
       </div>
       <div class="col-sm-12 col-md-8 col-lg-9 col-xl-10 table-responsive" id="tableView">
         <a id="toggleSearch" class="nav-link text-white text-center paleRed">Search</a>
@@ -54,6 +49,11 @@
             {% endfor %}
           </tbody>
         </table>
+        {{ knp_pagination_render(pagination, null, {}, {
+        'align': 'center',
+        'size': 'small',
+        'rounded': true,
+        }) }}
       </div>
     </div>
   {% endif %}           

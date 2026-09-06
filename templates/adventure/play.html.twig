@@ -35,11 +35,11 @@
                     {% set hero = adventure.hero %}
                     <div class="hero-panel">
                         <div class="hero-panel__header" id="heroStatsClose">
-                            <p class="hero-panel__eyebrow">{{ adventure.gamebook }}</p>
-                            <h2 class="hero-panel__name">{{ hero }}</h2>
-                            <div class="hero-panel__meta">
+                            <div class="hero-panel__topline">
+                                <span>{{ adventure.gamebook }}</span>
                                 <span>Adventure: <strong>{{ adventure.name }}</strong></span>
                             </div>
+                            <h2 class="hero-panel__name">{{ hero }}</h2>
                         </div>
                         <span class="hidden" id="heroId">{{ hero.id }}</span>
 

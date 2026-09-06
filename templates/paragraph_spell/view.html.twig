@@ -13,11 +13,6 @@
       <a class="text-decoration-none" href="{{ path('spell_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Spell</button></a>
       <a class="text-decoration-none" href="{{ path('paragraphspell_create', {'gamebook': gamebook, 'paragraph': paragraph}) }}"><button type="button" class="col-12 btn-primary d-grid gap-2 nav-link text-white">Create Paragraph Spell</button></a>   
       {{ knp_pagination_filter(pagination, {'p.text': 'Paragraph', 'e.name': 'Spell'}) }}
-      {{ knp_pagination_render(pagination, null, {}, {
-      'align': 'center',
-      'size': 'small',
-      'rounded': true,
-      }) }}
       </div>
       <div class="col-sm-12 col-md-8 table-responsive" id="tableView">
       <a id="toggleSearch" class="nav-link text-white text-center paleRed">Search</a>
@@ -42,6 +37,11 @@
             {% endfor %}
           </tbody>
         </table>
+        {{ knp_pagination_render(pagination, null, {}, {
+        'align': 'center',
+        'size': 'small',
+        'rounded': true,
+        }) }}
       </div>
     </div>
   {% endif %}           

@@ -340,6 +340,12 @@ input[type="radio"].form-control {
     padding: 0.7rem 0.9rem;
 }
 
+/* .table-sm tables (the compact equipment/spell lists in the hero panel)
+   should stay compact rather than inheriting the roomier CRUD-table padding above. */
+.table-sm.table-light > :not(caption) > * > * {
+    padding: 0.35rem 0.5rem;
+}
+
 .table-light.table-striped > tbody > tr:nth-of-type(odd) > * {
     background-color: var(--bs-table-striped-bg) !important;
 }
@@ -424,6 +430,7 @@ input[type="radio"].form-control {
 .pagination {
     gap: 0.3rem;
     flex-wrap: wrap;
+    margin-top: 0.9rem;
 }
 
 .page-link {
