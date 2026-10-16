@@ -2,13 +2,29 @@
 
 {% block title %}Welcome to Symfony Create Your Own Adventure!{% endblock %}
 
+{% block body_class %}scene-full{% endblock %}
+
 {% block body %}
 <div class="container-fluid">
     <p class="hidden" id="title">{{title}}</p>
     {% if app.user != null %}
         <div class="home-hero">
+            <div class="home-hero__sigil" aria-hidden="true">
+                <svg viewBox="0 0 200 200" fill="none" stroke="currentColor">
+                    <circle cx="100" cy="100" r="96" stroke-width="0.6"/>
+                    <circle cx="100" cy="100" r="88" stroke-width="0.4" stroke-dasharray="1 5"/>
+                    <circle cx="100" cy="100" r="74" stroke-width="0.6"/>
+                    <path d="M100 4 L100 26 M100 174 L100 196 M4 100 L26 100 M174 100 L196 100 M32 32 L48 48 M152 152 L168 168 M168 32 L152 48 M48 152 L32 168" stroke-width="0.8"/>
+                    <g class="sigil-inner">
+                        <polygon points="100,30 160,135 40,135" stroke-width="0.6"/>
+                        <polygon points="100,170 40,65 160,65" stroke-width="0.6"/>
+                        <circle cx="100" cy="100" r="34" stroke-width="0.5" stroke-dasharray="2 3"/>
+                    </g>
+                </svg>
+            </div>
             <p class="home-hero__eyebrow">Welcome back, {{ app.user.name }}</p>
-            <h1 class="home-hero__title">Where will your story take you?</h1>
+            <h1 class="home-hero__title" data-split>Where will your story take you?</h1>
+            <p class="home-hero__lede">Pick up a gamebook, choose your hero, and step into the dark.</p>
         </div>
         <div class="home-actions">
             <a class="home-card" href="{{ path('gamebook_view') }}">

@@ -5,11 +5,28 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Symfony CYOA{% endblock %}</title>
         <meta name="color-scheme" content="dark">
+        <meta name="theme-color" content="#06070b">
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🗡️</text></svg>">
+
+        {# Before first paint: mark that scripts run, whether this page arrived
+           through a view transition (then the curtain stays away), and whether
+           it came back to the same page, as a battle round does. #}
+        <script>
+            document.documentElement.classList.add('js');
+            addEventListener('pagereveal', function (e) {
+                if (!e.viewTransition) { return; }
+                var html = document.documentElement;
+                html.classList.add('vt');
+                var from = window.navigation && navigation.activation && navigation.activation.from;
+                try {
+                    if (from && from.url && new URL(from.url).pathname === location.pathname) { html.classList.add('vt-same'); }
+                } catch (err) {}
+            });
+        </script>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cinzel+Decorative:wght@700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -19,7 +36,19 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
+    {# scene-full opens the screen like a film; work screens (the default) fade in. #}
+    <body class="{% block body_class %}scene-quick{% endblock %}">
+        <div class="stage" aria-hidden="true">
+            <div class="stage__layer stage__mist stage__mist--far"></div>
+            <div class="stage__layer stage__rays"></div>
+            <div class="stage__layer stage__mist"></div>
+            <canvas class="stage__embers"></canvas>
+            <div class="stage__layer stage__torch"></div>
+            <div class="stage__layer stage__vignette"></div>
+        </div>
+        <div class="curtain" aria-hidden="true"></div>
+        <div class="grain" aria-hidden="true"></div>
+
         <div class="flash-stack">
             {% for message in app.flashes('success') %}
                 <div class="alert alert-success flash-toast">
