@@ -13,6 +13,7 @@ const $ = require('jquery');
 // this "modifies" the jquery module: adding behavior to it
 // the bootstrap module doesn't export/return anything
 import './bootstrap';
+import { battleRound, initCinema } from './cinema';
 
 // Change the selector if needed
 var $table = $('table.scroll'),
@@ -52,6 +53,23 @@ function pulseStat(selector, isIncrease) {
             $stat.find('.stat__fill').css('width', pct + '%');
         }
     }
+}
+
+var EVENT_ICONS = {
+    item: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+    fate: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.6 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>'
+};
+
+// One line of what just happened to the hero, as a table row for #actionText
+// or #equipmentText. Text from the gamebook is set as text, never as HTML.
+function storyEvent(kind, label, text) {
+    var $info = $('<span></span>')
+        .append($('<span class="story-event__label"></span>').text(label))
+        .append($('<span class="story-event__text"></span>').text(text));
+    var $cell = $('<td></td>')
+        .append($('<span class="story-event__icon" aria-hidden="true"></span>').html(EVENT_ICONS[kind]))
+        .append($info);
+    return $('<tr class="story-event story-event--' + kind + '"></tr>').append($cell);
 }
 
 // Shows a 2-second auto-closing, flashing popup for a battle-round change.
@@ -127,6 +145,18 @@ function showBattleRoundChanges() {
         } else if (luckDelta > 0) {
             showBattlePopup('You gain ' + luckDelta + ' Luck!', 'heal');
         }
+
+        battleRound({
+            round: current.round,
+            playerDelta: playerDelta,
+            enemyDelta: enemyDelta,
+            luckDelta: luckDelta,
+            enemyName: enemyName,
+            enemyDown: current.enemystamina <= 0,
+            heroDown: current.playerstamina <= 0
+        });
+    } else if (!previous) {
+        battleRound({ round: current.round, enemyName: enemyName, first: true });
     }
 
     try {
@@ -489,7 +519,7 @@ $(document).ready(function() {
             });
 
             $(".paragraphactionlist:nth-child(" + x + ")").remove();
-            $('#actionText').append('<tr><td class="text-center py-5">' + actionText + '</td></tr>');
+            $('#actionText').append(storyEvent('fate', 'What befalls you', actionText));
         }
         var healthCheck = $("#gamestamina").text();
         if (parseInt(healthCheck) < 1 ) {
@@ -506,7 +536,6 @@ $(document).ready(function() {
             var adventure = $("#adventure").text();
             var quantity = $(".paragraphequipmentquantity:first").text();
             var category = $(".paragraphequipmentcategory:first").text();
-            var equipmentText = category + " " + equipment;
 
             $.ajax({
                 url: "/run-paragraph-equipment",
@@ -527,7 +556,8 @@ $(document).ready(function() {
                 }
             });
             $(".paragraphEquipmentlist:nth-child(" + x + ")").remove();
-            $('#equipmentText').append('<tr><td class="text-center py-5">' + equipmentText + '</td></tr>');
+            var equipmentLabel = category === 'Add' ? 'Added to your pack' : (category === 'Remove' ? 'Taken from your pack' : category);
+            $('#equipmentText').append(storyEvent('item', equipmentLabel, parseInt(quantity, 10) > 1 ? equipment + ' × ' + quantity : equipment));
             x++;
             
         }
@@ -549,8 +579,16 @@ $(document).ready(function() {
                 var heroEquipment = $("#heroequipmentTable");
                 heroEquipment.html('');
                 $.each(equipments, function (key, equipment) {
-                    heroEquipment.append('<tr><td class="hidden heroEquipmentList">' + equipment.heroequipment + '</td><td>' + equipment.id + '</td><td>' + equipment.name + '</td><td class="heroEquipmentQuantity">' + equipment.quantity + '</td></tr>');
+                    heroEquipment.append($('<tr></tr>').append(
+                        $('<td class="hidden heroEquipmentList"></td>').text(equipment.heroequipment),
+                        $('<td></td>').text(equipment.id),
+                        $('<td></td>').text(equipment.name),
+                        $('<td class="heroEquipmentQuantity"></td>').text(equipment.quantity)
+                    ));
                 });
+                if (heroEquipment.children().length === 0) {
+                    heroEquipment.append('<tr class="inventory-empty"><td colspan="4">Your pack is empty.</td></tr>');
+                }
               },
               error: function (err) {
 
@@ -560,3 +598,6 @@ $(document).ready(function() {
       }
 
 });
+
+// The cinematic layer starts after the game logic above has settled the page.
+$(initCinema);

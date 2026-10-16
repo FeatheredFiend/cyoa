@@ -6,6 +6,7 @@
 @import './layout.css';
 @import './components.css';
 @import './game.css';
+@import './cinema.css';
 
 /* ---------- Legacy visibility helpers still referenced by templates/JS ---------- */
 

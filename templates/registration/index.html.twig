@@ -1,8 +1,14 @@
 {# templates/registration/index.html.twig #}
 {% extends 'base.html.twig' %}
 {% block title %}Register User{% endblock %}
+{% block body_class %}scene-full{% endblock %}
 {% block body %}
 <div class="auth-shell">
+    <div class="auth-hero">
+        <p class="auth-hero__eyebrow">A new hero</p>
+        <h1 class="auth-hero__title" data-split>Your story starts here.</h1>
+        <p class="auth-hero__lede">Make an account, then pick a gamebook to play or write your own.</p>
+    </div>
     <div class="card-body">
         <div class="card-header">Please Register</div>
         {{ form_start(form) }}

@@ -1,7 +1,16 @@
 {% extends 'base.html.twig' %}
 {% block title %}Play Adventure{% endblock %}
+{% block body_class %}scene-full scene-play{% endblock %}
 {% block body %}
 {% if app.user != null %}
+    {# The hero and gamebook, for the scene header, the duel and the death screen. #}
+    {% set hero = null %}
+    {% set book = null %}
+    {% for adventureRow in pagination %}
+        {% set hero = adventureRow.hero %}
+        {% set book = adventureRow.gamebook %}
+    {% endfor %}
+
     <p class="hidden" id="title">{{title}}</p>
     <p class="hidden" id="adventure">{{adventure}}</p>
     <p class="hidden" id="paragraph">{{paragraph}}</p>
@@ -9,22 +18,24 @@
 
         <div class="battle-popup-stack" id="battlePopupStack" aria-live="polite"></div>
 
-        <div class="gameover-screen hidden" id="gameover">
+        <div class="gameover-screen hidden" id="gameover" role="alertdialog" aria-labelledby="gameoverTitle">
             <div class="gameover-screen__inner">
-                <h1>Game Over</h1>
-                <a href="{{ path('homepage') }}">Return Home</a>
+                <p class="gameover-screen__kicker">Your adventure ends here</p>
+                <h1 id="gameoverTitle">Game Over</h1>
+                {% if hero %}<p class="gameover-screen__epitaph">{{ hero }} has fallen.</p>{% endif %}
+                <a class="gameover-screen__home" href="{{ path('homepage') }}">Return Home</a>
             </div>
         </div>
 
         <div class="game-shell" id="game">
             <div class="mobileHidden" id="heroStats">
-                {% for adventure in pagination %}
-                    {% set hero = adventure.hero %}
+                {% for adventureRow in pagination %}
+                    {% set hero = adventureRow.hero %}
                     <div class="hero-panel">
                         <div class="hero-panel__header" id="heroStatsClose">
                             <div class="hero-panel__topline">
-                                <span>{{ adventure.gamebook }}</span>
-                                <span>Adventure: <strong>{{ adventure.name }}</strong></span>
+                                <span>{{ adventureRow.gamebook }}</span>
+                                <span>Adventure: <strong>{{ adventureRow.name }}</strong></span>
                             </div>
                             <h2 class="hero-panel__name">{{ hero }}</h2>
                         </div>
@@ -41,7 +52,7 @@
                                 </div>
                                 <div class="stat__bar"><div class="stat__fill stat__fill--skill" style="width: {{ max(0, min(100, hero.startingskill > 0 ? (hero.skill / hero.startingskill * 100)|round : 100)) }}%"></div></div>
                             </div>
-                            <div class="stat" data-start="{{ hero.startingstamina }}">
+                            <div class="stat" data-start="{{ hero.startingstamina }}" data-vital="stamina">
                                 <div class="stat__row">
                                     <span class="stat__label">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
@@ -103,13 +114,14 @@
                                     </thead>
                                     <tbody name="heroequipmentTable" id="heroequipmentTable">
                                         {% for heroequipment in paginationHeroEquipment %}
-                                        {% set id = heroequipment.id %}
                                         <tr>
                                             <td class="hidden heroEquipmentList">{{ heroequipment.equipment.id}}</td>
                                             <td>{{ heroequipment.id}}</td>
                                             <td>{{ heroequipment.equipment }}</td>
                                             <td class="heroEquipmentQuantity">{{ heroequipment.quantity }}</td>
                                         </tr>
+                                        {% else %}
+                                        <tr class="inventory-empty"><td colspan="4">Your pack is empty.</td></tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
@@ -128,11 +140,12 @@
                                     </thead>
                                     <tbody name="herospellTable" id="herospellTable">
                                         {% for herospell in paginationHeroSpell %}
-                                        {% set id = herospell.id %}
                                         <tr>
                                             <td class="hidden heroEquipmentList">{{ herospell.spell.id}}</td>
                                             <td>{{ herospell.spell }}</td>
                                         </tr>
+                                        {% else %}
+                                        <tr class="inventory-empty"><td colspan="2">No spells learnt yet.</td></tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
@@ -142,14 +155,30 @@
                 {% endfor %}
             </div>
             <div id="gameWindow">
-                <a id="toggleStats" class="paleRed largeHidden">Stats</a>
+                <button type="button" id="toggleStats" class="hero-fab largeHidden">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5z"/></svg>
+                    Hero
+                </button>
 
                 <div class="story-card">
+                    {% for paragraph in paginationParagraph %}
+                        <header class="scene-title">
+                            <span class="scene-title__book">{{ paragraph.gamebook }}</span>
+                            <span class="scene-title__rule" aria-hidden="true"></span>
+                            <span class="scene-title__section" title="Section {{ paragraph.number }}">&sect;&nbsp;{{ paragraph.number }}</span>
+                        </header>
+                        {% if paragraph.image %}
+                            <figure class="scene-art">
+                                <img src="{{ asset('images/paragraph/' ~ paragraph.image) }}" alt="">
+                            </figure>
+                        {% endif %}
+                    {% endfor %}
                     <div class="story-text" id="paragraphText">
                         {% for paragraph in paginationParagraph %}
                             <p>{{ paragraph.text}}</p>
                         {% endfor %}
                     </div>
+                    <span class="reveal-hint" aria-hidden="true">Click to continue</span>
                 </div>
 
                 <div class="panel-section paragraphEquipments" id="paragraphEquipment">
@@ -215,7 +244,10 @@
                 <div class="panel-section" id="paragraphMerchant">
                     {% for paragraphmerchant in paginationMerchant %}
                         <div class="merchant-panel">
-                            <h3 class="merchant-panel__title">{{ paragraphmerchant.name }}</h3>
+                            <h3 class="merchant-panel__title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M14.5 9a2.5 2.5 0 0 0-2.5-1.5c-1.4 0-2.5.8-2.5 2s1.1 1.6 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2A2.5 2.5 0 0 1 9.5 15"/><path d="M12 6v1.5M12 16.5V18"/></svg>
+                                {{ paragraphmerchant.name }}
+                            </h3>
                             <div class="table-responsive">
                                 <table class="table table-striped table-light">
                                     <tr>
@@ -230,7 +262,7 @@
                                                 <td>{{ wares.merchantinventory.equipment }}</td>
                                                 <td>{{ wares.merchantinventory.cost }}</td>
                                                 <td>{{ wares.merchantinventory.quantity }}</td>
-                                                <td><button class="py-0 btn btn-danger col-6"><a class="nav-link text-white" href="{{ path('buy_equipment', {'adventure': adventure, 'paragraph': paragraph, 'merchantinventory': wares.merchantinventory.id, 'equipment': wares.merchantinventory.equipment.id, 'quantity': wares.merchantinventory.quantity}) }}">Buy Item</a></button></td>
+                                                <td><a class="btn btn-warning btn-sm" href="{{ path('buy_equipment', {'adventure': adventure, 'paragraph': paragraph, 'merchantinventory': wares.merchantinventory.id, 'equipment': wares.merchantinventory.equipment.id, 'quantity': wares.merchantinventory.quantity}) }}">Buy Item</a></td>
                                             </tr>
                                         {% endfor %}
                                     {% endfor %}
@@ -241,125 +273,81 @@
                 </div>
                 <div class="panel-section" id="paragraphEnemy">
                     {% for paragraphenemy in paginationEnemy %}
-                        <div class="battle-panel">
-                            {% if paragraphenemy.battlecategory == "Group" %}
-                                <div id="enemy">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-light">
-                                            <tr>
-                                                <th>Image</th>
-                                                <td>{{ paragraphenemy.image }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Name</th>
-                                                <td>{{ paragraphenemy.name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Skill</th>
-                                                <td>{{ paragraphenemy.skill }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Stamina</th>
-                                                <td>{{ paragraphenemy.stamina }}</td>
-                                            </tr>
-                                        </table>
-                                    </div>
+                        {% set special = paragraphenemy.battlecategory == "Special" %}
+                        <section class="battle-panel encounter">
+                            <p class="encounter__kicker">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6M16 16l4 4M19 21l2-2"/><path d="M14.5 6.5 18 3h3v3l-3.5 3.5"/><path d="m5 14 4 4M7 17l-3 3M3 19l2 2"/></svg>
+                                {{ special ? 'A deadly trial' : (paragraphenemy.battlecategory == "Group" ? 'They come together' : 'A foe blocks your way') }}
+                            </p>
+                            <div {% if special %}id="specialBattle"{% else %}id="enemy"{% endif %} class="foe">
+                                <div class="foe__portrait">
+                                    {% if paragraphenemy.image %}
+                                        <img src="{{ asset('images/enemy/' ~ paragraphenemy.image) }}" alt="{{ paragraphenemy.name }}">
+                                    {% else %}
+                                        <span class="foe__sigil" aria-hidden="true">{{ paragraphenemy.name|first|upper }}</span>
+                                    {% endif %}
                                 </div>
-                            {% elseif paragraphenemy.battlecategory == "Single" %}
-                                <div id="enemy">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-light">
-                                            <tr>
-                                                <th>Image</th>
-                                                <td>{{ paragraphenemy.image }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Name</th>
-                                                <td>{{ paragraphenemy.name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Skill</th>
-                                                <td>{{ paragraphenemy.skill }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Stamina</th>
-                                                <td>{{ paragraphenemy.stamina }}</td>
-                                            </tr>
-                                        </table>
-                                    </div>
+                                <div class="foe__body">
+                                    <h3 class="foe__name">{{ paragraphenemy.name }}</h3>
+                                    <dl class="foe__stats">
+                                        <div class="foe__stat"><dt>Skill</dt><dd>{{ paragraphenemy.skill }}</dd></div>
+                                        {% if special %}
+                                            <div class="foe__stat foe__stat--strength"><dt>Its attack</dt><dd id="enemyattackstrength" data-roll>{{ paragraphenemy.skill + random(1,6) + random(1,6) }}</dd></div>
+                                            <div class="foe__stat foe__stat--strength"><dt>Your attack</dt><dd id="playerattackstrength" data-roll>{{ random(1,6) + random(1,6) }}</dd></div>
+                                        {% else %}
+                                            <div class="foe__stat"><dt>Stamina</dt><dd>{{ paragraphenemy.stamina }}</dd></div>
+                                        {% endif %}
+                                    </dl>
                                 </div>
-                            {% elseif paragraphenemy.battlecategory == "Special" %}
-                                <div id="specialBattle">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-light">
-                                            <tr>
-                                                <th>Image</th>
-                                                <td>{{ paragraphenemy.image }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Name</th>
-                                                <td>{{ paragraphenemy.name }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Skill</th>
-                                                <td>{{ paragraphenemy.skill }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Enemy Attack Strength</th>
-                                                <td id="enemyattackstrength">{{ paragraphenemy.skill + random(1,6) + random(1,6)  }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Player Attack Strength</th>
-                                                <td id="playerattackstrength">{{ random(1,6) + random(1,6)  }}</td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            {% endif %}
-                            <div class="battle-actions">
-                                <button id="battleCreate" class="btn btn-danger"><a class="nav-link text-white" href="{{ path('battle_create', {'adventure': adventure, 'paragraph': paragraphenemy.paragraph.id, 'enemy': paragraphenemy.id, 'luck': 0}) }}">Fight!</a></button>
-                                <button id="battleCreateLuck" class="btn btn-warning"><a class="nav-link text-white" href="{{ path('battle_create', {'adventure': adventure, 'paragraph': paragraphenemy.paragraph.id, 'enemy': paragraphenemy.id, 'luck': 1}) }}">Fight with Luck!</a></button>
                             </div>
-                        </div>
+                            <div class="battle-actions">
+                                <a id="battleCreate" class="btn btn-danger" href="{{ path('battle_create', {'adventure': adventure, 'paragraph': paragraphenemy.paragraph.id, 'enemy': paragraphenemy.id, 'luck': 0}) }}">Fight!</a>
+                                <a id="battleCreateLuck" class="btn btn-warning" href="{{ path('battle_create', {'adventure': adventure, 'paragraph': paragraphenemy.paragraph.id, 'enemy': paragraphenemy.id, 'luck': 1}) }}">Fight with Luck!</a>
+                            </div>
+                        </section>
                     {% endfor %}
                 </div>
                 <div class="panel-section" id="paragraphBattle">
                     {% for paragraphbattle in paginationBattle %}
-                        <div class="battle-panel" id="battleEnemy">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-light">
-                                    <tr>
-                                        <th>Enemy Name</th>
-                                        <td id="battleenemyname">{{ paragraphbattle.enemy }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Battle Round</th>
-                                        <td id="battleround">{{ paragraphbattle.round }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Player Stamina</th>
-                                        <td id="battleplayerstamina">{{ paragraphbattle.playerstamina }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Enemy Stamina</th>
-                                        <td>{{ paragraphbattle.enemystamina }}</td>
-                                        <td class="hidden" id="enemystamina">{{ paragraphbattle.enemystamina }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Player Skill</th>
-                                        <td id="battleplayerskill">{{ paragraphbattle.playerskill }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Enemy Skill</th>
-                                        <td id="enemyskill">{{ paragraphbattle.enemyskill }}</td>
-                                    </tr>
-                                </table>
+                        {% set enemyStart = paragraphbattle.enemy.stamina %}
+                        {% set heroStart = hero ? hero.startingstamina : 0 %}
+                        <section class="battle-panel duel" id="battleEnemy">
+                            <div class="duel__round"><span>Round <strong id="battleround">{{ paragraphbattle.round }}</strong></span></div>
+                            <div class="duel__arena">
+                                <div class="fighter fighter--player">
+                                    <span class="fighter__label">You</span>
+                                    <div class="fighter__name">{{ hero ?: 'You' }}</div>
+                                    <div class="stat" data-start="{{ heroStart }}">
+                                        <div class="fighter__stamina">
+                                            <span class="fighter__value" id="battleplayerstamina">{{ paragraphbattle.playerstamina }}</span>
+                                            <span class="fighter__unit">Stamina</span>
+                                        </div>
+                                        <div class="stat__bar"><div class="stat__fill stat__fill--stamina" style="width: {{ max(0, min(100, heroStart > 0 ? (paragraphbattle.playerstamina / heroStart * 100)|round : 100)) }}%"></div></div>
+                                    </div>
+                                    <div class="fighter__skill">Skill<span id="battleplayerskill">{{ paragraphbattle.playerskill }}</span></div>
+                                </div>
+                                <div class="duel__vs" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5"/><path d="m13 19 6-6M16 16l4 4M19 21l2-2"/><path d="M14.5 6.5 18 3h3v3l-3.5 3.5"/><path d="m5 14 4 4M7 17l-3 3M3 19l2 2"/></svg>
+                                    <span>VS</span>
+                                </div>
+                                <div class="fighter fighter--enemy">
+                                    <span class="fighter__label">Foe</span>
+                                    <div class="fighter__name" id="battleenemyname">{{ paragraphbattle.enemy }}</div>
+                                    <div class="stat" data-start="{{ enemyStart }}">
+                                        <div class="fighter__stamina">
+                                            <span class="fighter__value" id="enemystamina">{{ paragraphbattle.enemystamina }}</span>
+                                            <span class="fighter__unit">Stamina</span>
+                                        </div>
+                                        <div class="stat__bar"><div class="stat__fill stat__fill--stamina" style="width: {{ max(0, min(100, enemyStart > 0 ? (paragraphbattle.enemystamina / enemyStart * 100)|round : 100)) }}%"></div></div>
+                                    </div>
+                                    <div class="fighter__skill">Skill<span id="enemyskill">{{ paragraphbattle.enemyskill }}</span></div>
+                                </div>
                             </div>
                             <div class="battle-actions">
-                                <button id="battleNext" class="btn btn-danger"><a class="nav-link text-white" href="{{ path('battle_next', {'adventure': adventure, 'paragraph': paragraph, 'battle': paragraphbattle.id, 'enemy': paragraphbattle.enemy.id, 'luck': 0}) }}">Next Round</a></button>
-                                <button id="battleNextLuck" class="btn btn-warning"><a class="nav-link text-white" href="{{ path('battle_next', {'adventure': adventure, 'paragraph': paragraph, 'battle': paragraphbattle.id, 'enemy': paragraphbattle.enemy.id, 'luck': 1}) }}">Next Round with Luck</a></button>
+                                <a id="battleNext" class="btn btn-danger" href="{{ path('battle_next', {'adventure': adventure, 'paragraph': paragraph, 'battle': paragraphbattle.id, 'enemy': paragraphbattle.enemy.id, 'luck': 0}) }}">Next Round</a>
+                                <a id="battleNextLuck" class="btn btn-warning" href="{{ path('battle_next', {'adventure': adventure, 'paragraph': paragraph, 'battle': paragraphbattle.id, 'enemy': paragraphbattle.enemy.id, 'luck': 1}) }}">Next Round with Luck</a>
                             </div>
-                        </div>
+                        </section>
                     {% endfor %}
                 </div>
                 <div class="choice-list" id="paragraphDirections">
@@ -382,10 +370,11 @@
                                 </table>
                             {% endfor %}
                             <div>
-                                <button class="choice-btn directionButton">
-                                    <a class="nav-link" href="{{ path('adventure_next', {'adventure': adventure, 'paragraph': paragraphdirection.redirectparagraph}) }}">{{paragraphdirection.text}}</a>
+                                <a class="choice-btn directionButton has-glow" href="{{ path('adventure_next', {'adventure': adventure, 'paragraph': paragraphdirection.redirectparagraph}) }}">
+                                    <span class="choice-btn__key" aria-hidden="true"></span>
+                                    <span class="choice-btn__text">{{paragraphdirection.text}}</span>
                                     <svg class="choice-btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     {% endfor %}
