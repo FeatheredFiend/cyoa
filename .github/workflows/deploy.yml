@@ -1,0 +1,88 @@
+name: Build and deploy
+
+# The same pipeline as the games: every push to main that passes the checks is
+# published to the `deploy` branch, and the host's Git clone of that branch
+# pulls it on a cron job, then runs any new migrations. Pull requests run the
+# checks and stop there. One-off host setup and how it fits together:
+# docs/DEPLOY.md.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: ctype, iconv, intl, gd, pdo_mysql, mbstring
+          tools: composer:v2
+          coverage: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - run: composer install --no-interaction --no-progress
+      - run: yarn install --frozen-lockfile
+      - run: yarn build
+
+      # There are no PHPUnit tests yet, so check what can be checked without a
+      # database: the templates, the config, the service container and the
+      # Doctrine mapping.
+      - name: Check
+        run: |
+          php bin/console lint:twig templates
+          php bin/console lint:yaml config --parse-tags
+          php bin/console lint:container
+          php bin/console doctrine:schema:validate --skip-sync
+
+      # The site to publish: production packages only, and .env compiled for
+      # prod (so APP_DEBUG is off). No secrets: on the host those live in
+      # ~/cyoa.env, outside the site's folder, loaded by config/runtime.php.
+      # BUILD names this deploy so Symfony starts a fresh cache (see
+      # Kernel::getCacheDir()), because the host pulls without running any
+      # commands. The subdomain's document root is public/, so nothing else in
+      # the tree can be fetched over HTTP.
+      #
+      # Only what the app needs at runtime is copied. composer.json must stay:
+      # Kernel::getProjectDir() finds the project root by looking for it.
+      - name: Assemble the site
+        env:
+          APP_ENV: prod
+        run: |
+          set -e
+          composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+          composer dump-env prod
+          echo "${GITHUB_SHA::12}" > BUILD
+          # Fails the job here, rather than as a blank 500 on the live site,
+          # if the production container doesn't compile.
+          php bin/console cache:warmup --env=prod --no-interaction
+          mkdir site
+          cp -a bin config migrations public src templates translations vendor \
+            composer.json .env .env.local.php BUILD site/
+
+      # Publishes the site to the `deploy` branch as plain files. The host's
+      # Git clone of that branch is the subdomain's folder.
+      - name: Publish build to the deploy branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: deploy
+          publish_dir: ./site
+          commit_message: Deploy

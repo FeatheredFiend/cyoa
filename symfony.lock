@@ -101,6 +101,9 @@
     "psr/log": {
         "version": "3.0.0"
     },
+    "symfony/apache-pack": {
+        "version": "v1.0.1"
+    },
     "symfony/asset": {
         "version": "v6.0.7"
     },
