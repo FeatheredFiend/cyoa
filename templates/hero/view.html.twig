@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Heroes{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-3 mb-3">
+  <p class="hidden" id="title">{{title}}</p> 
+  <p class="hidden" id="gamebook">{{gamebook}}</p> 
+  <p class="hidden" id="adventure">{{adventure}}</p> 
+  {% if app.user != null %}
+    <div class="row">
+      <div class="col-sm-12 col-md-4 table-responsive">
+        {% for hero in pagination %}    
+        <table class="table table-striped table-light">
+          <tr>
+            <th>Gamebook</th>
+            <td>{{ gamebook }}</td>
+          </tr>
+          <tr>
+            <th>Adventure</th>
+            <td>{{ adventure }}</td>
+          </tr>          
+          <tr>
+            <th>Name</th>
+            <td>{{ hero.name }}</td>
+          </tr>
+          <tr>
+            <th>Skill</th>
+            <td>{{ hero.startingskill }} / {{ hero.skill }}</td>         
+          </tr>
+          <tr>
+            <th>Stamina</th>
+            <td>{{ hero.startingstamina }} / {{ hero.stamina }}</td>         
+          </tr>   
+          <tr>
+            <th>Luck</th>
+            <td>{{ hero.startingluck }} / {{ hero.luck }}</td>         
+          </tr>  
+          <tr>
+            <th>Provisions</th>
+            <td>{{ hero.startingprovision }} / {{ hero.provision }}</td>         
+          </tr>      
+          <tr>
+            <th>Honour</th>
+            <td>{{ hero.honour }}</td>         
+          </tr>   
+          <tr>
+            <th>Treasure</th>
+            <td>{{ hero.treasure }}</td>         
+          </tr>                                                 
+        </table>
+        {% endfor %}        
+      </div>
+      <div class="col-sm-12 col-md-8 table-responsive" id="tableView">
+        <table class="table table-striped table-light">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Hero</th>
+              <th>Equipment</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody name="heroequipmentTable" id="heroequipmentTable">
+            {% for heroeq in paginationEq %}
+            {% set id = heroeq.id %}
+              <tr>
+                <td>{{ heroeq.id}}</td>
+                <td>{{ heroeq.hero }}</td>
+                <td>{{ heroeq.equipment }}</td>
+                <td>{{ heroeq.quantity }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>      
+    </div>
+  {% endif %}           
+</div>
+{% endblock %}

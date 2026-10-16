@@ -1,0 +1,81 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    enemy_images_directory: '%kernel.project_dir%/public/images/enemy'
+    paragraph_images_directory: '%kernel.project_dir%/public/images/paragraph'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Service\AddDay:
+        arguments: 
+            $addDay: '%kernel.project_dir%'             
+
+    App\Service\CreateHero:
+        arguments: 
+            $createHero: '%kernel.project_dir%'
+
+    App\Service\CreateBattle:
+        arguments: 
+            $createBattle: '%kernel.project_dir%'         
+
+    App\Service\GetHero:
+        arguments: 
+            $getHero: '%kernel.project_dir%'                     
+
+    App\Service\StartAdventure:
+        arguments: 
+            $startAdventure: '%kernel.project_dir%'
+
+    App\Service\NextParagraph:
+        arguments: 
+            $nextParagraph: '%kernel.project_dir%'
+
+    App\Service\ParagraphActionRun:
+        arguments: 
+            $paragraphActionRun: '%kernel.project_dir%'
+
+    App\Service\NextBattle:
+        arguments: 
+            $nextBattle: '%kernel.project_dir%'            
+
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectoryEnemy: '%enemy_images_directory%' 
+            $targetDirectoryParagraph: '%paragraph_images_directory%'       
+
+    App\Service\BuyEquipment:
+        arguments: 
+            $buyEquipment: '%kernel.project_dir%'
+
+    App\Service\UseEquipment:
+        arguments: 
+            $useEquipment: '%kernel.project_dir%' 
+
+    App\Service\UseProvision:
+        arguments: 
+            $useProvision: '%kernel.project_dir%'                  
+
+    App\Service\UseSpell:
+        arguments: 
+            $useSpell: '%kernel.project_dir%'                                                     
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+
